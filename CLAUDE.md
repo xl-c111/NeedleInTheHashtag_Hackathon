@@ -46,28 +46,39 @@ Design and build a demo addressing online safety issues. Interview mentors and r
 
 ## Tech Stack
 
-> **Update once decided**
-
-- **Frontend:** TBD (likely React/Next.js or simple HTML/Tailwind)
-- **Backend:** TBD (likely Python FastAPI or Node)
+- **Frontend:** Next.js 14 + Tailwind CSS + TypeScript
+- **Backend:** FastAPI (Python)
 - **AI/ML:** Claude API, possibly Perspective API, sentence-transformers
 - **Database:** TBD if needed
-- **Deployment:** TBD
+- **Deployment:** Vercel (frontend), TBD (backend)
 
 ## Project Structure
 
 ```
 esafety-hackathon/
-├── CLAUDE.md          # This file - project context
-├── docs/              # Documentation and context files
-├── src/               # Source code
-│   ├── classifiers/   # Classification logic
-│   ├── utils/         # Utility functions
-│   └── features/      # Feature extraction
-├── notebooks/         # Jupyter notebooks for exploration
-├── scripts/           # Standalone scripts
-├── data/              # Data files (gitignored)
-└── frontend/          # Frontend code (if separate)
+├── CLAUDE.md              # This file - project context
+├── docs/                  # Documentation
+│   ├── API_CONTRACT.md    # Frontend ↔ Backend interface
+│   ├── HACKATHON_CONTEXT.md
+│   ├── TECHNICAL_APPROACHES.md
+│   ├── PITCH_GUIDE.md
+│   └── TEAM_WORKFLOWS.md
+├── frontend/              # Next.js frontend
+│   ├── src/
+│   │   ├── app/           # Pages
+│   │   ├── components/    # Reusable components
+│   │   └── lib/           # API client, utilities
+│   └── package.json
+├── backend/               # FastAPI backend
+│   ├── main.py            # API routes
+│   ├── services/          # Business logic
+│   └── requirements.txt
+├── src/                   # Shared Python utilities
+│   ├── classifiers/       # Classification logic
+│   └── utils/             # Text processing
+├── notebooks/             # Jupyter notebooks
+├── scripts/               # CLI scripts
+└── data/                  # Data files (gitignored)
 ```
 
 ## Coding Conventions
@@ -134,3 +145,35 @@ When working on this project:
 4. **Check existing code** — Before creating new utilities, check if something similar exists in `src/utils/` or `src/classifiers/`.
 
 5. **Keep it simple** — We have ~48 hours of hacking plus a few days to polish. Don't over-engineer.
+
+## Parallel Workstreams
+
+The team works in parallel on different areas:
+
+| Area | Owner | Directory |
+|------|-------|-----------|
+| Backend API | Backend Engineer | `backend/` |
+| Frontend UI | Frontend/Design | `frontend/` |
+| Classification Logic | Tech Lead | `src/`, `backend/services/` |
+| Research/Pitch | Business Analyst | `docs/` |
+
+**Integration point:** `docs/API_CONTRACT.md` defines the interface between frontend and backend.
+
+### Quick Commands
+
+**Frontend:**
+```bash
+cd frontend && npm install && npm run dev
+# Runs at http://localhost:3000
+# Uses mock data by default (no backend needed)
+```
+
+**Backend:**
+```bash
+cd backend && pip install -r requirements.txt && uvicorn main:app --reload
+# Runs at http://localhost:8000
+# API docs at http://localhost:8000/docs
+```
+
+**Connect frontend to backend:**
+In `frontend/src/lib/api.ts`, set `USE_MOCK = false`

@@ -1,0 +1,18 @@
+# Backend dependencies
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+python-dotenv>=1.0.0
+
+# CORS
+python-multipart>=0.0.6
+
+# Optional: For LLM classification (uncomment if using)
+# anthropic>=0.7.0
+# openai>=1.0.0
+
+# Optional: For Perspective API
+# google-api-python-client>=2.100.0
+
+# Optional: For embeddings
+# sentence-transformers>=2.2.0
