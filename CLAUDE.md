@@ -104,12 +104,35 @@ Store in `.env` file (gitignored). Copy from `.env.example`:
 
 ## Quick Commands
 
+### Windows Setup
 ```bash
-# Setup
+# Setup (first time)
+python -m venv venv
+venv\Scripts\activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+copy .env.example .env
+
+# Activate venv (every new terminal session)
+venv\Scripts\activate
+
+# Run classification script
+python scripts/classify_messages.py input.csv output.csv --text-column text
+
+# Start Jupyter
+jupyter notebook
+```
+
+### macOS/Linux Setup
+```bash
+# Setup (first time)
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
+
+# Activate venv (every new terminal session)
+source venv/bin/activate
 
 # Run classification script
 python scripts/classify_messages.py input.csv output.csv --text-column text

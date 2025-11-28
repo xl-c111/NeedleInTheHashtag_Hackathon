@@ -41,5 +41,5 @@ requests>=2.31.0
 aiohttp>=3.8.0
 
 # Text Cleaning
-clean-text>=0.6.0
+# clean-text>=0.6.0  # Not needed - conflicts with emoji package, custom clean_text() exists
 ftfy>=6.1.0

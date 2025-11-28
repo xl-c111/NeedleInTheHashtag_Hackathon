@@ -20,18 +20,51 @@ Design and build a demo addressing online safety issues. Talk to mentors and eSa
 
 ## 🚀 Quick Start
 
-```bash
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+### Windows Setup (Recommended)
 
-# Install dependencies
+```bash
+# 1. Create virtual environment in project directory
+python -m venv venv
+
+# 2. Activate virtual environment
+venv\Scripts\activate
+
+# You should see (venv) at the start of your command prompt
+
+# 3. Upgrade pip (fixes Windows long path issues)
+python -m pip install --upgrade pip
+
+# 4. Install dependencies
 pip install -r requirements.txt
 
-# Copy environment template and add your API keys
+# 5. Copy environment template and add your API keys
+copy .env.example .env
+
+# 6. Run the example notebook
+jupyter notebook notebooks/01_exploration.ipynb
+```
+
+**Note:** You'll need to activate the virtual environment each time you open a new terminal:
+```bash
+venv\Scripts\activate
+```
+
+### macOS/Linux Setup
+
+```bash
+# 1. Create virtual environment
+python -m venv venv
+
+# 2. Activate virtual environment
+source venv/bin/activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Copy environment template
 cp .env.example .env
 
-# Run the example notebook
+# 5. Run the example notebook
 jupyter notebook notebooks/01_exploration.ipynb
 ```
 
