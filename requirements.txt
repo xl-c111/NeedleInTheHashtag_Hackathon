@@ -1,0 +1,45 @@
+# Core Data Science
+pandas>=2.0.0
+numpy>=1.24.0
+scipy>=1.10.0
+
+# NLP & Text Processing
+nltk>=3.8.0
+spacy>=3.5.0
+textblob>=0.17.1
+emoji>=2.8.0
+
+# Machine Learning
+scikit-learn>=1.3.0
+xgboost>=2.0.0
+
+# Deep Learning (optional - comment out if not needed)
+torch>=2.0.0
+transformers>=4.30.0
+sentence-transformers>=2.2.0
+
+# API Clients
+openai>=1.0.0
+anthropic>=0.7.0
+google-cloud-language>=2.9.0
+google-api-python-client>=2.100.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.15.0
+wordcloud>=1.9.0
+
+# Jupyter & Development
+jupyter>=1.0.0
+ipywidgets>=8.0.0
+tqdm>=4.65.0
+
+# Data Loading & Utilities
+python-dotenv>=1.0.0
+requests>=2.31.0
+aiohttp>=3.8.0
+
+# Text Cleaning
+clean-text>=0.6.0
+ftfy>=6.1.0
