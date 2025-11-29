@@ -18,10 +18,10 @@ ENV/
 .env.local
 
 # Data (keep out of git - may be large/sensitive)
-data/raw/*
-data/processed/*
-!data/raw/.gitkeep
-!data/processed/.gitkeep
+# data/raw/*
+# data/processed/*
+# !data/raw/.gitkeep
+# !data/processed/.gitkeep
 
 # Models
 models/
