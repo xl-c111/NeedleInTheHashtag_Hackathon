@@ -96,8 +96,8 @@ export default function ChatInterface() {
     <div className="flex h-screen flex-col">
       <ChatHeader />
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-2xl px-4 py-6">
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <div className="mx-auto max-w-2xl px-4 py-6 flex-1 flex flex-col justify-end">
           <MessageList messages={messages} />
 
           <AnimatePresence>

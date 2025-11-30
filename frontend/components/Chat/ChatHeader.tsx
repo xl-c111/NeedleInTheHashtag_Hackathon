@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 
 export function ChatHeader() {
@@ -23,8 +24,14 @@ export function ChatHeader() {
           </p>
         </div>
 
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black/5 dark:bg-white/5">
-          <span className="text-sm">🌿</span>
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/5 dark:bg-white/5">
+          <Image 
+            src="/owlaitransparent.svg" 
+            alt="AI Assistant" 
+            width={28} 
+            height={28} 
+            className="h-7 w-7"
+          />
         </div>
       </div>
     </header>
