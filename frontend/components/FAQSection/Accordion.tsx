@@ -37,26 +37,20 @@ export default function Accordion({
         <div
             className={cn(
                 "w-full max-w-2xl",
-                "bg-white dark:bg-[#1a1a1a]",
-                "border border-zinc-200 dark:border-zinc-800/50",
-                "ring-1 ring-zinc-100 dark:ring-zinc-800/50",
-                "shadow-lg shadow-zinc-200/20 dark:shadow-black/20",
-                "rounded-xl",
-                "overflow-hidden",
                 className
             )}
             {...props}
         >
-            <div className="p-8 border-b border-zinc-200 dark:border-zinc-800/50 bg-zinc-50 dark:bg-[#121212]">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tighter">
+            <div className="p-8">
+                <h2 className="text-2xl font-bold text-black tracking-tighter">
                     {title}
                 </h2>
-                <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 tracking-tighter">
+                <p className="mt-2 text-sm text-black/80 tracking-tighter">
                     {description}
                 </p>
             </div>
 
-            <div className="divide-y divide-zinc-200 dark:divide-zinc-800/50">
+            <div className="">
                 {items?.map((item, index) => (
                     <AccordionItemComponent
                         key={index}
@@ -87,32 +81,21 @@ function AccordionItemComponent({
     const { resolvedTheme } = useTheme();
     const isDark = resolvedTheme === "dark";
 
-    const colorSet = accentColors[index % accentColors.length];
-    const backgroundColor = isOpen
-        ? isDark
-            ? colorSet.dark
-            : colorSet.light
-        : "transparent";
-
     return (
         <motion.div
             className={cn(
                 "p-6 cursor-pointer relative group",
-                "hover:bg-zinc-50 dark:hover:bg-[#222222]",
                 "transition-colors duration-200"
             )}
             onClick={onClick}
             initial={false}
-            animate={{
-                backgroundColor,
-            }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
             <div className="flex items-start justify-between gap-4">
                 <span
                     className={cn(
                         "text-left text-base font-medium tracking-tighter transition-colors duration-200",
-                        "text-zinc-900 dark:text-zinc-100"
+                        "text-black"
                     )}
                 >
                     {question}
@@ -125,7 +108,7 @@ function AccordionItemComponent({
                     <ChevronDown
                         className={cn(
                             "w-5 h-5 transition-colors duration-200",
-                            "text-zinc-700 dark:text-zinc-300"
+                            "text-black"
                         )}
                     />
                 </motion.div>
@@ -148,7 +131,7 @@ function AccordionItemComponent({
                         }}
                         className="overflow-hidden"
                     >
-                        <p className="text-sm text-zinc-700 dark:text-zinc-400 leading-relaxed tracking-tighter">
+                        <p className="text-sm text-black/80 leading-relaxed tracking-tighter">
                             {answer}
                         </p>
                     </motion.div>

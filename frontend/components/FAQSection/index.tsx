@@ -4,17 +4,17 @@ const faqItems = [
   {
     question: "Is this really anonymous?",
     answer:
-      "Yes, completely. We don't require any sign-up, email, or personal information. Your conversations and stories are never linked to your identity. We believe anonymity creates a safer space for honest sharing.",
+      "Yes. You can make a profile without using your real name. We believe anonymity creates a safer space for honest sharing.",
   },
   {
     question: "Who am I talking to?",
     answer:
-      "You'll chat with an AI companion designed to listen without judgement. It's not a replacement for professional help, but a first step when you need someone to hear you. The stories you read are from real people in our community.",
+      "You'll chat with an AI companion (a friendly owl!) designed to listen to your story, then match you with mentor stories that match yours. The stories you read are from real people in our community.",
   },
   {
     question: "Is this free?",
     answer:
-      "Yes, Village is completely free. We believe everyone deserves access to support, regardless of their situation. There are no hidden costs, premium tiers, or data selling. Ever.",
+      "Yes, been there is completely free. We believe everyone deserves access to support, regardless of their situation. There are no hidden costs, premium tiers, or data selling. Ever.",
   },
   {
     question: "What if I'm in crisis?",
@@ -26,11 +26,6 @@ const faqItems = [
     answer:
       "Absolutely. Sharing your experience can help others feel less alone, and many find it therapeutic. All stories are reviewed before publishing to ensure they're supportive and don't contain harmful content.",
   },
-  {
-    question: "Why focus on young men?",
-    answer:
-      "Young men often face unique barriers to seeking support—stigma, expectations, and fewer spaces that feel welcoming. Village is designed to meet these challenges with an approach that feels comfortable, not clinical.",
-  },
 ];
 
 export default function FAQSection() {
@@ -39,11 +34,34 @@ export default function FAQSection() {
       className="relative mx-auto flex w-full max-w-7xl flex-col items-center px-6 pt-12 pb-24 sm:pt-16 sm:pb-32"
       id="faq"
     >
-      <Accordion
-        title="Questions you might have"
-        description="We get it. Here's what you need to know."
-        items={faqItems}
-      />
+      {/* Header outside scroll background */}
+      <div className="mb-8 text-center">
+        <h2 className="mb-3 font-semibold text-3xl text-black tracking-tight sm:text-4xl lg:text-5xl">
+          questions?
+        </h2>
+        <p className="mx-auto max-w-2xl text-black/80 text-sm leading-relaxed tracking-tight sm:text-base">
+          read our faq below.
+        </p>
+      </div>
+      
+      {/* FAQ items with larger scroll background */}
+      <div
+        className="w-full max-w-4xl min-h-[1500px] flex items-center justify-center px-8 py-24"
+        style={{
+          backgroundImage: "url('/scrollpostthicc.svg')",
+          backgroundSize: 'contain',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <div className="w-full max-w-2xl">
+          <Accordion
+            title=""
+            description=""
+            items={faqItems}
+          />
+        </div>
+      </div>
     </section>
   );
 }

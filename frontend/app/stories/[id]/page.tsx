@@ -110,11 +110,11 @@ export async function generateMetadata({ params }: StoryPageProps) {
   const story = await fetchStoryFromSupabase(id);
 
   if (!story) {
-    return { title: "Story Not Found | been there" };
+    return { title: "Story Not Found | Village" };
   }
 
   return {
-    title: `${story.title} | been there`,
+    title: `${story.title} | Village`,
     description: story.excerpt,
   };
 }
@@ -206,7 +206,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
               Did this story resonate with you?
             </h3>
             <p className="mt-2 text-sm text-black/60 dark:text-white/60">
-              Talk to been there about what you're going through. We'll help you find
+              Talk to Village about what you're going through. We'll help you find
               more stories from people who understand.
             </p>
             <Link
@@ -225,22 +225,25 @@ export default async function StoryPage({ params }: StoryPageProps) {
             More stories
           </h3>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {relatedStories.map((relatedStory) => (
-              <Link
-                key={relatedStory.id}
-                href={`/stories/${relatedStory.id}`}
-                className="scroll-card-thin relative overflow-hidden rounded-lg border border-black/10 transition-colors hover:border-black/20 dark:border-white/10 dark:hover:border-white/20"
-              >
-                <div className="relative z-10 bg-white/85 p-4 dark:bg-black/85">
-                  <h4 className="font-medium text-sm tracking-tight text-black dark:text-white">
-                    {relatedStory.title}
-                  </h4>
-                  <p className="mt-1 line-clamp-2 text-xs text-black/60 dark:text-white/60">
-                    {relatedStory.excerpt}
-                  </p>
-                </div>
-              </Link>
-            ))}
+            {seedStories
+              .filter((s) => s.id !== story.id)
+              .slice(0, 2)
+              .map((relatedStory) => (
+                <Link
+                  key={relatedStory.id}
+                  href={`/stories/${relatedStory.id}`}
+                  className="scroll-card-thin relative overflow-hidden rounded-lg border border-black/10 transition-colors hover:border-black/20 dark:border-white/10 dark:hover:border-white/20"
+                >
+                  <div className="relative z-10 bg-white/85 p-4 dark:bg-black/85">
+                    <h4 className="font-medium text-sm tracking-tight text-black dark:text-white">
+                      {relatedStory.title}
+                    </h4>
+                    <p className="mt-1 line-clamp-2 text-xs text-black/60 dark:text-white/60">
+                      {relatedStory.excerpt}
+                    </p>
+                  </div>
+                </Link>
+              ))}
           </div>
         </div>
       </main>
