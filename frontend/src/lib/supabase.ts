@@ -1,4 +1,4 @@
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@supabase/supabase-js'
 
 export type Database = {
   public: {
@@ -39,4 +39,16 @@ export type Database = {
   }
 }
 
-export const supabase = createClientComponentClient<Database>()
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+// Debug: Check if env vars are loaded
+console.log('Supabase URL:', supabaseUrl)
+console.log('Supabase Anon Key:', supabaseAnonKey ? 'Present (length: ' + supabaseAnonKey.length + ')' : 'MISSING')
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('❌ Supabase environment variables not loaded!')
+  console.error('Make sure .env.local has NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY')
+}
+
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
