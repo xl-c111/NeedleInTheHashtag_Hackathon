@@ -19,10 +19,10 @@ transformers>=4.30.0
 sentence-transformers>=2.2.0
 
 # API Clients
-openai>=1.0.0
-anthropic>=0.7.0
-google-cloud-language>=2.9.0
-google-api-python-client>=2.100.0
+groq>=0.4.0  # PRIMARY - Fast LLM inference for classification
+openai>=1.0.0  # OPTIONAL - Alternative to Groq
+anthropic>=0.7.0  # OPTIONAL - Alternative to Groq
+google-api-python-client>=2.100.0  # For Perspective API (toxicity detection)
 
 # Visualization
 matplotlib>=3.7.0

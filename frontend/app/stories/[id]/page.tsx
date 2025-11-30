@@ -41,7 +41,7 @@ function postToStory(row: { id: string; user_id: string; content: string; topic_
     author: `Anonymous ${row.user_id.slice(-4)}`,
     excerpt: generateExcerpt(row.content),
     content: row.content,
-    tags: row.topic_tags || [],  // Use topic_tags directly as categories
+    tags: row.topic_tags || [],
     readTime: calculateReadTime(row.content),
     datePosted: row.timestamp ? new Date(row.timestamp).toISOString().split("T")[0] : row.created_at.split("T")[0],
   };
@@ -107,9 +107,9 @@ export default async function StoryPage({ params }: StoryPageProps) {
   const relatedStories = await fetchRelatedStories(id);
 
   return (
-    <div className="min-h-screen bg-white pt-16 dark:bg-black">
-      {/* Header */}
-      <header className="border-b border-black/10 bg-white dark:border-white/10 dark:bg-black">
+    <div className="min-h-screen pt-16">
+      {/* Header - simplified */}
+      <header className="border-b border-black/10 dark:border-white/10">
         <div className="mx-auto flex max-w-3xl items-center justify-end px-4 py-4 sm:px-6">
           <span className="text-sm text-black/60 dark:text-white/60">
             {story.datePosted}
@@ -149,8 +149,9 @@ export default async function StoryPage({ params }: StoryPageProps) {
         <div className="my-8 h-px bg-black/10 dark:bg-white/10" />
 
         {/* Content */}
-        <article className="prose prose-lg max-w-none dark:prose-invert">
-          {story.content.split("\n\n").map((paragraph, i) => (
+        <article className="scroll-card-thick relative overflow-hidden rounded-lg prose prose-lg max-w-none dark:prose-invert">
+          <div className="relative z-10 bg-white/90 p-8 dark:bg-black/90">
+            {story.content.split("\n\n").map((paragraph, i) => (
             <p
               key={i}
               className="mb-6 leading-relaxed text-black/80 dark:text-white/80"
@@ -158,24 +159,27 @@ export default async function StoryPage({ params }: StoryPageProps) {
               {paragraph}
             </p>
           ))}
+          </div>
         </article>
 
         {/* CTA */}
-        <div className="mt-12 rounded-xl border border-black/10 bg-black/5 p-6 dark:border-white/10 dark:bg-white/5">
-          <h3 className="font-medium text-base tracking-tight text-black dark:text-white">
-            Did this story resonate with you?
-          </h3>
-          <p className="mt-2 text-sm text-black/60 dark:text-white/60">
-            Talk to Village about what you're going through. We'll help you find
-            more stories from people who understand.
-          </p>
-          <Link
-            href="/chat"
-            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
-          >
-            <MessageCircle className="h-4 w-4" />
-            Start talking
-          </Link>
+        <div className="scroll-card-thin relative overflow-hidden rounded-xl mt-12 border border-black/10 dark:border-white/10">
+          <div className="relative z-10 bg-white/80 p-6 dark:bg-black/80">
+            <h3 className="font-medium text-base tracking-tight text-black dark:text-white">
+              Did this story resonate with you?
+            </h3>
+            <p className="mt-2 text-sm text-black/60 dark:text-white/60">
+              Talk to Village about what you're going through. We'll help you find
+              more stories from people who understand.
+            </p>
+            <Link
+              href="/chat"
+              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Start talking
+            </Link>
+          </div>
         </div>
 
         {/* More stories */}
@@ -188,14 +192,16 @@ export default async function StoryPage({ params }: StoryPageProps) {
               <Link
                 key={relatedStory.id}
                 href={`/stories/${relatedStory.id}`}
-                className="rounded-lg border border-black/10 p-4 transition-colors hover:border-black/20 dark:border-white/10 dark:hover:border-white/20"
+                className="scroll-card-thin relative overflow-hidden rounded-lg border border-black/10 transition-colors hover:border-black/20 dark:border-white/10 dark:hover:border-white/20"
               >
-                <h4 className="font-medium text-sm tracking-tight text-black dark:text-white">
-                  {relatedStory.title}
-                </h4>
-                <p className="mt-1 line-clamp-2 text-xs text-black/60 dark:text-white/60">
-                  {relatedStory.excerpt}
-                </p>
+                <div className="relative z-10 bg-white/85 p-4 dark:bg-black/85">
+                  <h4 className="font-medium text-sm tracking-tight text-black dark:text-white">
+                    {relatedStory.title}
+                  </h4>
+                  <p className="mt-1 line-clamp-2 text-xs text-black/60 dark:text-white/60">
+                    {relatedStory.excerpt}
+                  </p>
+                </div>
               </Link>
             ))}
           </div>

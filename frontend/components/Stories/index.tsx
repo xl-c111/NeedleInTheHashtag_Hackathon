@@ -47,7 +47,7 @@ export default function StoriesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white pt-16 dark:bg-black">
+    <div className="min-h-screen pt-16">
       <StoriesHeader totalStories={stories.length} />
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
