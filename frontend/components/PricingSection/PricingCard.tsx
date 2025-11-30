@@ -31,7 +31,7 @@ export function PricingCard({ tier, index }: PricingCardProps) {
 
   return (
     <motion.div
-      className={`group relative flex flex-col rounded-2xl border bg-white/50 p-6 backdrop-blur-sm transition-all duration-300 hover:bg-white/80 dark:bg-black/50 dark:hover:bg-black/80 ${colors.border}`}
+      className={`scroll-card-thick relative overflow-hidden group flex flex-col rounded-2xl border backdrop-blur-sm transition-all duration-300 ${colors.border}`}
       initial={{ opacity: 0, y: 30 }}
       transition={{
         delay: index * ANIMATION_DELAY_MULTIPLIER,
@@ -40,6 +40,7 @@ export function PricingCard({ tier, index }: PricingCardProps) {
       viewport={{ once: true }}
       whileInView={{ opacity: 1, y: 0 }}
     >
+      <div className="relative z-10 bg-white/80 p-6 hover:bg-white/90 dark:bg-black/80 dark:hover:bg-black/90 transition-all duration-300">
       {/* Title */}
       <h3 className="mb-2 font-semibold text-2xl text-black tracking-tighter dark:text-white">
         {tier.name}
@@ -106,6 +107,7 @@ export function PricingCard({ tier, index }: PricingCardProps) {
             </span>
           </motion.div>
         ))}
+      </div>
       </div>
     </motion.div>
   );

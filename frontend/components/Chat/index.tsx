@@ -93,7 +93,7 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex h-screen flex-col bg-white dark:bg-black">
+    <div className="flex h-screen flex-col">
       <ChatHeader />
 
       <div className="flex-1 overflow-y-auto">
