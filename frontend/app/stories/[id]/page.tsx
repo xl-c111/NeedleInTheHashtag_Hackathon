@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock, MessageCircle } from "lucide-react";
+import { Clock, MessageCircle } from "lucide-react";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import type { Story } from "@/lib/types";
@@ -107,25 +107,13 @@ export default async function StoryPage({ params }: StoryPageProps) {
   const relatedStories = await fetchRelatedStories(id);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
+    <div className="min-h-screen bg-white pt-16 dark:bg-black">
       {/* Header */}
       <header className="border-b border-black/10 bg-white dark:border-white/10 dark:bg-black">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4 sm:px-6">
-          <Link
-            href="/stories"
-            className="flex items-center gap-2 rounded-full p-2 text-sm text-black/60 transition-colors hover:bg-black/5 dark:text-white/60 dark:hover:bg-white/5"
-          >
-            <ArrowLeft className="h-5 w-5" />
-            <span className="hidden sm:inline">Back to stories</span>
-          </Link>
-
-          <Link
-            href="/chat"
-            className="flex items-center gap-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
-          >
-            <MessageCircle className="h-4 w-4" />
-            <span className="hidden sm:inline">Start talking</span>
-          </Link>
+        <div className="mx-auto flex max-w-3xl items-center justify-end px-4 py-4 sm:px-6">
+          <span className="text-sm text-black/60 dark:text-white/60">
+            {story.datePosted}
+          </span>
         </div>
       </header>
 
