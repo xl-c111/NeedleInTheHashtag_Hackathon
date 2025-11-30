@@ -24,14 +24,14 @@ export function MessageBubble({ message }: MessageBubbleProps) {
       {!isUser && (
         <div className="flex h-24 w-24 items-center justify-center mb-1 flex-shrink-0">
           <motion.div
-            whileHover={{ 
+            animate={isHovered ? { 
               y: [-2, -8, -2],
               transition: {
                 duration: 0.6,
                 repeat: Infinity,
                 ease: "easeInOut"
               }
-            }}
+            } : { y: 0 }}
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
             className="cursor-pointer"
