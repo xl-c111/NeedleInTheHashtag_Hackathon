@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Clock, MessageCircle } from "lucide-react";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase/server";
 import type { Story } from "@/lib/types";
 
 interface StoryPageProps {
@@ -49,7 +48,7 @@ function postToStory(row: { id: string; user_id: string; content: string; topic_
 
 // Helper to fetch story from Supabase posts table
 async function fetchStoryFromSupabase(id: string): Promise<Story | null> {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
     .select("*")
@@ -65,7 +64,7 @@ async function fetchStoryFromSupabase(id: string): Promise<Story | null> {
 
 // Helper to fetch related stories from Supabase posts table
 async function fetchRelatedStories(excludeId: string): Promise<Story[]> {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
     .select("*")
