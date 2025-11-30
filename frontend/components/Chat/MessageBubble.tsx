@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import Image from "next/image";
+import { useState } from "react";
 import type { ChatMessage } from "@/lib/types";
 
 interface MessageBubbleProps {
@@ -10,6 +11,7 @@ interface MessageBubbleProps {
 
 export function MessageBubble({ message }: MessageBubbleProps) {
   const isUser = message.role === "user";
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
@@ -21,13 +23,27 @@ export function MessageBubble({ message }: MessageBubbleProps) {
       {/* AI Avatar - only show for assistant messages */}
       {!isUser && (
         <div className="flex h-24 w-24 items-center justify-center mb-1 flex-shrink-0">
-          <Image 
-            src="/owlaitransparent.svg" 
-            alt="AI Assistant" 
-            width={96} 
-            height={96} 
-            className="h-24 w-24"
-          />
+          <motion.div
+            whileHover={{ 
+              y: [-2, -8, -2],
+              transition: {
+                duration: 0.6,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }
+            }}
+            onHoverStart={() => setIsHovered(true)}
+            onHoverEnd={() => setIsHovered(false)}
+            className="cursor-pointer"
+          >
+            <Image 
+              src={isHovered ? "/owlhappyai.svg" : "/owlaitransparent.svg"}
+              alt="AI Assistant" 
+              width={96} 
+              height={96} 
+              className="h-24 w-24"
+            />
+          </motion.div>
         </div>
       )}
 
