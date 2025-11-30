@@ -1,154 +1,71 @@
-# eSafety Hackathon - Needle in the Hashtag
+# Village - Peer Support for Young Men
 
-> 16 Days of Activism Against Gender-Based Violence Hackathon
+> A safe space for young men to share, listen, and find their way forward.
+
+Built for the **eSafety Hackathon - Needle in the Hashtag**
+> 16 Days of Activism Against Gender-Based Violence
 > Nov 29-30, 2025 | Stone & Chalk, Melbourne
 
-## 🎯 Challenges
+## 🎯 The Problem
 
-### Mini-Challenge: Persona Classification
-Classify AI personas from millions of messages on a fake social media platform.
-Target personas include:
-- Body dysmorphia indicators
-- Incel language patterns  
-- LinkedIn Lunatic posting style
-- Other behavioral patterns
+Young men face unique challenges with loneliness and isolation, often struggling to find spaces where they can openly share and connect. Village provides a peer-to-peer support platform where they can:
+- Share their stories anonymously
+- Connect with others who understand
+- Find resources and support
 
-### Grand Challenge: eSafety Solution Demo
-Design and build a demo addressing online safety issues. Talk to mentors and eSafety researchers to understand the problems deeply.
-
----
-
-## 🚀 Quick Start
-
-### Windows Setup (Recommended)
+## 🚀 Quick Start (Frontend)
 
 ```bash
-# 1. Create virtual environment in project directory
-python -m venv venv
+# Install dependencies
+npm install
 
-# 2. Activate virtual environment
-venv\Scripts\activate
+# Run development server
+npm run dev
 
-# You should see (venv) at the start of your command prompt
-
-# 3. Upgrade pip (fixes Windows long path issues)
-python -m pip install --upgrade pip
-
-# 4. Install dependencies
-pip install -r requirements.txt
-
-# 5. Copy environment template and add your API keys
-copy .env.example .env
-
-# 6. Run the example notebook
-jupyter notebook notebooks/01_exploration.ipynb
-```
-
-**Note:** You'll need to activate the virtual environment each time you open a new terminal:
-```bash
-venv\Scripts\activate
-```
-
-### macOS/Linux Setup
-
-```bash
-# 1. Create virtual environment
-python -m venv venv
-
-# 2. Activate virtual environment
-source venv/bin/activate
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Copy environment template
-cp .env.example .env
-
-# 5. Run the example notebook
-jupyter notebook notebooks/01_exploration.ipynb
+# Open http://localhost:3000
 ```
 
 ## 📁 Project Structure
 
 ```
-esafety-hackathon/
-├── data/                    # Data files (gitignored)
-│   ├── raw/                 # Raw data from hackathon
-│   └── processed/           # Processed/cleaned data
-├── notebooks/               # Jupyter notebooks for exploration
-│   ├── 01_exploration.ipynb
-│   └── 02_classification.ipynb
-├── src/                     # Source code
-│   ├── classifiers/         # Classification approaches
-│   ├── features/            # Feature extraction
-│   └── utils/               # Utility functions
-├── scripts/                 # Standalone scripts
-├── requirements.txt
-├── .env.example
-└── README.md
+village-mvp/
+├── app/                    # Next.js App Router pages
+├── components/             # React components
+│   ├── FAQSection/        # FAQ accordion
+│   ├── Feature/           # Feature showcase
+│   ├── Header/            # Navigation
+│   ├── HeroSection/       # Landing hero
+│   └── ui/                # Reusable UI components
+├── public/                 # Static assets & videos
+└── lib/                    # Utilities
 ```
 
-## 🔧 Available Tools & APIs
+## 🛠️ Tech Stack
 
-### Free APIs for Content Moderation
+| Category | Technology |
+|----------|------------|
+| Framework | Next.js 16 |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 |
+| UI | Radix UI, shadcn/ui |
+| Animations | Motion (Framer Motion) |
+| Theme | next-themes |
 
-| API | Use Case | Rate Limit |
-|-----|----------|------------|
-| **Perspective API** | Toxicity, insults, threats | 1 QPS (free tier) |
-| **OpenAI** | Flexible classification, embeddings | Pay-per-use |
-| **HuggingFace** | Pre-trained models (BERT, etc.) | Unlimited local |
+## 🌐 Features
 
-### Suggested Approaches
+- **Anonymous peer support** - Share without judgment
+- **Community stories** - Read others' experiences
+- **Crisis resources** - Quick access to Lifeline, Beyond Blue, Emergency
+- **Dark mode** - Easy on the eyes
+- **Accessible** - Reduced motion support, ARIA labels
 
-1. **LLM Classification**: Use GPT-4/Claude to classify text with custom prompts
-2. **Perspective API**: Quick toxicity scoring baseline
-3. **Embeddings + Clustering**: Group similar messages, identify persona clusters
-4. **Fine-tuned BERT**: If you have labeled training data
-5. **Keyword/Pattern Matching**: Fast baseline for known vocabulary
+## 📞 Crisis Support
 
-## 🧠 Persona Detection Ideas
-
-### Body Dysmorphia Indicators
-- Negative body talk, appearance obsession
-- Comparison language ("I wish I looked like...")
-- Diet/exercise extremism vocabulary
-
-### Incel Language Patterns
-- Specific terminology (known vocabulary)
-- Victim mentality + entitlement blend
-- Gender-related hostility
-
-### LinkedIn Lunatic
-- Humble-brag patterns
-- "Agree?" ending posts
-- Inspirational story arcs with business lessons
-- Excessive emoji usage
-
-## 📊 Evaluation Approach
-
-For the mini-challenge, likely metrics:
-- Accuracy / F1-score per persona class
-- Confusion matrix analysis
-- Precision/Recall trade-offs
-
-## 🏆 Pitch Day Tips
-
-1. **Lead with the problem** - What harm are you addressing?
-2. **Show, don't tell** - Live demo > slides
-3. **Be specific** - "Reduces moderator workload by 40%" beats "helps with moderation"
-4. **Acknowledge limitations** - Shows maturity and understanding
-
-## 📚 Resources
-
-- [Perspective API Docs](https://developers.perspectiveapi.com/)
-- [HuggingFace Transformers](https://huggingface.co/docs/transformers)
-- [OpenAI API Docs](https://platform.openai.com/docs)
-- [eSafety Commissioner](https://www.esafety.gov.au/)
-
-## 👥 Team Notes
-
-_Add team member names/roles here during the hackathon_
+If you're in crisis, please reach out:
+- **Lifeline**: 13 11 14
+- **Beyond Blue**: 1300 22 4636
+- **Emergency**: 000
 
 ---
 
-*Built at the eSafety Hackathon - Making online spaces safer together* 🛡️
+*Built with care at the eSafety Hackathon - Making online spaces safer together* 🛡️
