@@ -17,11 +17,9 @@ export default function PostCard({ post }: { post: Post }) {
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Unknown date'
     const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    })
+    // Use UTC methods to ensure consistent rendering between server and client
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    return `${monthNames[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`
   }
 
   return (
