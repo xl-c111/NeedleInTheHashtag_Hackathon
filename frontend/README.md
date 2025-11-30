@@ -27,13 +27,22 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 frontend/
 ├── app/                      # Next.js App Router
 │   ├── page.tsx              # Landing page (Hero, Features, FAQ)
-│   ├── layout.tsx            # Root layout with theme provider
-│   ├── chat/page.tsx         # AI chat interface
+│   ├── layout.tsx            # Root layout (AuthProvider wrapped)
+│   ├── (auth)/               # Auth route group
+│   │   ├── login/page.tsx    # Login page
+│   │   └── signup/page.tsx   # Signup page
+│   ├── auth/callback/        # OAuth callback handler
+│   ├── chat/page.tsx         # AI chat interface (protected)
 │   ├── posts/page.tsx        # Posts listing with filters
-│   ├── stories/page.tsx      # Stories listing (from Supabase)
-│   ├── stories/[id]/page.tsx # Individual story detail
+│   ├── stories/page.tsx      # Stories listing (protected)
+│   ├── stories/[id]/page.tsx # Individual story detail (public)
 │   └── api/chat/route.ts     # Chat API endpoint
 ├── components/
+│   ├── Auth/                 # Authentication components
+│   │   ├── AuthProvider.tsx  # Global auth context
+│   │   ├── LoginForm.tsx     # Login form
+│   │   ├── SignupForm.tsx    # Signup form
+│   │   └── UserButton.tsx    # Header user menu
 │   ├── Header/               # Navigation components
 │   ├── HeroSection/          # Landing hero
 │   ├── Feature/              # Features section
@@ -41,27 +50,31 @@ frontend/
 │   ├── Chat/                 # Chat interface components
 │   ├── Stories/              # Stories page components
 │   ├── PostCard.tsx          # Post card component
-│   ├── Auth.tsx              # Authentication component
-│   ├── Assets/               # SVG assets
 │   ├── ui/                   # shadcn/ui primitives
 │   └── icons/                # SVG icon components
 ├── lib/
 │   ├── supabase.ts           # Supabase client & fetch functions
-│   ├── types.ts              # TypeScript types
+│   ├── supabase/             # Supabase SSR utilities
+│   │   ├── client.ts         # Browser client
+│   │   ├── server.ts         # Server component client
+│   │   └── middleware.ts     # Auth middleware logic
 │   ├── utils.ts              # Utility functions
 │   └── data/stories.ts       # Seed stories (fallback)
+├── middleware.ts             # Route protection middleware
 └── config/site.ts            # Site metadata
 ```
 
 ## Pages
 
-| Route | Description |
-|-------|-------------|
-| `/` | Landing page with Hero, Features, FAQ |
-| `/chat` | AI peer support chat interface |
-| `/posts` | Posts listing with search and category filters |
-| `/stories` | Recovery stories from Supabase `posts` table |
-| `/stories/[id]` | Individual story detail view |
+| Route | Description | Protected |
+|-------|-------------|-----------|
+| `/` | Landing page with Hero, Features, FAQ | No |
+| `/login` | Login page | No |
+| `/signup` | Signup page | No |
+| `/chat` | AI peer support chat interface | Yes |
+| `/posts` | Posts listing with search and category filters | No |
+| `/stories` | Recovery stories from Supabase `posts` table | Yes |
+| `/stories/[id]` | Individual story detail view | No |
 
 ## Supabase Integration
 
@@ -125,9 +138,55 @@ The chat interface at `/chat`:
 | React | 19.2.0 |
 | TypeScript | 5.x |
 | Tailwind CSS | 4.0.7 |
-| Supabase | @supabase/auth-helpers-nextjs |
+| Supabase | @supabase/ssr |
 | Motion | 12.0.5 |
 | shadcn/ui | Latest |
+
+## Authentication
+
+### Overview
+Uses Supabase Auth with `@supabase/ssr` (the recommended SSR package).
+
+### Features
+- Email/password authentication
+- Anonymous browsing (temporary users)
+- Anonymous-to-permanent account conversion
+- Route protection via middleware
+
+### Auth Flow
+1. Unauthenticated users visiting protected routes → redirected to `/login`
+2. Login options: email/password or "Browse Anonymously"
+3. Anonymous users see prompt to convert to permanent account
+4. `useAuth()` hook provides user state in client components
+
+### Key Files
+| File | Purpose |
+|------|---------|
+| `middleware.ts` | Route protection |
+| `lib/supabase/client.ts` | Browser client |
+| `lib/supabase/server.ts` | Server client |
+| `components/Auth/AuthProvider.tsx` | Global auth context |
+| `components/Auth/UserButton.tsx` | Header sign-in/out UI |
+
+### Usage
+```tsx
+// Client component
+import { useAuth } from '@/components/Auth'
+
+function MyComponent() {
+  const { user, isAnonymous, signOut } = useAuth()
+  // ...
+}
+
+// Server component
+import { createClient } from '@/lib/supabase/server'
+
+async function ServerComponent() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  // ...
+}
+```
 
 ## Component Patterns
 
