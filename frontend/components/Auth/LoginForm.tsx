@@ -92,7 +92,7 @@ export function LoginForm() {
           disabled={loading}
           className="w-full rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-black"
         >
-          {loading ? 'Signing in...' : 'Sign in'}
+          {loading ? 'signing in...' : 'login'}
         </button>
       </form>
 
@@ -117,7 +117,7 @@ export function LoginForm() {
       <p className="mt-6 text-center text-sm text-black/60 dark:text-white/60">
         Don't have an account?{' '}
         <Link href="/signup" className="font-medium text-black underline dark:text-white">
-          Sign up
+          sign up
         </Link>
       </p>
     </div>

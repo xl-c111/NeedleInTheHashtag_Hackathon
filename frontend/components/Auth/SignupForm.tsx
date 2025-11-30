@@ -81,7 +81,7 @@ export function SignupForm() {
             onClick={() => router.push('/login')}
             className="mt-4 text-sm font-medium text-black underline dark:text-white"
           >
-            Back to login
+            back to login
           </button>
         </div>
       </div>
@@ -153,14 +153,14 @@ export function SignupForm() {
           disabled={loading}
           className="w-full rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-black"
         >
-          {loading ? 'Creating account...' : isAnonymous ? 'Create account' : 'Sign up'}
+          {loading ? 'creating account...' : isAnonymous ? 'create account' : 'sign up'}
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm text-black/60 dark:text-white/60">
         Already have an account?{' '}
         <Link href="/login" className="font-medium text-black underline dark:text-white">
-          Sign in
+          login
         </Link>
       </p>
     </div>
