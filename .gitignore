@@ -97,3 +97,28 @@ models/
 # ===== Supabase =====
 supabase/.branches
 supabase/.temp
+
+# ===== History Files =====
+# Shell history
+.bash_history
+.zsh_history
+.history
+.sh_history
+
+# Node/npm history
+.node_repl_history
+.npm/_logs/
+
+# Editor/IDE history
+.vscode/history/
+.idea/history/
+.history/
+**/.history/
+
+# Browser history
+.chrome_history
+.firefox_history
+
+# Other history files
+*_history
+*.history
