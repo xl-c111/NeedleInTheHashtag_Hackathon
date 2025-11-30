@@ -201,15 +201,16 @@ a {
   animation: gradient-mesh-3 30s ease-in-out infinite;
 }
 
+/* Scroll card backgrounds - updated paths */
 .scroll-card-thick {
-  background-image: url('/components/Assets/scrollpostthicc.svg');
+  background-image: url('/scrollpostthicc.svg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
 .scroll-card-thin {
-  background-image: url('/components/Assets/scrollpostthin.svg');
+  background-image: url('/scrollpostthin.svg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
