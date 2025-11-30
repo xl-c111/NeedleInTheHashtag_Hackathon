@@ -1,8 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { MessageCircle, BookOpen } from "lucide-react";
+import Image from "next/image";
 
 export function SignInOptions() {
   const router = useRouter();
@@ -10,25 +9,32 @@ export function SignInOptions() {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
       {/* Primary CTA - Start a conversation */}
-      <Button
-        className="h-10 tracking-tighter"
+      <button
+        className="h-20 tracking-tighter px-6 hover:scale-110 transition-transform duration-200 ease-in-out"
         onClick={() => router.push("/chat")}
-        size="lg"
       >
-        <MessageCircle className="h-4 w-4" />
-        Start a conversation
-      </Button>
+        <Image 
+          src="/chatbtn.svg" 
+          alt="Start a conversation" 
+          width={280} 
+          height={80} 
+          className="h-18"
+        />
+      </button>
 
       {/* Secondary CTA - Read stories */}
-      <Button
-        className="h-10 tracking-tighter"
+      <button
+        className="h-20 tracking-tighter px-6 hover:scale-110 transition-transform duration-200 ease-in-out"
         onClick={() => router.push("/stories")}
-        size="lg"
-        variant="outline"
       >
-        <BookOpen className="h-4 w-4" />
-        Read stories from others
-      </Button>
+        <Image 
+          src="/storiesbtn.svg" 
+          alt="Read stories from others" 
+          width={280} 
+          height={80} 
+          className="h-18"
+        />
+      </button>
     </div>
   );
 }

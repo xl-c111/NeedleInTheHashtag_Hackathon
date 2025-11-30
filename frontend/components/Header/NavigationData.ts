@@ -20,13 +20,6 @@ export interface NavigationMenu {
 
 export const NAVIGATION_ITEMS: NavigationMenu[] = [
   {
-    name: "Support",
-    items: [
-      { name: "Start a conversation", href: "/chat", icon: MessageCircle },
-      { name: "Read stories", href: "/stories", icon: BookOpen },
-    ],
-  },
-  {
     name: "About",
     items: [
       { name: "How it works", href: "#features" },
