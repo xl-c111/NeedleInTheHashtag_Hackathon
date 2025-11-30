@@ -1,126 +1,122 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+# CLAUDE.md - Project Context for Claude Code
 
 ## Project Overview
 
-This is a Next.js 15 template for a landing page showcasing AI-powered eyewear. It's built with modern technologies including React 19, TypeScript, and Tailwind CSS v4.
+**Project:** Village - Peer Support for Young Men
+**Event:** eSafety Hackathon - "Needle in the Hashtag"
+**Theme:** 16 Days of Activism Against Gender-Based Violence
+**Dates:** Nov 29-30, 2025 (Stone & Chalk, Melbourne)
+**Submission:** Dec 5, 11:59pm | Pitch Day: Dec 11
 
-## Development Commands
+## Tech Stack
+
+| Component | Version |
+|-----------|---------|
+| Next.js | 16.0.1 |
+| React | 19.2.0 |
+| TypeScript | 5.x |
+| Tailwind CSS | 4.0.7 |
+| Motion | 12.0.5 |
+| shadcn/ui | Latest |
+
+## Quick Commands
 
 ```bash
-# Install dependencies
+# Development
 npm install
+npm run dev          # http://localhost:3000
 
-# Start development server (uses Turbopack)
-npm run dev
-
-# Build for production
+# Production
 npm run build
-
-# Start production server
 npm start
 
-# Run linter
+# Linting
 npm run lint
 ```
 
-Development server runs at http://localhost:3000
+## Project Structure
 
-## Architecture
+```
+/
+├── app/                    # Next.js App Router
+│   ├── page.tsx            # Home page
+│   ├── layout.tsx          # Root layout
+│   └── globals.css         # Tailwind v4 config
+├── components/
+│   ├── Header/             # Navigation
+│   ├── HeroSection/        # Landing hero
+│   ├── Feature/            # Features
+│   ├── FAQSection/         # FAQ accordion
+│   ├── PricingSection/     # Pricing
+│   ├── ui/                 # shadcn/ui components
+│   ├── icons/              # SVG icons
+│   └── footer.tsx          # Footer
+├── config/site.ts          # Site metadata
+├── lib/utils.ts            # Utilities
+├── docs/                   # Documentation
+│   ├── DEVELOPMENT.md      # Dev guide
+│   ├── COMPONENTS.md       # Component reference
+│   └── API_CONTRACT.md     # API spec
+└── public/                 # Static assets
+```
 
-### Page Structure
+## Key Patterns
 
-The application follows a simple single-page layout pattern:
-- **app/page.tsx**: Main entry point that composes the landing page from section components
-- **app/layout.tsx**: Root layout with metadata, fonts (Geist), and ThemeProvider configuration
+### Component Structure
+Each section has its own folder:
+- `index.tsx` - Main component
+- `*Data.ts` - Configuration data
+- Supporting sub-components
 
-### Component Organization
+### Styling (Tailwind v4)
+- CSS-first config in `globals.css`
+- Use `bg-black/50` not `bg-opacity-50`
+- `shadow-xs` replaces `shadow-sm`
+- Dark mode: `dark:` prefix
 
-Landing page sections (in render order):
-1. `Header` - Fixed navigation with centered menu items, theme toggle, auth buttons
-2. `HeroSection` - Centered hero with headline, CTA buttons, and AI provider icons
-3. `Feature` - Feature showcase section
-4. `PricingSection` - Pricing tiers and plans
-5. `FAQSection` - Frequently asked questions
-6. `Footer` - Site footer
+### Page Composition
+```tsx
+import HeroSection from "@/components/HeroSection";
+import Feature from "@/components/Feature";
 
-**UI Components** (`components/ui/`):
-- shadcn/ui-based components (Button, Card, Chart)
-- Follow Radix UI patterns with class-variance-authority for variants
+export default function Home() {
+  return (
+    <>
+      <HeroSection />
+      <Feature />
+    </>
+  );
+}
+```
 
-**Icons** (`components/icons/`):
-- AI provider icons (Anthropic, OpenAI, DeepSeek, Gemini, Mistral)
-- Available in light/dark variants
+## Coding Conventions
 
-### Theme System
+- **TypeScript:** Strict mode, explicit types
+- **Naming:** camelCase for JS/TS, kebab-case for files
+- **Imports:** Use `@/` path alias
+- **Components:** Prefer composition over props drilling
+- **Styling:** Tailwind utilities, consistent spacing
 
-Uses `next-themes` for dark mode support:
-- Theme provider in `app/layout.tsx`
-- Custom dark variant in `app/globals.css`: `@custom-variant dark (&:is(.dark *))`
-- Theme toggle in Header component
-- Color scheme follows HSL-based design tokens (see globals.css)
+## Current Status
 
-### Configuration
+- [x] Landing page complete (Hero, Features, FAQ, Footer)
+- [x] Dark mode support
+- [x] Responsive design
+- [x] Build passes
+- [ ] Chat interface
+- [ ] Stories page
+- [ ] Backend integration
 
-**Site Config** (`config/site.ts`):
-- Site metadata (name, URL, description)
-- Used in layout.tsx for SEO metadata
-- Contains social links and OG image configuration
+## Notes for Claude Code
 
-## Tailwind CSS v4 Specific Guidelines
+1. **Hackathon context** - Speed matters, working solutions over perfect code
+2. **Demo-first** - Focus on the happy path for judges
+3. **Check existing code** - Look in `components/` before creating new
+4. **Keep it simple** - Don't over-engineer
+5. **Tailwind v4** - Use new syntax, not v3 patterns
 
-This project uses **Tailwind CSS v4** (not v3). Key differences:
+## Documentation
 
-### Configuration
-- CSS-first configuration using `@theme` directive in `app/globals.css`
-- Import syntax: `@import 'tailwindcss'` (not `@tailwind` directives)
-- PostCSS plugin: `@tailwindcss/postcss`
-- Custom variants use `@custom-variant` (see dark mode variant)
-
-### Breaking Changes from v3
-- **Opacity syntax**: Use `bg-black/15` (not `bg-opacity-15`)
-- **Shadow sizes**: `shadow-xs` (was `shadow-sm`), `shadow-sm` (was `shadow`)
-- **Border color**: Default is `currentColor` (compatibility layer added in globals.css)
-- **Tracking**: Use `tracking-[-0.04em]` for custom letter-spacing
-
-### Design System
-- Custom color tokens defined via CSS variables in `:root` and `.dark`
-- Radius system: `--radius-lg`, `--radius-md`, `--radius-sm`
-- Chart colors: `--chart-1` through `--chart-5`
-
-## Styling Conventions
-
-- **Tight tracking**: Components use `tracking-tighter` or `tracking-[-0.04em]` for condensed text
-- **Hover states**: Use `hover:bg-black/15 dark:hover:bg-white/15` pattern for subtle hover effects
-- **Rounded corners**: Consistently use `rounded-lg` for buttons and interactive elements
-- **Theme-aware colors**: Always provide dark mode variants (e.g., `text-black dark:text-white`)
-
-## Component Patterns
-
-### Header Navigation
-- Centered navigation using absolute positioning: `absolute left-1/2 transform -translate-x-1/2`
-- Rectangle backgrounds on hover (not color changes)
-- Consistent hover pattern across nav items and buttons
-
-### Buttons
-- Primary: `bg-black dark:bg-white` with inverse text colors
-- Ghost: `variant="ghost"` with `hover:bg-black/15 dark:hover:bg-white/15`
-- Icons use Lucide React (`lucide-react` package)
-
-### Responsive Design
-- Mobile-first approach
-- Breakpoints: sm, md, lg (standard Tailwind)
-- Mobile menu toggle in Header for navigation
-
-## Technology Stack
-
-- **Framework**: Next.js 15.2.1 (App Router)
-- **React**: 19.0.0
-- **TypeScript**: 5.x
-- **Styling**: Tailwind CSS 4.0.7
-- **Animations**: Motion (12.0.5), tailwindcss-animate
-- **UI Library**: Radix UI (via shadcn/ui patterns)
-- **Icons**: Lucide React
-- **Charts**: Recharts
-- **Fonts**: Geist (Google Fonts)
+- `docs/DEVELOPMENT.md` - Full development guide
+- `docs/COMPONENTS.md` - Component reference
+- `docs/API_CONTRACT.md` - API specification

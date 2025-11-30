@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 2_678_400,
   },
   reactStrictMode: true,
-  cacheComponents: true,
+  cacheComponents: false,
   experimental: {
     turbopackFileSystemCacheForDev: true,
   },

@@ -1,3 +1,5 @@
+"use client";
+
 import { Heart, Phone } from "lucide-react";
 import Link from "next/link";
 
@@ -5,8 +7,8 @@ const footerLinks = [
   {
     title: "Support",
     links: [
-      { name: "Start a conversation", href: "/village/chat" },
-      { name: "Read stories", href: "/village/stories" },
+      { name: "Start a conversation", href: "#" },
+      { name: "Read stories", href: "#" },
       { name: "How it works", href: "#features" },
       { name: "FAQ", href: "#faq" },
     ],
@@ -14,7 +16,7 @@ const footerLinks = [
   {
     title: "About",
     links: [
-      { name: "Our mission", href: "/village/about" },
+      { name: "Our mission", href: "#" },
       { name: "Privacy", href: "/privacy" },
       { name: "Terms", href: "/terms" },
       { name: "Contact", href: "/contact" },
