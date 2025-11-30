@@ -1,4 +1,4 @@
-import { createClientComponentClient, type SupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import type { Story, Theme } from './types'
 
 // Check if Supabase is configured
@@ -12,10 +12,14 @@ let _supabaseClient: SupabaseClient<Database> | null = null
 
 function getSupabaseClient(): SupabaseClient<Database> | null {
   if (!isSupabaseConfigured) {
+    console.warn('Supabase not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY')
     return null
   }
   if (!_supabaseClient) {
-    _supabaseClient = createClientComponentClient<Database>()
+    _supabaseClient = createClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
   }
   return _supabaseClient
 }
