@@ -238,7 +238,7 @@ async def chat_assistance(request: ChatRequest):
     """
     Chat interface to help users articulate their struggles.
 
-    Uses Groq API (fast, free LLM).
+    Uses Gemini via OpenRouter API (fast, free LLM).
     Does NOT provide advice - only helps users express themselves.
     """
     try:
@@ -255,7 +255,7 @@ async def chat_assistance(request: ChatRequest):
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=f"Chat failed: {str(e)}. Make sure GROQ_API_KEY is set in .env"
+            detail=f"Chat failed: {str(e)}. Make sure OPENROUTER_API_KEY is set in .env"
         )
 
 

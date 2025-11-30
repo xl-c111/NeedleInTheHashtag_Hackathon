@@ -1,7 +1,7 @@
 """
 Chat Assistant Service
 
-Conversational interface that helps users articulate their struggles using Groq API.
+Conversational interface that helps users articulate their struggles using Gemini via OpenRouter.
 
 IMPORTANT: This does NOT provide advice or therapy.
 It helps users express their feelings clearly, then passes to the matcher.
@@ -9,21 +9,13 @@ It helps users express their feelings clearly, then passes to the matcher.
 
 import os
 from typing import Optional
-
-# Try to import Groq SDK
-try:
-    from groq import Groq
-    HAS_GROQ = True
-except ImportError:
-    HAS_GROQ = False
-    print("⚠ Groq SDK not installed. Run: pip install groq")
-
+import requests
 
 class ChatAssistant:
     """
     Conversational interface that helps users articulate their struggles.
 
-    Uses Groq API (fast, free LLM inference).
+    Uses Gemini via OpenRouter API (fast, free LLM inference).
 
     Usage:
         chat = ChatAssistant()
@@ -58,16 +50,17 @@ SUMMARY:
 
     def __init__(self, api_key: Optional[str] = None):
         """
-        Initialize chat assistant with Groq API.
+        Initialize chat assistant with OpenRouter API.
 
         Args:
-            api_key: Groq API key (or set GROQ_API_KEY env var)
+            api_key: OpenRouter API key (or set OPENROUTER_API_KEY env var)
         """
-        if not HAS_GROQ:
-            raise ImportError("groq package not installed. Run: pip install groq")
+        self.api_key = api_key or os.getenv('OPENROUTER_API_KEY')
+        if not self.api_key:
+            raise ValueError("OPENROUTER_API_KEY must be set in .env or passed to constructor")
 
-        self.client = Groq(api_key=api_key or os.getenv('GROQ_API_KEY'))
-        self.model = "llama-3.1-8b-instant"  # Fast and free
+        self.model = "google/gemini-2.0-flash-exp:free"  # Fast and free via OpenRouter
+        self.api_url = "https://openrouter.ai/api/v1/chat/completions"
         self.conversation_history = []
 
     def send(self, user_message: str) -> str:
@@ -89,15 +82,26 @@ SUMMARY:
         messages = [{"role": "system", "content": self.SYSTEM_PROMPT}]
         messages.extend(self.conversation_history)
 
-        # Call Groq API
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            max_tokens=300,
-            temperature=0.7
-        )
+        # Call OpenRouter API
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://been-there.app",  # Required by OpenRouter
+            "X-Title": "Been There"  # Optional but recommended
+        }
 
-        assistant_message = response.choices[0].message.content
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "max_tokens": 300,
+            "temperature": 0.7
+        }
+
+        response = requests.post(self.api_url, headers=headers, json=payload)
+        response.raise_for_status()
+
+        result = response.json()
+        assistant_message = result['choices'][0]['message']['content']
 
         self.conversation_history.append({
             "role": "assistant",
