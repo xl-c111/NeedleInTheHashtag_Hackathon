@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import Image from "next/image";
 import type { ChatMessage } from "@/lib/types";
 
 interface MessageBubbleProps {
@@ -15,8 +16,21 @@ export function MessageBubble({ message }: MessageBubbleProps) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
-      className={`flex ${isUser ? "justify-end" : "justify-start"}`}
+      className={`flex gap-3 ${isUser ? "justify-end" : "justify-start items-end"}`}
     >
+      {/* AI Avatar - only show for assistant messages */}
+      {!isUser && (
+        <div className="flex h-24 w-24 items-center justify-center mb-1 flex-shrink-0">
+          <Image 
+            src="/owlaitransparent.svg" 
+            alt="AI Assistant" 
+            width={96} 
+            height={96} 
+            className="h-24 w-24"
+          />
+        </div>
+      )}
+
       <div
         className={`max-w-[85%] rounded-2xl px-4 py-3 ${
           isUser
