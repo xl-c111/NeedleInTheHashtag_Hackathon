@@ -13,11 +13,18 @@ export function Logo() {
           className="h-6 w-6"
         />
         <Image 
+          src="/beentheretextdark.svg" 
+          alt="been there" 
+          width={120} 
+          height={32} 
+          className="h-8 dark:hidden"
+        />
+        <Image 
           src="/beentheretext.svg" 
           alt="been there" 
           width={120} 
           height={32} 
-          className="h-8"
+          className="h-8 hidden dark:block"
         />
       </Link>
     </div>
