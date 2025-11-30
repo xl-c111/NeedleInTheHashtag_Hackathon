@@ -12,9 +12,13 @@ export function Logo() {
           height={24} 
           className="h-6 w-6"
         />
-        <span className="font-bold text-2xl text-black tracking-tighter transition-colors dark:text-white">
-          been there
-        </span>
+        <Image 
+          src="/beentheretext.svg" 
+          alt="been there" 
+          width={120} 
+          height={32} 
+          className="h-8"
+        />
       </Link>
     </div>
   );
