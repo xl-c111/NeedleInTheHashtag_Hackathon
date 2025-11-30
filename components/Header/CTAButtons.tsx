@@ -11,7 +11,7 @@ export function CTAButtons() {
     <>
       <Button
         className="h-9 tracking-tighter"
-        onClick={() => router.push("#")}
+        onClick={() => router.push("/stories")}
         size="sm"
         variant="outline"
       >
@@ -19,7 +19,7 @@ export function CTAButtons() {
       </Button>
       <Button
         className="h-9 tracking-tighter"
-        onClick={() => router.push("#")}
+        onClick={() => router.push("/chat")}
         size="sm"
       >
         <MessageCircle className="mr-1.5 h-3.5 w-3.5" />

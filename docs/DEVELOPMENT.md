@@ -31,6 +31,7 @@ Development server runs at **http://localhost:3000**
 | shadcn/ui | Latest | Pre-built component library |
 | Lucide React | 0.507.0 | Icon library |
 | next-themes | 0.4.4 | Dark mode support |
+| OpenRouter | - | LLM API (Gemini 2.0 Flash) |
 
 ## Project Structure
 
@@ -41,7 +42,19 @@ Development server runs at **http://localhost:3000**
 │   ├── layout.tsx                # Root layout with Header & ThemeProvider
 │   ├── globals.css               # Tailwind v4 config & design tokens
 │   ├── not-found.tsx             # 404 page
-│   └── robots.txt                # SEO robots
+│   ├── robots.txt                # SEO robots
+│   │
+│   ├── chat/                     # Chat feature
+│   │   └── page.tsx              # Chat interface (/chat)
+│   │
+│   ├── stories/                  # Stories feature
+│   │   ├── page.tsx              # Stories grid (/stories)
+│   │   └── [id]/
+│   │       └── page.tsx          # Story detail (/stories/:id)
+│   │
+│   └── api/                      # API Routes
+│       └── chat/
+│           └── route.ts          # Chat API (OpenRouter/Gemini)
 │
 ├── components/                   # React Components
 │   ├── Header/                   # Navigation header
@@ -57,6 +70,21 @@ Development server runs at **http://localhost:3000**
 │   │   ├── HeroImage.tsx         # Hero visual
 │   │   └── SignInOptions.tsx     # CTA buttons
 │   │
+│   ├── Chat/                     # Chat components
+│   │   ├── index.tsx             # Main ChatInterface
+│   │   ├── ChatHeader.tsx        # Header with back button
+│   │   ├── MessageList.tsx       # Message container
+│   │   ├── MessageBubble.tsx     # Individual messages
+│   │   ├── ChatInput.tsx         # Text input + send
+│   │   ├── TypingIndicator.tsx   # Loading animation
+│   │   └── StoriesPrompt.tsx     # CTA to view stories
+│   │
+│   ├── Stories/                  # Stories components
+│   │   ├── index.tsx             # Main StoriesPage
+│   │   ├── StoriesHeader.tsx     # Page header
+│   │   ├── StoryCard.tsx         # Story preview card
+│   │   └── StoryFilters.tsx      # Theme filter chips
+│   │
 │   ├── Feature/                  # Features showcase
 │   │   ├── index.tsx             # Main export
 │   │   ├── FeatureData.ts        # Features config
@@ -67,21 +95,13 @@ Development server runs at **http://localhost:3000**
 │   │   ├── FAQData.ts            # FAQ Q&A config
 │   │   └── Accordion.tsx         # Accordion logic
 │   │
-│   ├── PricingSection/           # Pricing tiers
-│   │   ├── index.tsx             # Main export
-│   │   └── PricingData.ts        # Pricing config
-│   │
 │   ├── ui/                       # shadcn/ui components
 │   │   ├── button.tsx            # Button with variants
 │   │   ├── card.tsx              # Card container
-│   │   ├── dropdown-menu.tsx     # Dropdown menu
-│   │   ├── input.tsx             # Text input
-│   │   ├── label.tsx             # Form label
-│   │   └── navigation-menu.tsx   # Nav menu
+│   │   └── ...                   # Other UI components
 │   │
 │   ├── icons/                    # SVG icon components
-│   │   ├── logo.tsx              # Site logo
-│   │   └── ...                   # AI provider icons
+│   │   └── ...                   # Logo & icons
 │   │
 │   └── footer.tsx                # Site footer
 │
@@ -89,15 +109,18 @@ Development server runs at **http://localhost:3000**
 │   └── site.ts                   # Site metadata config
 │
 ├── lib/
-│   └── utils.ts                  # Utility functions (cn)
+│   ├── utils.ts                  # Utility functions (cn)
+│   ├── types.ts                  # TypeScript interfaces
+│   └── data/
+│       └── stories.ts            # Seed story data
 │
 ├── public/                       # Static assets
-│   ├── hero-video.mp4            # Videos for features
 │   └── ...
 │
 ├── docs/                         # Documentation
 │   ├── DEVELOPMENT.md            # This file
-│   ├── API_CONTRACT.md           # API specification
+│   ├── COMPONENTS.md             # Component reference
+│   ├── DESIGN.md                 # Design system (Kokonut UI Pro)
 │   └── ...
 │
 └── [Config files]
@@ -105,9 +128,41 @@ Development server runs at **http://localhost:3000**
     ├── tailwind.config.ts        # Tailwind config
     ├── tsconfig.json             # TypeScript config
     ├── components.json           # shadcn/ui config
-    ├── biome.jsonc               # Linter config
-    └── postcss.config.mjs        # PostCSS config
+    └── .env.local                # API keys (gitignored)
 ```
+
+## Core Features
+
+### Chat (`/chat`)
+Conversational interface that connects users with recovery stories.
+
+**Flow:**
+1. User sends message → API route → OpenRouter (Gemini)
+2. AI responds with empathetic questions
+3. After 4+ messages, "Browse stories" prompt appears
+4. User navigates to stories page
+
+**Key files:**
+- `app/chat/page.tsx` - Chat page
+- `components/Chat/index.tsx` - Main chat logic
+- `app/api/chat/route.ts` - OpenRouter API integration
+
+### Stories (`/stories`)
+Grid of recovery stories with filtering by theme.
+
+**Features:**
+- 12 seed stories covering various themes
+- Filter by theme (loneliness, self-improvement, etc.)
+- Individual story detail pages
+- Related stories suggestions
+
+**Key files:**
+- `app/stories/page.tsx` - Stories grid
+- `app/stories/[id]/page.tsx` - Story detail
+- `components/Stories/` - Story components
+- `lib/data/stories.ts` - Seed story data
+
+---
 
 ## Component Patterns
 
@@ -437,11 +492,26 @@ npm start
 Create `.env.local` for local development:
 
 ```env
-# API endpoints (if needed)
-NEXT_PUBLIC_API_URL=http://localhost:8000
+# OpenRouter API (required for chat)
+# Get your key at: https://openrouter.ai/keys
+OPENROUTER_API_KEY=sk-or-v1-your-key-here
 
-# Feature flags
-NEXT_PUBLIC_ENABLE_ANALYTICS=false
+# Optional: Force mock responses (for testing without API)
+USE_MOCK_CHAT=false
+```
+
+### API Configuration
+
+The chat feature uses OpenRouter to access Gemini 2.0 Flash. The API route (`app/api/chat/route.ts`) handles:
+- Sending messages to OpenRouter with system prompt
+- Falling back to mock responses if API fails
+- Error handling and logging
+
+To switch models, edit the `model` field in `app/api/chat/route.ts`:
+```ts
+model: "google/gemini-2.0-flash-001"  // Current
+model: "anthropic/claude-3-haiku"     // Alternative
+model: "openai/gpt-4o-mini"           // Alternative
 ```
 
 ## Contributing

@@ -82,7 +82,7 @@ export function MobileNav({ onClose }: MobileNavProps) {
           <Button
             className="w-full tracking-tighter"
             onClick={() => {
-              router.push("#");
+              router.push("/stories");
               onClose();
             }}
             size="sm"
@@ -93,7 +93,7 @@ export function MobileNav({ onClose }: MobileNavProps) {
           <Button
             className="w-full tracking-tighter"
             onClick={() => {
-              router.push("#");
+              router.push("/chat");
               onClose();
             }}
             size="sm"
