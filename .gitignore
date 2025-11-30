@@ -41,3 +41,48 @@ yarn-error.log*
 next-env.d.ts
 
 .cursor
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data (keep out of git - may be large/sensitive)
+# data/raw/*
+# data/processed/*
+# !data/raw/.gitkeep
+# !data/processed/.gitkeep
+
+# Models
+models/
+*.pkl
+*.joblib
+*.h5
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Secrets
+*.key
+credentials.json
+service-account.json
