@@ -7,12 +7,17 @@ python-dotenv>=1.0.0
 # CORS
 python-multipart>=0.0.6
 
-# Optional: For LLM classification (uncomment if using)
-# anthropic>=0.7.0
-# openai>=1.0.0
+# AI/ML Dependencies (Required for Been There)
+sentence-transformers>=2.2.0
+scikit-learn>=1.3.0
+numpy>=1.24.0
+pandas>=2.1.0
 
-# Optional: For Perspective API
-# google-api-python-client>=2.100.0
+# Groq API for chat interface
+groq>=0.4.0
 
-# Optional: For embeddings
-# sentence-transformers>=2.2.0
+# Supabase client
+supabase>=2.0.0
+
+# Optional: For enhanced classification
+# tensorflow>=2.14.0  # For neural network moderator
