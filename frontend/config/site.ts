@@ -1,10 +1,10 @@
 export const siteConfig = {
-  name: "Village",
-  url: "https://village.app",
-  ogImage: "https://village.app/og.jpg",
+  name: "been there",
+  url: "https://beenthere.app",
+  ogImage: "https://beenthere.app/og.jpg",
   description: "You're not alone",
   links: {
-    twitter: "https://twitter.com/villageapp",
+    twitter: "https://twitter.com/beenthereapp",
   },
 };
 

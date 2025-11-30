@@ -4,7 +4,7 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const USE_MOCK = process.env.USE_MOCK_CHAT === "true";
 
-const SYSTEM_PROMPT = `You are a supportive peer counselor for Village, a platform that connects people with recovery stories from others who have overcome similar challenges.
+const SYSTEM_PROMPT = `You are a supportive peer counselor for been there, a platform that connects people with recovery stories from others who have overcome similar challenges.
 
 Your role:
 - Listen with empathy and without judgment
@@ -50,8 +50,8 @@ export async function POST(req: NextRequest) {
           headers: {
             Authorization: `Bearer ${OPENROUTER_API_KEY}`,
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://village.app",
-            "X-Title": "Village",
+            "HTTP-Referer": "https://beenthere.app",
+            "X-Title": "been there",
           },
           body: JSON.stringify({
             model: "google/gemini-2.0-flash-001",
