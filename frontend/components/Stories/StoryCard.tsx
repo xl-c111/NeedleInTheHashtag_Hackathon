@@ -28,37 +28,42 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
           }}
         >
           {/* Main content area with larger margins to avoid scroll edges */}
-          <div className="relative z-10 flex-1 px-12 pt-10 pb-4">
-            {/* Tags */}
-            <div className="mb-4 flex flex-wrap gap-2">
-            {story.tags.slice(0, 3).map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-black shadow-sm backdrop-blur-sm"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
+          <div className="relative z-10 flex-1 px-8 pt-14 pb-4">
           {/* Title */}
           <h3 className="font-medium text-lg tracking-tight text-black transition-colors group-hover:text-black/80 drop-shadow-lg">
             {story.title}
           </h3>
 
+          {/* Divider */}
+          <div className="mt-3 h-px bg-black/10 dark:bg-white/10" />
+
           {/* Excerpt */}
-          <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-black/80 drop-shadow">
+          <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-black/80 drop-shadow">
             {story.excerpt}
           </p>
+
+          {/* Divider */}
+          <div className="mt-4 h-px bg-black/10 dark:bg-white/10" />
+
+          {/* Tags */}
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {story.tags.slice(0, 3).map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full bg-secondary/80 px-2 py-0.5 text-[10px] font-medium text-secondary-foreground shadow-sm backdrop-blur-sm dark:bg-accent dark:text-accent-foreground"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
           </div>
 
           {/* Meta positioned in the lighter bottom area of the scroll */}
-          <div className="relative z-10 px-12 pb-12 mt-auto">
-            <div className="flex items-center justify-between text-xs text-black/70 drop-shadow">
-              <span className="font-medium">{story.author}</span>
+          <div className="relative z-10 px-8 pb-16 mt-auto">
+            <div className="flex items-center justify-end text-xs text-black/70 drop-shadow">
               <span className="flex items-center gap-1">
                 <Clock className="h-3 w-3" />
-                {story.readTime} min
+                {story.readTime} min read
               </span>
             </div>
           </div>

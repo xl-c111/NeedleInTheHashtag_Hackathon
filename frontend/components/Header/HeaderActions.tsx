@@ -1,5 +1,6 @@
 import ThemeToggle from "@/lib/theme-toggle";
 import { CTAButtons } from "./CTAButtons";
+import { UserButton } from "@/components/Auth";
 
 export function HeaderActions() {
   return (
@@ -7,6 +8,7 @@ export function HeaderActions() {
       <div className="mx-3 h-4 w-px bg-black/10 dark:bg-white/10" />
       <ThemeToggle />
       <CTAButtons />
+      <UserButton />
     </>
   );
 }

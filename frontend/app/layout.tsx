@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Header } from "@/components/Header";
+import { AuthProvider } from "@/components/Auth";
 import { siteConfig } from "@/config/site";
 
 const geistSans = Geist({
@@ -65,10 +66,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main className="relative min-h-screen w-full overflow-hidden scroll-smooth">
-            {children}
-          </main>
+          <AuthProvider>
+            <Header />
+            <main className="relative min-h-screen w-full overflow-hidden scroll-smooth">
+              {children}
+            </main>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

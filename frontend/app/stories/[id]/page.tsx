@@ -1,34 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock, MessageCircle } from "lucide-react";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import type { Story, Theme } from "@/lib/types";
+import { Clock, MessageCircle } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import type { Story } from "@/lib/types";
 
 interface StoryPageProps {
   params: Promise<{ id: string }>;
-}
-
-// Map topic_tags to Theme type
-function mapTopicTagsToThemes(topicTags: string[] | null): Theme[] {
-  if (!topicTags) return [];
-  const tagToTheme: Record<string, Theme> = {
-    "Mental health history": "therapy",
-    "Views on women": "relationships",
-    "Views on men/masculinity": "self-improvement",
-    "Dating history": "rejection",
-    "Sexuality": "relationships",
-    "Friendship history": "loneliness",
-    "Online spaces": "toxic-communities",
-    "Social isolation": "loneliness",
-  };
-  const themes = new Set<Theme>();
-  for (const tag of topicTags) {
-    const theme = tagToTheme[tag];
-    if (theme) themes.add(theme);
-  }
-  if (themes.size === 0) themes.add("self-improvement");
-  return Array.from(themes);
 }
 
 // Generate title from content
@@ -64,7 +41,6 @@ function postToStory(row: { id: string; user_id: string; content: string; topic_
     excerpt: generateExcerpt(row.content),
     content: row.content,
     tags: row.topic_tags || [],
-    themes: mapTopicTagsToThemes(row.topic_tags),
     readTime: calculateReadTime(row.content),
     datePosted: row.timestamp ? new Date(row.timestamp).toISOString().split("T")[0] : row.created_at.split("T")[0],
   };
@@ -72,8 +48,7 @@ function postToStory(row: { id: string; user_id: string; content: string; topic_
 
 // Helper to fetch story from Supabase posts table
 async function fetchStoryFromSupabase(id: string): Promise<Story | null> {
-  const cookieStore = await cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
     .select("*")
@@ -89,8 +64,7 @@ async function fetchStoryFromSupabase(id: string): Promise<Story | null> {
 
 // Helper to fetch related stories from Supabase posts table
 async function fetchRelatedStories(excludeId: string): Promise<Story[]> {
-  const cookieStore = await cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
     .select("*")
@@ -132,25 +106,13 @@ export default async function StoryPage({ params }: StoryPageProps) {
   const relatedStories = await fetchRelatedStories(id);
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
+    <div className="min-h-screen pt-16">
+      {/* Header - simplified */}
       <header className="border-b border-black/10 dark:border-white/10">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4 sm:px-6">
-          <Link
-            href="/stories"
-            className="flex items-center gap-2 rounded-full p-2 text-sm text-black/60 transition-colors hover:bg-black/5 dark:text-white/60 dark:hover:bg-white/5"
-          >
-            <ArrowLeft className="h-5 w-5" />
-            <span className="hidden sm:inline">Back to stories</span>
-          </Link>
-
-          <Link
-            href="/chat"
-            className="flex items-center gap-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
-          >
-            <MessageCircle className="h-4 w-4" />
-            <span className="hidden sm:inline">Start talking</span>
-          </Link>
+        <div className="mx-auto flex max-w-3xl items-center justify-end px-4 py-4 sm:px-6">
+          <span className="text-sm text-black/60 dark:text-white/60">
+            {story.datePosted}
+          </span>
         </div>
       </header>
 
