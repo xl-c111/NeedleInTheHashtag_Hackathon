@@ -132,6 +132,8 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     response: str
     session_id: str
+    suggested_posts: Optional[List[dict]] = None
+    ready_for_stories: bool = False
 
 
 class HealthResponse(BaseModel):
@@ -233,24 +235,74 @@ async def moderate_content(request: ModerateRequest):
     return ModerateResponse(**result)
 
 
+@app.get("/api/chat/greeting")
+async def get_initial_greeting():
+    """
+    Get initial greeting to start the conversation.
+    """
+    return {
+        "greeting": """Hey, I'm here to listen. Sometimes it helps to talk about what's on your mind.
+
+Take your time - there's no rush. You can share whatever feels right.
+
+Some things that might help get started:
+• What's been weighing on you lately?
+• Is there something specific that's been bothering you?
+• How have you been feeling?
+
+I'm here to understand, not to judge. When you're ready, I'll help you find stories from others who've been through similar experiences."""
+    }
+
+
+# In-memory session storage (in production, use Redis or database)
+chat_sessions = {}
+
+
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_assistance(request: ChatRequest):
     """
     Chat interface to help users articulate their struggles.
 
+    After 2-3 exchanges, automatically suggests matching mentor posts.
     Uses Gemini via OpenRouter API (fast, free LLM).
-    Does NOT provide advice - only helps users express themselves.
     """
     try:
-        # Create new chat assistant for each session
-        # In production, you'd want to cache these by session_id
-        chat = ChatAssistant()
+        session_id = request.session_id or "default"
 
+        # Get or create chat session
+        if session_id not in chat_sessions:
+            chat_sessions[session_id] = ChatAssistant()
+
+        chat = chat_sessions[session_id]
+
+        # Send message and get response
         response = chat.send(request.message)
+
+        # Count user messages (not total messages)
+        user_message_count = sum(1 for msg in chat.conversation_history if msg['role'] == 'user')
+
+        # After 2-3 user messages, suggest matching posts
+        suggested_posts = None
+        ready_for_stories = False
+
+        if user_message_count >= 2 and matcher and matcher.mentor_embeddings is not None:
+            # Get user's combined text for matching
+            user_text = chat.get_user_text_for_matching()
+
+            # Find matching posts
+            try:
+                matches = matcher.match(user_text, top_k=3, min_similarity=0.3)
+                if matches:
+                    suggested_posts = matches
+                    ready_for_stories = True
+            except Exception as e:
+                print(f"Matching failed: {e}")
 
         return ChatResponse(
             response=response,
-            session_id=request.session_id or "default"
+            session_id=session_id,
+            suggested_posts=suggested_posts,
+            ready_for_stories=ready_for_stories
         )
     except Exception as e:
         raise HTTPException(
