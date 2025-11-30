@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python scripts/fetch_supabase_posts.py:*)",
+      "Bash(python -m pip install:*)",
+      "Bash(python scripts/generate_embeddings.py:*)",
+      "Bash(python -m uvicorn:*)",
+      "Bash(timeout /t 5)",
+      "Bash(timeout /t 1)",
+      "Bash(python:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: switch from Groq to Gemini via OpenRouter for chat\n\n- Replace Groq SDK with OpenRouter API using requests library\n- Update ChatAssistant to use google/gemini-2.0-flash-exp:free model\n- Add required HTTP-Referer and X-Title headers for OpenRouter\n- Update environment variables to use OPENROUTER_API_KEY\n- Update API error messages to reference OpenRouter instead of Groq\n- Successfully tested Gemini integration with direct API calls\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git fetch:*)",
+      "Bash(git merge:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
