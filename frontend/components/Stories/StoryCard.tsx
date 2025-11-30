@@ -18,9 +18,10 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
       transition={{ duration: 0.3, delay: index * 0.05 }}
     >
       <Link href={`/stories/${story.id}`}>
-        <article className="group h-full rounded-xl border border-black/10 bg-white p-6 transition-all hover:border-black/20 hover:shadow-sm dark:border-white/10 dark:bg-black dark:hover:border-white/20">
-          {/* Tags */}
-          <div className="mb-4 flex flex-wrap gap-2">
+        <article className="scroll-card-thick relative overflow-hidden rounded-lg group h-full border border-black/10 transition-all hover:border-black/20 hover:shadow-sm dark:border-white/10 dark:hover:border-white/20">
+          <div className="relative z-10 bg-white/85 p-6 dark:bg-black/85">
+            {/* Tags */}
+            <div className="mb-4 flex flex-wrap gap-2">
             {story.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
@@ -48,6 +49,7 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
               <Clock className="h-3 w-3" />
               {story.readTime} min
             </span>
+          </div>
           </div>
         </article>
       </Link>

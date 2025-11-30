@@ -22,15 +22,15 @@ export const NAVIGATION_ITEMS: NavigationMenu[] = [
   {
     name: "Support",
     items: [
-      { name: "Start a conversation", href: "/village/chat", icon: MessageCircle },
-      { name: "Read stories", href: "/village/stories", icon: BookOpen },
+      { name: "Start a conversation", href: "/chat", icon: MessageCircle },
+      { name: "Read stories", href: "/stories", icon: BookOpen },
     ],
   },
   {
     name: "About",
     items: [
       { name: "How it works", href: "#features" },
-      { name: "Our mission", href: "/village/about", icon: Heart },
+      { name: "Our mission", href: "/about", icon: Heart },
       { name: "FAQ", href: "#faq", icon: HelpCircle },
     ],
   },
