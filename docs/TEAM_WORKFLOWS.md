@@ -4,11 +4,11 @@
 
 | Role | Focus Areas | AI Tools |
 |------|-------------|----------|
-| **Tech Lead / AI Integration** | Architecture, classification pipeline, AI integration | Claude Code |
-| **Backend Engineer** | API design, data processing, database | TBD |
-| **Frontend / Design** | UI/UX, CSS, visual polish | TBD |
-| **Business Analyst** | Problem framing, user research, pitch narrative | TBD |
-| **Developer** | Supporting tasks, testing, documentation | TBD |
+| **Tech Lead / AI Integration** | Backend API, AI matching algorithm, classification, integration | Claude Code |
+| **Backend Engineer** | Database design, schema, data models | TBD |
+| **Frontend / Design** | Loveable skeleton generation, hand-drawn assets (owl/scroll theme) | Loveable |
+| **Business Analyst** | Mentor post curation, pitch narrative, user research | TBD |
+| **Developer** | Testing, integration support, documentation | TBD |
 
 ---
 
@@ -83,13 +83,89 @@ main
 
 ### Parallel Workstreams
 
-While Tech Lead works on classification:
-- **Frontend** can build UI with mock data
-- **Backend** can set up project structure, API skeleton
-- **BA** can interview mentors, draft pitch
-- **Developer** can help with testing, documentation
+Work happens in parallel on different components:
+- **Tech Lead** builds AI matching endpoint + integrates with frontend
+- **Frontend/Design** generates Loveable skeleton + creates hand-drawn assets
+- **Backend Engineer** designs database schema
+- **BA** curates mentor posts from r/IncelExit + writes pitch
+- **Developer** helps with testing, integration, documentation
 
-Define interface contracts early so work can happen in parallel.
+Define interface contracts early (see `docs/API_CONTRACT.md`) so work can happen in parallel.
+
+---
+
+## Loveable Integration Workflow
+
+### Step 1: Generate Frontend Skeleton in Loveable
+**Owner:** Frontend/Design team
+
+1. Use Loveable AI to generate initial UI structure
+2. Specify requirements:
+   - 7-step user journey (describe struggle → match → interact → diary → resources)
+   - Owl delivering messages theme
+   - Hand-written scrolls/parchments aesthetic
+   - Quill/pen imagery
+   - Beach or Space background themes
+   - Mobile-responsive
+3. Iterate in Loveable until layout feels right
+4. Export code from Loveable
+
+### Step 2: Export and Share
+**Owner:** Frontend/Design team
+
+1. Export Loveable project code
+2. Share with team via GitHub or zip file
+3. Document any Loveable-specific dependencies or quirks
+4. Provide screenshots/walkthrough of intended user flow
+
+### Step 3: Replace Loveable Assets with Hand-Drawn
+**Owner:** Frontend/Design team
+
+1. Identify all visual assets in Loveable export
+2. Create hand-drawn versions:
+   - Owl character delivering messages
+   - Scroll/parchment backgrounds
+   - Quill pen imagery
+   - UI elements in hand-drawn style
+3. Replace Loveable defaults with custom assets
+4. Ensure visual consistency across all screens
+
+### Step 4: Tech Lead Creates Matching API Endpoints
+**Owner:** Tech Lead (using Claude Code)
+
+1. Read Loveable frontend code to understand data requirements
+2. Implement `/api/match` endpoint (see `docs/API_CONTRACT.md`)
+3. Use existing utilities:
+   - `src/classifiers/api_classifiers.py` for embeddings
+   - `src/utils/text_utils.py` for text cleaning
+4. Curate 10-20 sample mentor posts for demo
+5. Pre-compute embeddings for mentor posts
+6. Test endpoint with sample queries
+
+### Step 5: Integration Testing
+**Owner:** All team members
+
+1. Connect Loveable frontend to backend API
+2. Update API base URL in frontend config
+3. Test each step of 7-step user journey:
+   - User input → backend receives it ✓
+   - Backend returns matched posts ✓
+   - Frontend displays posts correctly ✓
+   - Interactions (save, navigate) work ✓
+   - Diary/resources pages render ✓
+4. Fix integration issues
+5. Rehearse demo flow
+
+### Step 6: Polish and Prepare Demo
+**Owner:** All team members
+
+1. **Frontend/Design:** Final visual polish, animations, transitions
+2. **Tech Lead:** Optimize API response times, add error handling
+3. **Backend Engineer:** Integrate database (if ready) or finalize mock data
+4. **BA:** Prepare demo script, practice narration
+5. **Developer:** Test on different browsers/devices, document known issues
+
+---
 
 ---
 
@@ -124,38 +200,71 @@ Track key decisions to avoid re-litigating:
 
 ### Frontend ↔ Backend Contract
 
-Define API contracts early:
+**Source of truth:** `docs/API_CONTRACT.md`
+
+Key endpoints for peer-support platform:
 
 ```typescript
-// Example: Classification endpoint
+// Story matching endpoint (PRIMARY for demo)
+POST /api/match
+Request:  { user_message: string, context?: string[], limit?: number }
+Response: {
+  matched_posts: Array<{...}>,
+  themes_detected: string[],
+  suggested_resources: Array<{...}>
+}
+
+// Classification endpoints (for moderation - existing)
 POST /api/classify
 Request:  { text: string }
 Response: { category: string, confidence: number, indicators: string[] }
-
-// Example: Batch classification
-POST /api/classify/batch
-Request:  { texts: string[] }
-Response: { results: Array<{ text: string, category: string, confidence: number }> }
 ```
+
+### Loveable Export → Backend Integration
+
+1. **Frontend generates API calls** - Loveable exports fetch/axios calls
+2. **Backend implements matching contract** - See `docs/API_CONTRACT.md` for request/response shapes
+3. **Environment configuration** - Frontend uses `API_BASE_URL` env var
+4. **CORS setup** - Backend allows `localhost:3000` or Loveable dev server
+
+### Database Schema (Awaiting Design)
+
+**Owner:** Backend Engineer
+
+Required tables/collections:
+- Users (anonymous profiles, preferences)
+- Mentor Posts (content, embeddings, themes, engagement)
+- Diary Entries (user_id, content, mood, timestamp, private flag)
+- Interactions (user_id, post_id, type: save/helpful, timestamp)
+- Mood Tracking (user_id, mood, note, timestamp)
+- Resources (type, title, url, themes, description)
+
+**Integration:** Once schema is ready, Tech Lead will migrate from in-memory/JSON to database queries.
 
 ### Shared Types/Models
 
-If using TypeScript frontend + Python backend, define equivalent types:
+Define equivalent types across stack:
 
 ```python
-# Python (backend)
-class ClassificationResult(BaseModel):
-    category: str
-    confidence: float
-    indicators: list[str]
+# Python (backend/models.py)
+class MatchedPost(BaseModel):
+    post_id: str
+    author_persona: str
+    content: str
+    relevance_score: float
+    themes: list[str]
+    created_at: datetime
 ```
 
 ```typescript
-// TypeScript (frontend)
-interface ClassificationResult {
-  category: string;
-  confidence: number;
-  indicators: string[];
+// TypeScript (frontend/types.ts)
+interface MatchedPost {
+  post_id: string;
+  author_persona: string;
+  content: string;
+  relevance_score: number;
+  themes: string[];
+  created_at: string;  // ISO datetime
 }
 ```
 

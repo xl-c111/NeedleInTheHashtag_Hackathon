@@ -200,6 +200,200 @@ GET /api/stats
 
 ---
 
+## New Endpoints (Peer-Support Platform)
+
+> **Note:** These endpoints will be implemented incrementally as the Loveable frontend skeleton reveals requirements.
+> The following are **draft designs** to guide development. Exact request/response shapes may evolve based on frontend needs.
+
+### Story/Mentor Post Matching
+
+#### Match User to Mentor Posts
+
+Match a user's message to relevant mentor posts based on semantic similarity.
+
+```
+POST /api/match
+```
+
+**Request:**
+```json
+{
+  "user_message": "I've been feeling really lonely lately and don't know how to connect with people",
+  "context": ["previous message 1", "previous message 2"],  // Optional: conversation history
+  "limit": 5  // Optional: number of matches to return (default: 5)
+}
+```
+
+**Response:**
+```json
+{
+  "matched_posts": [
+    {
+      "post_id": "mp_001",
+      "author_persona": "Anon123",  // Anonymous pseudonym
+      "content": "I used to feel so isolated, but I found that joining a local book club helped me connect with people who shared my interests...",
+      "relevance_score": 0.87,
+      "themes": ["loneliness", "community_building"],
+      "created_at": "2024-11-15T10:30:00Z",
+      "engagement": {
+        "saves": 45,
+        "helpful_count": 23
+      }
+    },
+    {
+      "post_id": "mp_002",
+      "author_persona": "Anon456",
+      "content": "Volunteering at an animal shelter gave me a sense of purpose and introduced me to kind people...",
+      "relevance_score": 0.82,
+      "themes": ["loneliness", "purpose", "volunteering"],
+      "created_at": "2024-10-22T14:20:00Z",
+      "engagement": {
+        "saves": 32,
+        "helpful_count": 18
+      }
+    }
+  ],
+  "themes_detected": ["loneliness", "community_building", "purpose"],
+  "suggested_resources": [
+    {
+      "type": "article",
+      "title": "Building Social Connections: A Guide",
+      "url": "https://example.com/social-connections",
+      "description": "Practical tips for making friends as an adult"
+    },
+    {
+      "type": "service",
+      "title": "Local Meetup Groups",
+      "url": "https://meetup.com",
+      "description": "Find groups based on your interests"
+    }
+  ]
+}
+```
+
+---
+
+### Story/Mentor Posts (CRUD - Future)
+
+> **To be implemented:** Full CRUD for mentor posts once database is ready
+
+**Placeholder endpoints:**
+- `GET /api/posts` - List all mentor posts (with filtering, pagination)
+- `GET /api/posts/{post_id}` - Get single post
+- `POST /api/posts` - Submit new mentor post (requires moderation)
+- `GET /api/posts/trending` - Get trending/popular posts
+
+---
+
+### Diary Entries (Future)
+
+> **To be implemented:** User diary/journaling feature
+
+**Placeholder endpoints:**
+- `GET /api/diary` - Get user's diary entries
+- `POST /api/diary` - Create new diary entry
+- `GET /api/diary/{entry_id}` - Get specific entry
+- `PUT /api/diary/{entry_id}` - Update entry
+- `DELETE /api/diary/{entry_id}` - Delete entry
+
+**Draft Request (POST /api/diary):**
+```json
+{
+  "content": "Today I felt a bit better. I reached out to an old friend...",
+  "mood": "hopeful",  // Optional: mood tag
+  "private": true  // Default: true (entries are private by default)
+}
+```
+
+---
+
+### Resources (Future)
+
+> **To be implemented:** Curated resources (articles, services, crisis support)
+
+**Placeholder endpoints:**
+- `GET /api/resources` - List resources (filtered by theme)
+- `GET /api/resources/recommend` - Get personalized recommendations based on user's themes
+
+**Draft Response:**
+```json
+{
+  "resources": [
+    {
+      "id": "res_001",
+      "type": "article",  // article, service, video, crisis_hotline
+      "title": "Self-Compassion for Difficult Times",
+      "url": "https://example.com/self-compassion",
+      "description": "A guide to being kind to yourself",
+      "themes": ["self_esteem", "mental_health"],
+      "difficulty": "beginner"  // beginner, intermediate, advanced
+    }
+  ]
+}
+```
+
+---
+
+### User Interactions (Future)
+
+> **To be implemented:** Save posts, mark helpful, etc.
+
+**Placeholder endpoints:**
+- `POST /api/interactions/save` - Save a post for later
+- `POST /api/interactions/helpful` - Mark a post as helpful
+- `GET /api/interactions/saved` - Get user's saved posts
+
+---
+
+### Mood Tracking (Future)
+
+> **To be implemented:** Daily mood check-ins
+
+**Placeholder endpoints:**
+- `POST /api/mood` - Log mood
+- `GET /api/mood/history` - Get mood history (for charts/trends)
+
+**Draft Request (POST /api/mood):**
+```json
+{
+  "mood": "neutral",  // very_low, low, neutral, good, very_good
+  "note": "Feeling a bit better today",  // Optional
+  "timestamp": "2024-11-30T10:00:00Z"  // Optional: defaults to now
+}
+```
+
+---
+
+### AI Chat (Future)
+
+> **To be implemented:** Conversational interface for understanding user issues
+
+**Placeholder endpoints:**
+- `POST /api/chat` - Send message, get AI response (guides conversation, doesn't give advice)
+- `GET /api/chat/history` - Get conversation history
+
+**Draft Request (POST /api/chat):**
+```json
+{
+  "message": "I don't know how to talk to people at parties",
+  "conversation_id": "conv_123"  // Optional: for multi-turn conversations
+}
+```
+
+**Draft Response:**
+```json
+{
+  "response": "That sounds challenging. Can you tell me more about what happens when you try to start conversations?",
+  "conversation_id": "conv_123",
+  "suggestions": [
+    "Tell me more about social situations",
+    "I want to see mentor posts about social anxiety"
+  ]
+}
+```
+
+---
+
 ## Error Responses
 
 All errors follow this format:
@@ -235,6 +429,11 @@ All errors follow this format:
 
 ## Notes for Backend
 
-- CORS is enabled for `http://localhost:3000` (Next.js dev server)
+- CORS is enabled for `http://localhost:3000` (Next.js/Loveable dev server)
 - Add request validation using Pydantic models
 - Log all requests for debugging during hackathon
+- **New focus:** Implement `/api/match` endpoint first (core of peer-support platform)
+- Use existing text processing utilities (`src/utils/text_utils.py`) for cleaning
+- Use existing embedding classifier (`src/classifiers/api_classifiers.py`) for matching
+- Keep existing classification endpoints for content moderation
+- Database schema TBD by teammate - use in-memory/JSON for MVP if needed

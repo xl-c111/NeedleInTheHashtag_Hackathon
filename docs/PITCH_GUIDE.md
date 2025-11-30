@@ -5,59 +5,204 @@
 The final submission includes a pitch video (deadline: Friday Dec 5, 11:59pm).
 Finalists will pitch live on Thursday Dec 11.
 
-> **Confirm video requirements with organizers on Day 1**
-> - Length limit?
-> - Format requirements?
-> - What must be included?
+> **Confirmed video requirements:**
+> - Length limit: 3 mins
+> - Format requirements: Video .mp4
+> - Must include: Problem, solution, demo, impact
 
 ---
 
-## Pitch Structure (Draft)
+## Our Motto Options
+
+Choose one for the pitch (or use in rotation):
+
+1. **"Bringing a village to your screen. Connect with people who truly understand."** ⭐ (PRIMARY)
+2. "Your village, just a message away. Real people. Real experiences. Real support."
+3. "You're not alone. Connect with others who've lived what you're living."
+4. "Find your people. Share stories with those who get it."
+5. "Where real experiences meet real connection."
+6. "A village of support — right on your screen."
+7. "Talk to people who understand, because they've been there too."
+
+---
+
+## Key Messages
+
+These should be woven throughout the pitch:
+
+### 1. The Problem
+**"Online echo chambers are radicalizing young people, increasing misogyny, and correlating with higher rates of gender-based violence."**
+
+- Incel communities started as support spaces but have become toxic echo chambers
+- Exposure to extreme content increases radicalization and harmful beliefs
+- Research links misogynistic views to domestic violence and gender-based violence
+- Current approaches (deplatforming) don't address root causes
+
+### 2. The Solution
+**"We connect people to real stories from those who've overcome similar struggles — not AI therapy, but real human connection."**
+
+- AI matches users to relevant mentor posts (doesn't generate advice)
+- Real stories from reformed community members (e.g., r/IncelExit)
+- Multi-perspective content breaks echo chambers
+- Combines peer support + professional resources + self-reflection
+
+### 3. Why It Matters
+**"Prevention through de-radicalization and human connection reduces the risk of gender-based violence."**
+
+- Intervene before beliefs become entrenched
+- Provide hope through authentic examples of positive change
+- Foster empathy by exposing users to diverse perspectives
+- Connect to professional help without stigma
+
+### 4. What Makes It Different
+**"Real human stories, not AI-generated content. AI only matches people to lived experiences."**
+
+- Authenticity over automation
+- Peer support proven more effective than algorithms alone
+- Privacy-first, stigma-free environment
+- Wholesome interactions inspired by successful games like "Kind Words"
+
+---
+
+## Pitch Structure
+
+**Total Time: 3 minutes**
 
 ### 1. The Hook (15 seconds)
-Grab attention immediately. Options:
-- Shocking statistic
-- Compelling question
-- Brief story/scenario
-- Bold statement
+**Goal:** Grab attention with the urgency and scope of the problem
 
-**Example:** "Every day, 40% of young people experience harassment online. But what if we could catch the warning signs before it escalates?"
+**Script:**
+> "Every day, young people are falling into online echo chambers that promote misogyny and radicalization. Research shows a direct link between these beliefs and gender-based violence. But what if we could connect them to people who've been there and found their way out?"
+
+**Alternatives:**
+- Stat: "Studies show that holding misogynistic views significantly increases the risk of domestic violence..."
+- Question: "What if the solution to online radicalization wasn't deplatforming, but connection?"
+
+---
 
 ### 2. The Problem (30 seconds)
-- What's broken? Be specific.
-- Who's affected? Make it human.
-- Why does it matter? Stakes.
-- Why now? Urgency.
+**Goal:** Make the problem specific, human, and urgent
 
-**Tip:** Use insights from the hackathon talks to demonstrate understanding.
+**Script:**
+> "Online communities that were once created as support spaces — like early incel forums — have been overtaken by extreme viewpoints. These echo chambers reinforce loneliness, spread misinformation, and radicalize vulnerable young people, particularly young men.
+>
+> The impact? Higher rates of misogyny, isolation, and tragically, gender-based violence. Deplatforming doesn't work — users just migrate and feel martyred. We need a better approach."
+
+**Key points to hit:**
+- Incel communities are echo chambers (but don't say "platform for incels")
+- Young people are vulnerable and being radicalized
+- Current solutions (deplatforming) don't address root causes
+- There's a link to gender-based violence (the hackathon theme)
+
+---
 
 ### 3. Our Solution (45 seconds)
-- What we built (one sentence)
-- How it works (simple explanation)
-- Key innovation (what's new/different)
+**Goal:** Clearly explain what we built and how it works
 
-**Tip:** Lead with the *what*, then the *how*. Don't get lost in technical details.
+**Script:**
+> "We built a peer-support platform that brings a village to your screen. Here's how it works:
+>
+> When someone is struggling with loneliness, relationships, or self-esteem, they share their story through our AI chat. But here's the key — the AI doesn't give advice. Instead, it matches them to real posts from people who've lived through similar challenges and come out stronger.
+>
+> These are authentic stories from reformed community members, people from different genders and backgrounds, showing that change is possible. We combine this with professional resources, a private diary for reflection, and wholesome interactions — no toxic comments, just support."
+
+**Key innovation to emphasize:**
+- AI for matching, NOT for generating therapy
+- Real human stories from lived experience
+- Multi-perspective content (breaks echo chambers)
+- Human connection at the core
+
+---
 
 ### 4. Demo (60 seconds)
-- Show the product working
-- Focus on the "aha moment"
-- Narrate what you're showing
-- Use real (or realistic) examples
+**Goal:** Show the product working through our 7-step user journey
 
-**Tip:** Record demo separately, edit into pitch video. Rehearse the flow.
+**Demo Script (narrate while showing):**
+
+> "Let me show you how it works.
+>
+> **[Step 1]** Meet Alex, a young person feeling isolated and lonely. They come to our platform and describe their struggles.
+>
+> **[Step 2]** Our AI chat helps them articulate what they're going through — not giving advice, just listening and understanding.
+>
+> **[Step 3]** Based on what Alex shared, they're matched to real stories from mentors who felt the same way and improved their lives. Look — here's someone who used to struggle with loneliness and found connection through volunteering.
+>
+> **[Step 4]** Alex saves the posts that resonate, marking them to revisit later.
+>
+> **[Step 5]** They explore perspectives from people of different genders and backgrounds — seeing that these feelings are universal, not unique to them.
+>
+> **[Step 6]** Alex starts journaling in their private diary, reflecting on their journey and tracking their progress.
+>
+> **[Step 7]** Finally, they access curated resources — mental health services, articles on building self-esteem, all tailored to their needs.
+>
+> This is prevention through connection."
+
+**Demo Tips:**
+- Use a relatable scenario (loneliness, not extreme incel language)
+- Show each of the 7 steps visually
+- Emphasize the matching (not AI generation)
+- End on a hopeful note (resources, progress)
+
+---
 
 ### 5. Impact (30 seconds)
-- Who benefits and how
-- Potential scale
-- Measurable outcomes
-- Broader implications
+**Goal:** Show who benefits and why it matters at scale
 
-**Example:** "This could help moderators review 3x more content, catching harmful patterns 40% earlier."
+**Script:**
+> "This matters because we're preventing radicalization before it takes hold. By connecting people to real stories of change, we break echo chambers and build empathy. By providing stigma-free access to resources, we make it easier to get help.
+>
+> The impact? Reduced radicalization, decreased misogyny, and ultimately, fewer instances of gender-based violence. We're addressing the root cause — isolation and harmful beliefs — with the most powerful tool we have: human connection.
+>
+> And this can scale. There are millions of people struggling, and thousands willing to share their recovery stories. We're building the village they need."
+
+**Key impact points:**
+- Prevention (before radicalization entrenches)
+- Scalability (millions of users, thousands of mentors)
+- Measurable (reduced harmful beliefs, increased help-seeking)
+- Addresses hackathon theme (gender-based violence prevention)
+
+---
 
 ### 6. Team & Close (15 seconds)
-- Brief team intro (names/skills)
-- Call to action or memorable close
-- Thank you
+**Goal:** Humanize the team and end memorably
+
+**Script:**
+> "We're a team of engineers, designers, and researchers who believe that connection can change minds. We've built the foundation in 48 hours, and we're ready to scale it.
+>
+> Thank you. Let's bring a village to every screen."
+
+**Alternative closes:**
+- "Because everyone deserves to know they're not alone."
+- "Real stories. Real connection. Real change."
+- "Join us in building a safer, more connected online world."
+
+---
+
+## Important Notes for Pitch Delivery
+
+### Language & Framing
+- **Don't say "platform for incels"** - Keep generic ("peer-support platform," "people struggling with loneliness")
+- **Emphasize human connection over AI** - Make it clear AI is a tool, not the solution
+- **Use real examples** - Reference r/IncelExit, deradicalization programs (Indonesia), Kind Words game
+- **Avoid "gamification"** - Frame as "wholesome interactions" or "positive reinforcement," not games
+
+### Moderation & Safety
+- **Foster healthy human connection** - This is the core message
+- **Help people when they struggle** - Supportive, not punitive approach
+- **Lived experiences matter** - Real stories are more powerful than algorithms
+- **AI controls hate speech** - But doesn't replace human judgment
+
+### What NOT to Say
+- "AI therapist" or "AI-generated advice" ❌
+- "Targeting incels" ❌
+- "Gamification to make it fun" ❌ (sounds trivializing)
+- Technical jargon (embeddings, cosine similarity, etc.) ❌
+
+### What TO Say
+- "AI matches people to real human stories" ✓
+- "Supporting people through difficult times" ✓
+- "Wholesome interactions inspired by Kind Words" ✓
+- "Prevention through connection" ✓
 
 ---
 
@@ -137,19 +282,19 @@ If using slides, keep them minimal:
 
 ## Key Messages to Convey
 
-Fill these in as you develop your solution:
+Use these throughout your pitch and when talking to judges:
 
 1. **Problem in one sentence:**
-   > [To be defined]
+   > Online echo chambers are radicalizing young people, increasing misogyny, and correlating with higher rates of gender-based violence.
 
 2. **Solution in one sentence:**
-   > [To be defined]
+   > We connect people to real stories from those who've overcome similar struggles — not AI therapy, but AI-powered matching to real human connection.
 
 3. **Why it matters:**
-   > [To be defined]
+   > Prevention through de-radicalization and human connection reduces the risk of gender-based violence by addressing root causes (isolation, harmful beliefs) before they become entrenched.
 
 4. **What makes it different:**
-   > [To be defined]
+   > Real human stories, not AI-generated content. AI only matches people to lived experiences. Privacy-first, stigma-free, and scalable through volunteer mentor contributions.
 
 ---
 

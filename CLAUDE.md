@@ -33,24 +33,39 @@ Design and build a demo addressing online safety issues. Interview mentors and r
 
 ## Current Status
 
-> **Update this section as work progresses**
+> **Last Updated:** Nov 30, 2025
 
-- [ ] Problem statement defined
-- [ ] Tech stack decided
-- [ ] Architecture designed
-- [ ] MVP built
-- [ ] Demo ready
-- [ ] Pitch recorded
+- [x] Problem statement defined - Online radicalization & echo chambers → gender-based violence
+- [x] Solution decided - Peer-support platform with AI-powered story matching
+- [x] Tech stack decided - Loveable frontend + FastAPI backend + AI matching
+- [x] Architecture designed - See docs/SOLUTION_CONCEPT.md
+- [ ] Frontend skeleton from Loveable - In progress
+- [ ] AI matching endpoint implemented - Pending
+- [ ] Mentor post curation - Pending
+- [ ] Demo ready - Target: Dec 4
+- [ ] Pitch recorded - Target: Dec 5
 
-**Current Focus:** [Update with current sprint goal]
+**Current Focus:** Implementing peer-support platform (Grand Challenge)
+- Frontend team generating skeleton in Loveable
+- Tech Lead designing AI matching algorithm
+- Database teammate working on schema
+- All teams aligned on 7-step user journey
 
 ## Tech Stack
 
-- **Frontend:** Next.js 14 + Tailwind CSS + TypeScript
-- **Backend:** FastAPI (Python)
-- **AI/ML:** Claude API, possibly Perspective API, sentence-transformers
-- **Database:** TBD if needed
-- **Deployment:** Vercel (frontend), TBD (backend)
+- **Frontend:** Loveable (skeleton generation) → Hand-drawn assets (owl/scroll/parchment theme)
+  - Design: Owl delivering messages, hand-written scrolls/parchments, quills
+  - Themes: Beach and Space backgrounds (MVP has 2 options)
+  - Inspiration: "Kind Words" game aesthetic
+  - Previous Next.js code available for reference
+- **Backend:** FastAPI (Python) - existing infrastructure
+- **AI/ML:**
+  - Sentence-transformers (`all-MiniLM-L6-v2`) for story matching
+  - Claude API for conversational AI (optional)
+  - Perspective API for content moderation
+  - Existing classification utilities repurposed
+- **Database:** TBD by teammate (user profiles, mentor posts, diary, interactions, mood)
+- **Deployment:** Localhost for demo, consider Vercel/Railway for post-hackathon
 
 ## Project Structure
 
@@ -80,6 +95,48 @@ esafety-hackathon/
 ├── scripts/               # CLI scripts
 └── data/                  # Data files (gitignored)
 ```
+
+## Solution Overview
+
+**Motto:** "Bringing a village to your screen"
+
+### The Problem
+Online echo chambers (particularly incel communities) are radicalizing young people, increasing misogyny, and correlating with higher rates of gender-based violence. Current approaches (deplatforming) don't address root causes.
+
+### Our Solution
+A peer-support platform that connects people struggling with difficult issues (loneliness, relationships, self-esteem) to **real stories from mentors with lived experiences** who have overcome similar challenges.
+
+### Key Innovation
+**AI for matching, not therapy.** We use AI to connect users to authentic human stories, not to generate advice. This breaks echo chambers through:
+1. Semantic matching (embeddings) to find relevant mentor posts
+2. Multi-perspective content (different genders, backgrounds)
+3. Professional resources + personal journaling
+4. Wholesome interactions (inspired by "Kind Words" game)
+
+### 7-Step Demo Flow
+1. User describes their struggle (e.g., loneliness)
+2. AI chat helps articulate issues (doesn't give advice)
+3. Matched to relevant mentor posts via semantic similarity
+4. Favorite/save posts that resonate
+5. View perspectives from other genders/backgrounds
+6. Write in private diary for self-reflection
+7. Access curated resources (mental health services, articles)
+
+### Core Features
+- **AI Conversation Matcher** - Understands user issues, finds relevant stories
+- **Mentor Post Feed** - Real stories from r/IncelExit and similar communities
+- **Personal Diary** - Private reflection and progress tracking
+- **Multi-Perspective Content** - Break echo chambers with diverse voices
+- **Resources Hub** - Professional help, crisis support, educational content
+- **Wholesome Interactions** - Positive engagement, no toxic comments
+- **Mood Tracking** - Self-reported emotional state over time
+
+### Why This Matters
+Prevention through de-radicalization reduces the risk of gender-based violence by addressing root causes (isolation, harmful beliefs) before they become entrenched.
+
+**For more details, see:** `docs/SOLUTION_CONCEPT.md`
+
+---
 
 ## Coding Conventions
 
@@ -161,13 +218,24 @@ When working on this project:
 
 1. **Hackathon context** — Speed matters. Prefer working solutions over perfect code. We can refactor later.
 
-2. **Demo-first** — The goal is a compelling demo for judges. Focus on the happy path.
+2. **Demo-first** — The goal is a compelling demo for judges. Focus on the happy path (7-step user journey).
 
-3. **Classification is core** — Most tasks will relate to text classification or presenting classification results.
+3. **AI for matching, not therapy** — Most tasks relate to:
+   - Matching user messages to mentor posts (semantic similarity)
+   - Content moderation (existing classification infrastructure)
+   - Theme detection (to recommend resources)
+   - **NOT** generating AI advice or therapy
 
-4. **Check existing code** — Before creating new utilities, check if something similar exists in `src/utils/` or `src/classifiers/`.
+4. **Check existing code** — Before creating new utilities, check if something similar exists in:
+   - `src/utils/text_utils.py` - Text cleaning, feature extraction
+   - `src/classifiers/api_classifiers.py` - Embeddings, LLM classification, Perspective API
+   - `backend/services/classifier.py` - Pattern-based classification
 
 5. **Keep it simple** — We have ~48 hours of hacking plus a few days to polish. Don't over-engineer.
+
+6. **Database TBD** — Another teammate is designing the database schema. Use in-memory/JSON storage for MVP if needed before database is ready.
+
+7. **Frontend theme** — Owl delivering messages, hand-written scrolls/parchments, quills. Wholesome and warm aesthetic.
 
 ## Parallel Workstreams
 
@@ -175,12 +243,16 @@ The team works in parallel on different areas:
 
 | Area | Owner | Directory |
 |------|-------|-----------|
-| Backend API | Backend Engineer | `backend/` |
-| Frontend UI | Frontend/Design | `frontend/` |
-| Classification Logic | Tech Lead | `src/`, `backend/services/` |
-| Research/Pitch | Business Analyst | `docs/` |
+| Backend API + AI Matching | Tech Lead (uses Claude Code) | `backend/`, `src/` |
+| Frontend UI (Loveable + Assets) | Frontend/Design | Loveable → Export |
+| Database Design | Backend Engineer | Database schema (TBD) |
+| Pitch/Content Curation | Business Analyst | `docs/`, mentor post curation |
+| Testing/Support | Developer (CS student) | Cross-functional |
 
-**Integration point:** `docs/API_CONTRACT.md` defines the interface between frontend and backend.
+**Integration points:**
+- `docs/API_CONTRACT.md` - Frontend ↔ Backend interface
+- `docs/SOLUTION_CONCEPT.md` - Team alignment on vision
+- Database schema (awaiting design from teammate)
 
 ### Quick Commands
 

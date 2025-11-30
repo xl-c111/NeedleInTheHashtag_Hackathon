@@ -42,13 +42,122 @@ Design and build a demo addressing online safety issues. This requires:
 3. Building a working demo
 4. Pitching the solution
 
-**Potential Directions:**
-- Early intervention systems (detect warning signs)
-- Bystander support tools (help friends recognize risks)
-- Counter-messaging (generate supportive responses)
-- Moderator copilot (AI-assisted moderation)
-- Educational simulators (show how manipulation works)
-- Gaming safety (real-time toxicity intervention)
+**Our Chosen Direction: Peer-Support Platform for De-Radicalization**
+
+We are building a platform that connects people struggling with difficult issues (loneliness, relationships, self-esteem) to real stories from mentors with lived experiences who have overcome similar challenges.
+
+**Key Innovation:** AI-powered matching (not AI-generated content) to connect users with authentic human stories, breaking echo chambers and preventing radicalization.
+
+---
+
+## Our Solution Approach
+
+### Problem We're Solving
+**Online radicalization and echo chambers that increase misogyny and correlate with gender-based violence**
+
+- Incel communities and similar spaces started as support groups but became toxic echo chambers
+- Young people (especially young men) are vulnerable to misinformation and extreme viewpoints
+- Echo chambers reinforce harmful beliefs, increasing risk of self-harm and harming others
+- Research links misogynistic views to higher rates of domestic violence and gender-based violence
+- Current approaches (deplatforming) don't address root causes and can worsen the problem
+
+### Our Solution
+**A peer-support platform that connects people to real human stories, not AI therapy**
+
+**Core Features:**
+1. **AI Conversation Matcher** - User describes struggles → AI matches to relevant mentor posts
+2. **Mentor Post Feed** - Real stories from reformed community members (e.g., r/IncelExit)
+3. **Personal Diary** - Private reflection and journey tracking
+4. **Multi-Perspective Content** - Stories from different genders/backgrounds to break echo chambers
+5. **Resources Hub** - Professional services, crisis support, educational content
+6. **Wholesome Interactions** - Positive engagement inspired by "Kind Words" game
+7. **Mood Tracking** - Self-reported emotional state over time
+
+**What Makes It Different:**
+- **Real human stories, not AI-generated content** - Authenticity drives connection
+- **AI for matching only** - Technology connects users to lived experiences, doesn't replace them
+- **Prevention-focused** - Intervene before beliefs become entrenched
+- **Privacy-first** - Anonymous profiles, stigma-free environment
+- **Scalable** - Volunteer mentors sharing stories help thousands
+
+### Target Users
+- Young people exposed to online misinformation and radicalization
+- People struggling with loneliness, relationships, self-esteem
+- Those at risk of or already in echo chambers of harmful beliefs
+- Reformed community members willing to share their recovery journeys (as mentors)
+
+### Technical Approach
+- **Frontend:** Loveable-generated skeleton with hand-drawn assets
+- **Backend:** FastAPI with existing text processing infrastructure
+- **AI/ML:** Sentence-transformers for semantic matching, classification for moderation
+- **Data:** Curated mentor posts from r/IncelExit and similar recovery communities
+- **Database:** TBD by teammate (stores users, posts, diary, interactions, mood)
+
+### Success Metrics (Demo)
+- User completes 7-step journey (describe struggle → matched posts → interaction → diary → resources)
+- Matching algorithm returns relevant mentor posts (judged by team)
+- UI is intuitive, visually appealing, and wholesome
+- Pitch clearly conveys problem → solution → impact
+
+---
+
+## Inspirations
+
+### Products & Platforms
+1. **Kind Words (game)** - Wholesome peer-to-peer messaging with scroll-based UI
+   - Players send anonymous requests for kind words
+   - Others respond with supportive messages
+   - No toxicity, just mutual support
+   - **Inspiration:** Wholesome interactions, positive-only environment
+
+2. **r/IncelExit** - Reformed incel community helping current members exit the ideology
+   - Real people sharing their recovery journeys
+   - Constructive advice from those who've been there
+   - Moderated to prevent toxicity while staying supportive
+   - **Inspiration:** Lived experience sharing, mentor-mentee model
+
+3. **Glassdoor** - Anonymous workplace reviews
+   - Anonymous but authentic perspectives
+   - Helps people make informed decisions
+   - Community-driven content
+   - **Inspiration:** Anonymous yet authentic content model
+
+4. **7 Cups** - Peer support and active listening platform
+   - Trained volunteers provide emotional support
+   - Not therapy, just someone to listen
+   - **Inspiration:** Peer support at scale
+
+### Research & Real-World Programs
+1. **Deradicalization Programs (Indonesia)**
+   - Former extremists mentor current ones
+   - Proven effectiveness in reducing radicalization
+   - Human connection breaks ideological echo chambers
+   - **Inspiration:** Mentor model for deradicalization
+
+2. **Gender-Based Violence Prevention Research**
+   - Link between misogynistic beliefs and domestic violence
+   - Early intervention reduces long-term risk
+   - Changing beliefs through exposure to diverse perspectives
+   - **Inspiration:** Evidence-based approach to prevention
+
+3. **Peer Support Effectiveness Studies**
+   - Peer support as effective as professional intervention for some issues
+   - Lived experience builds trust and relatability
+   - Reduces stigma around seeking help
+   - **Inspiration:** Validation of peer-to-peer model
+
+---
+
+## Mini-Challenge Status
+
+**Status:** Deprioritized in favor of Grand Challenge
+
+The mini-challenge (persona classification) is still relevant for our solution:
+- **Content moderation** - Classify harmful content before showing it to users
+- **Theme detection** - Identify topics in user conversations and mentor posts
+- **Matching algorithm** - Use classification to improve relevance of matches
+
+We're leveraging existing classification infrastructure (keyword patterns, embeddings, LLM classification) but focusing demo effort on the peer-support platform.
 
 ## Day 1 Talks (Saturday)
 
