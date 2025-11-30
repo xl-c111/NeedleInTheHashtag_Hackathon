@@ -42,8 +42,13 @@ export default function StoriesPage() {
   };
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen bg-white dark:bg-black">
       <StoriesHeader totalStories={stories.length} />
+=======
+    <div className="min-h-screen">
+      <StoriesHeader totalStories={seedStories.length} />
+>>>>>>> uliana
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         {/* Filters */}
