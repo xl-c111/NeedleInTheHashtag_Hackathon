@@ -27,6 +27,28 @@ function getSupabaseClient(): SupabaseClient<Database> | null {
 export type Database = {
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          id: string
+          username: string
+          avatar_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          username: string
+          avatar_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          username?: string
+          avatar_url?: string | null
+          updated_at?: string
+        }
+      }
       posts: {
         Row: {
           id: string
@@ -59,42 +81,35 @@ export type Database = {
           created_at?: string
         }
       }
-      mentor_stories: {
+      diary_entries: {
         Row: {
           id: string
+          user_id: string
           title: string
-          author: string
-          excerpt: string
           content: string
-          tags: string[] | null
-          themes: string[] | null
-          read_time: number
-          date_posted: string
+          mood: string | null
+          is_private: boolean
           created_at: string
+          updated_at: string
         }
         Insert: {
           id?: string
-          title: string
-          author: string
-          excerpt: string
+          user_id: string
+          title?: string
           content: string
-          tags?: string[] | null
-          themes?: string[] | null
-          read_time?: number
-          date_posted?: string
+          mood?: string | null
+          is_private?: boolean
           created_at?: string
+          updated_at?: string
         }
         Update: {
           id?: string
+          user_id?: string
           title?: string
-          author?: string
-          excerpt?: string
           content?: string
-          tags?: string[] | null
-          themes?: string[] | null
-          read_time?: number
-          date_posted?: string
-          created_at?: string
+          mood?: string | null
+          is_private?: boolean
+          updated_at?: string
         }
       }
     }
