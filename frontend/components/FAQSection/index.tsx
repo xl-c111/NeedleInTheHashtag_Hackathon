@@ -14,12 +14,12 @@ const faqItems = [
   {
     question: "Is this free?",
     answer:
-      "Yes, Village is completely free. We believe everyone deserves access to support, regardless of their situation. There are no hidden costs, premium tiers, or data selling. Ever.",
+      "Yes, been there is completely free. We believe everyone deserves access to support, regardless of their situation. There are no hidden costs, premium tiers, or data selling. Ever.",
   },
   {
     question: "What if I'm in crisis?",
     answer:
-      "If you're experiencing a mental health crisis, please reach out to professional services immediately. In Australia: Lifeline (13 11 14), Beyond Blue (1300 22 4636), or call 000 for emergencies. Village is for peer support, not crisis intervention.",
+      "If you're experiencing a mental health crisis, please reach out to professional services immediately. In Australia: Lifeline (13 11 14), Beyond Blue (1300 22 4636), or call 000 for emergencies. been there is for peer support, not crisis intervention.",
   },
   {
     question: "Can I share my own story?",
@@ -29,7 +29,7 @@ const faqItems = [
   {
     question: "Why focus on young men?",
     answer:
-      "Young men often face unique barriers to seeking support—stigma, expectations, and fewer spaces that feel welcoming. Village is designed to meet these challenges with an approach that feels comfortable, not clinical.",
+      "Young men often face unique barriers to seeking support—stigma, expectations, and fewer spaces that feel welcoming. been there is designed to meet these challenges with an approach that feels comfortable, not clinical.",
   },
 ];
 
