@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Header } from "@/components/Header";
+import { AuthProvider } from "@/components/Auth";
 import { siteConfig } from "@/config/site";
 
 const geistSans = Geist({
@@ -26,8 +27,8 @@ export const metadata: Metadata = {
     "mens health",
   ],
   robots: "index, follow",
-  authors: [{ name: "Village Team" }],
-  creator: "Village",
+  authors: [{ name: "been there Team" }],
+  creator: "been there",
   openGraph: {
     title: siteConfig.name,
     description:
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    creator: "@villageapp",
+    creator: "@beenthereapp",
     title: siteConfig.name,
     description:
       "A safe space for young men to share, listen, and find their way forward.",
@@ -65,10 +66,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main className="relative min-h-screen w-full overflow-hidden scroll-smooth">
-            {children}
-          </main>
+          <AuthProvider>
+            <Header />
+            <main className="relative min-h-screen w-full overflow-hidden scroll-smooth">
+              {children}
+            </main>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

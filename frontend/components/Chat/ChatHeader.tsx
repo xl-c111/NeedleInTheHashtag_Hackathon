@@ -17,7 +17,7 @@ export function ChatHeader() {
 
         <div className="flex-1">
           <h1 className="font-medium text-base tracking-tight text-black dark:text-white">
-            Village
+            been there
           </h1>
           <p className="text-xs text-black/50 dark:text-white/50">
             Share what's on your mind

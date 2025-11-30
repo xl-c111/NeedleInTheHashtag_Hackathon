@@ -6,23 +6,26 @@ export interface Story {
   author: string;
   excerpt: string;
   content: string;
-  tags: string[];
-  themes: Theme[];
+  tags: string[];  // topic_tags from Supabase (used as categories)
+  themes: Theme[]; // mapped themes for filtering
   readTime: number; // minutes
   datePosted: string;
 }
 
+// Theme types for story filtering
 export type Theme =
-  | "loneliness"
-  | "social-anxiety"
-  | "rejection"
-  | "self-improvement"
-  | "toxic-communities"
-  | "finding-purpose"
-  | "therapy"
-  | "fitness"
-  | "career"
-  | "relationships";
+  | 'therapy'
+  | 'relationships'
+  | 'self-improvement'
+  | 'rejection'
+  | 'loneliness'
+  | 'toxic-communities'
+  | 'career'
+  | 'fitness'
+  | 'finding-purpose';
+
+// Categories are now dynamic from Supabase topic_tags
+export type Category = string;
 
 export interface ChatMessage {
   id: string;
@@ -32,7 +35,7 @@ export interface ChatMessage {
 }
 
 export interface UserProfile {
-  themes: Theme[];
+  categories: Category[];
   concerns: string[];
   readyForStories: boolean;
   messageCount: number;
@@ -48,10 +51,10 @@ export interface ChatRequest {
 
 export interface ChatResponse {
   reply: string;
-  detectedThemes?: Theme[];
+  detectedCategories?: Category[];
 }
 
 export interface StoriesFilters {
-  themes?: Theme[];
+  categories?: Category[];
   search?: string;
 }
