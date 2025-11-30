@@ -4,21 +4,37 @@ import { useState } from "react";
 import { X } from "lucide-react";
 
 interface StoryFiltersProps {
-  categories: string[];
-  selectedCategories: string[];
-  onCategoryToggle: (category: string) => void;
+  selectedThemes: string[];
+  onThemeToggle: (theme: string) => void;
   onClear: () => void;
 }
 
 export function StoryFilters({
-  categories,
-  selectedCategories,
-  onCategoryToggle,
+  selectedThemes,
+  onThemeToggle,
   onClear,
 }: StoryFiltersProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const displayCategories = isExpanded ? categories : categories.slice(0, 6);
+  // All available themes
+  const allThemes = [
+    "Academic Pressure",
+    "Body Image",
+    "Bullying",
+    "Career Uncertainty",
+    "Family Conflict",
+    "Financial Stress",
+    "Identity & Self-Discovery",
+    "Loneliness",
+    "Mental Health",
+    "Peer Pressure",
+    "Rejection",
+    "Relationship Issues",
+    "Social Anxiety",
+    "Substance Use",
+  ];
+
+  const displayCategories = isExpanded ? allThemes : allThemes.slice(0, 6);
 
   return (
     <div className="space-y-3">
@@ -27,7 +43,7 @@ export function StoryFilters({
           Filter by category
         </span>
 
-        {selectedCategories.length > 0 && (
+        {selectedThemes.length > 0 && (
           <button
             onClick={onClear}
             className="flex items-center gap-1 text-xs text-black/50 transition-colors hover:text-black dark:text-white/50 dark:hover:text-white"
@@ -40,11 +56,11 @@ export function StoryFilters({
 
       <div className="flex flex-wrap gap-2">
         {displayCategories.map((category) => {
-          const isSelected = selectedCategories.includes(category);
+          const isSelected = selectedThemes.includes(category);
           return (
             <button
               key={category}
-              onClick={() => onCategoryToggle(category)}
+              onClick={() => onThemeToggle(category)}
               className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                 isSelected
                   ? "bg-black text-white dark:bg-white dark:text-black"
@@ -56,12 +72,12 @@ export function StoryFilters({
           );
         })}
 
-        {!isExpanded && categories.length > 6 && (
+        {!isExpanded && allThemes.length > 6 && (
           <button
             onClick={() => setIsExpanded(true)}
             className="rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-black/60 transition-colors hover:border-black/20 dark:border-white/10 dark:text-white/60 dark:hover:border-white/20"
           >
-            +{categories.length - 6} more
+            +{allThemes.length - 6} more
           </button>
         )}
 

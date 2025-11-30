@@ -30,8 +30,8 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
 
-  // Protected routes: /chat and /stories (but NOT /stories/[id])
-  const isProtectedRoute = pathname === '/chat' || pathname === '/stories'
+  // Protected routes: /chat, /write, /diary (but NOT /stories)
+  const isProtectedRoute = pathname === '/chat' || pathname === '/write' || pathname === '/diary'
   const isAuthRoute = pathname === '/login' || pathname === '/signup'
 
   // Redirect to login if accessing protected route without auth
