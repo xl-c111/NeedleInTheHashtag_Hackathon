@@ -1,5 +1,5 @@
 import { createClientComponentClient, type SupabaseClient } from '@supabase/auth-helpers-nextjs'
-import type { Story, Theme } from './types'
+import type { Story } from './types'
 
 // Check if Supabase is configured
 const isSupabaseConfigured = !!(
@@ -102,37 +102,6 @@ export function getSupabase() {
   return getSupabaseClient()
 }
 
-// Map topic_tags to our Theme type
-function mapTopicTagsToThemes(topicTags: string[] | null): Theme[] {
-  if (!topicTags) return []
-
-  const tagToTheme: Record<string, Theme> = {
-    'Mental health history': 'therapy',
-    'Views on women': 'relationships',
-    'Views on men/masculinity': 'self-improvement',
-    'Dating history': 'rejection',
-    'Sexuality': 'relationships',
-    'Friendship history': 'loneliness',
-    'Online spaces': 'toxic-communities',
-    'Social isolation': 'loneliness',
-    'Self-improvement': 'self-improvement',
-    'Career': 'career',
-    'Fitness': 'fitness',
-    'Purpose': 'finding-purpose',
-  }
-
-  const themes = new Set<Theme>()
-  for (const tag of topicTags) {
-    const theme = tagToTheme[tag]
-    if (theme) themes.add(theme)
-  }
-
-  // Default theme if no mapping found
-  if (themes.size === 0) themes.add('self-improvement')
-
-  return Array.from(themes)
-}
-
 // Generate a title from content
 function generateTitle(content: string): string {
   // Take first sentence or first 60 chars
@@ -169,8 +138,7 @@ function postToStory(row: Database['public']['Tables']['posts']['Row']): Story {
     author: `Anonymous ${row.user_id.slice(-4)}`, // Use last 4 digits of user_id
     excerpt: generateExcerpt(row.content),
     content: row.content,
-    tags: row.topic_tags || [],
-    themes: mapTopicTagsToThemes(row.topic_tags),
+    tags: row.topic_tags || [],  // Use topic_tags directly as categories
     readTime: calculateReadTime(row.content),
     datePosted: row.timestamp ? new Date(row.timestamp).toISOString().split('T')[0] : row.created_at.split('T')[0],
   }
@@ -218,8 +186,8 @@ export async function fetchMentorStoryById(id: string): Promise<Story | null> {
   return postToStory(data)
 }
 
-// Fetch stories filtered by themes (using topic_tags)
-export async function fetchStoriesByThemes(themes: string[]): Promise<Story[]> {
+// Fetch stories filtered by categories (using topic_tags)
+export async function fetchStoriesByCategories(categories: string[]): Promise<Story[]> {
   const supabase = getSupabaseClient()
   if (!supabase) {
     return []
@@ -228,15 +196,45 @@ export async function fetchStoriesByThemes(themes: string[]): Promise<Story[]> {
   const { data, error } = await supabase
     .from('posts')
     .select('*')
-    .overlaps('topic_tags', themes)
+    .overlaps('topic_tags', categories)
     .order('created_at', { ascending: false })
 
   if (error) {
-    console.error('Error fetching posts by themes:', error)
+    console.error('Error fetching posts by categories:', error)
     return []
   }
 
   return data.map(postToStory)
+}
+
+// Fetch all unique categories (topic_tags) from Supabase
+export async function fetchUniqueCategories(): Promise<string[]> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select('topic_tags')
+
+  if (error) {
+    console.error('Error fetching categories:', error)
+    return []
+  }
+
+  // Collect all unique tags
+  const allTags = new Set<string>()
+  const postsData = data as Array<{ topic_tags: string[] | null }>
+  for (const post of postsData) {
+    if (post.topic_tags) {
+      for (const tag of post.topic_tags) {
+        allTags.add(tag)
+      }
+    }
+  }
+
+  return Array.from(allTags).sort()
 }
 
 // Export config check for use in other files

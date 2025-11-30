@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import PostCard from '@/components/PostCard'
 import { Search, Filter } from 'lucide-react'
 
@@ -28,6 +28,13 @@ export default function PostsPage() {
   useEffect(() => {
     async function fetchPosts() {
       try {
+        const supabase = getSupabase()
+        if (!supabase) {
+          console.log('Supabase not configured')
+          setLoading(false)
+          return
+        }
+
         const { data, error } = await supabase
           .from('posts')
           .select('*')
@@ -35,12 +42,13 @@ export default function PostsPage() {
 
         if (error) throw error
 
-        setPosts(data || [])
-        setFilteredPosts(data || [])
+        const postsData = (data || []) as Post[]
+        setPosts(postsData)
+        setFilteredPosts(postsData)
 
         // Extract unique tags
         const tags = new Set<string>()
-        data?.forEach(post => {
+        postsData.forEach(post => {
           post.topic_tags?.forEach(tag => tags.add(tag))
         })
         setAllTags(['All', ...Array.from(tags).sort()])

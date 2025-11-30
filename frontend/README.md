@@ -29,6 +29,7 @@ frontend/
 │   ├── page.tsx              # Landing page (Hero, Features, FAQ)
 │   ├── layout.tsx            # Root layout with theme provider
 │   ├── chat/page.tsx         # AI chat interface
+│   ├── posts/page.tsx        # Posts listing with filters
 │   ├── stories/page.tsx      # Stories listing (from Supabase)
 │   ├── stories/[id]/page.tsx # Individual story detail
 │   └── api/chat/route.ts     # Chat API endpoint
@@ -39,6 +40,9 @@ frontend/
 │   ├── FAQSection/           # FAQ accordion
 │   ├── Chat/                 # Chat interface components
 │   ├── Stories/              # Stories page components
+│   ├── PostCard.tsx          # Post card component
+│   ├── Auth.tsx              # Authentication component
+│   ├── Assets/               # SVG assets
 │   ├── ui/                   # shadcn/ui primitives
 │   └── icons/                # SVG icon components
 ├── lib/
@@ -55,6 +59,7 @@ frontend/
 |-------|-------------|
 | `/` | Landing page with Hero, Features, FAQ |
 | `/chat` | AI peer support chat interface |
+| `/posts` | Posts listing with search and category filters |
 | `/stories` | Recovery stories from Supabase `posts` table |
 | `/stories/[id]` | Individual story detail view |
 
@@ -66,34 +71,43 @@ frontend/
 - `id` (UUID)
 - `user_id` (TEXT)
 - `content` (TEXT)
-- `topic_tags` (TEXT[])
+- `topic_tags` (TEXT[]) - Categories for filtering
 - `timestamp`, `created_at`
 
 ### Fetch Functions (`lib/supabase.ts`)
 
 ```typescript
+// Get Supabase client (lazy initialization)
+getSupabase(): SupabaseClient | null
+
 // Fetch all stories from posts table
 fetchMentorStories(): Promise<Story[]>
 
 // Fetch single story by ID
 fetchMentorStoryById(id: string): Promise<Story | null>
 
-// Fetch stories filtered by themes
-fetchStoriesByThemes(themes: string[]): Promise<Story[]>
+// Fetch stories filtered by categories
+fetchStoriesByCategories(categories: string[]): Promise<Story[]>
+
+// Fetch all unique categories from posts
+fetchUniqueCategories(): Promise<string[]>
 ```
 
 ### Post to Story Transformation
 
 Posts from Supabase are transformed to Story format:
-- **Title**: Generated from first sentence of content
+- **Title**: Generated from first sentence of content (max 80 chars)
 - **Author**: `Anonymous XXXX` (last 4 digits of user_id)
 - **Excerpt**: First 200 characters
-- **Themes**: Mapped from `topic_tags`:
-  - "Mental health history" -> "therapy"
-  - "Views on women" -> "relationships"
-  - "Dating history" -> "rejection"
-  - "Friendship history" -> "loneliness"
-  - etc.
+- **Tags**: `topic_tags` directly from Supabase (used as categories)
+- **Read Time**: Calculated from word count (200 wpm)
+
+### Dynamic Categories
+
+Categories are fetched dynamically from Supabase `topic_tags`:
+- No hardcoded category mappings
+- Filter buttons show actual categories present in database
+- Categories include: "Mental health history", "Views on women", "Dating history", etc.
 
 ## Chat Feature
 
@@ -124,12 +138,11 @@ Each section follows a consistent pattern:
 
 Example:
 ```
-FAQSection/
-├── index.tsx        # Main export
-├── FAQData.ts       # FAQ content array
-├── FAQHeader.tsx    # Section header
-├── FAQList.tsx      # List container
-└── FAQItem.tsx      # Individual item
+Stories/
+├── index.tsx           # Main export (fetches from Supabase)
+├── StoriesHeader.tsx   # Page header
+├── StoryFilters.tsx    # Dynamic category filters
+└── StoryCard.tsx       # Individual story card
 ```
 
 ## Styling (Tailwind v4)

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 export default function Auth() {
   const [email, setEmail] = useState('')
@@ -13,6 +13,13 @@ export default function Auth() {
     e.preventDefault()
     setLoading(true)
     setMessage(null)
+
+    const supabase = getSupabase()
+    if (!supabase) {
+      setMessage({ type: 'error', text: 'Supabase not configured' })
+      setLoading(false)
+      return
+    }
 
     const { error } = await supabase.auth.signUp({
       email,
@@ -35,6 +42,13 @@ export default function Auth() {
     setLoading(true)
     setMessage(null)
 
+    const supabase = getSupabase()
+    if (!supabase) {
+      setMessage({ type: 'error', text: 'Supabase not configured' })
+      setLoading(false)
+      return
+    }
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -52,6 +66,13 @@ export default function Auth() {
   const handleGoogleSignIn = async () => {
     setLoading(true)
     setMessage(null)
+
+    const supabase = getSupabase()
+    if (!supabase) {
+      setMessage({ type: 'error', text: 'Supabase not configured' })
+      setLoading(false)
+      return
+    }
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',

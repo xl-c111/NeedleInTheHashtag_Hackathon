@@ -3,32 +3,10 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Clock, MessageCircle } from "lucide-react";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import type { Story, Theme } from "@/lib/types";
+import type { Story } from "@/lib/types";
 
 interface StoryPageProps {
   params: Promise<{ id: string }>;
-}
-
-// Map topic_tags to Theme type
-function mapTopicTagsToThemes(topicTags: string[] | null): Theme[] {
-  if (!topicTags) return [];
-  const tagToTheme: Record<string, Theme> = {
-    "Mental health history": "therapy",
-    "Views on women": "relationships",
-    "Views on men/masculinity": "self-improvement",
-    "Dating history": "rejection",
-    "Sexuality": "relationships",
-    "Friendship history": "loneliness",
-    "Online spaces": "toxic-communities",
-    "Social isolation": "loneliness",
-  };
-  const themes = new Set<Theme>();
-  for (const tag of topicTags) {
-    const theme = tagToTheme[tag];
-    if (theme) themes.add(theme);
-  }
-  if (themes.size === 0) themes.add("self-improvement");
-  return Array.from(themes);
 }
 
 // Generate title from content
@@ -63,8 +41,7 @@ function postToStory(row: { id: string; user_id: string; content: string; topic_
     author: `Anonymous ${row.user_id.slice(-4)}`,
     excerpt: generateExcerpt(row.content),
     content: row.content,
-    tags: row.topic_tags || [],
-    themes: mapTopicTagsToThemes(row.topic_tags),
+    tags: row.topic_tags || [],  // Use topic_tags directly as categories
     readTime: calculateReadTime(row.content),
     datePosted: row.timestamp ? new Date(row.timestamp).toISOString().split("T")[0] : row.created_at.split("T")[0],
   };
@@ -72,8 +49,7 @@ function postToStory(row: { id: string; user_id: string; content: string; topic_
 
 // Helper to fetch story from Supabase posts table
 async function fetchStoryFromSupabase(id: string): Promise<Story | null> {
-  const cookieStore = await cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  const supabase = createServerComponentClient({ cookies });
   const { data, error } = await supabase
     .from("posts")
     .select("*")
@@ -89,8 +65,7 @@ async function fetchStoryFromSupabase(id: string): Promise<Story | null> {
 
 // Helper to fetch related stories from Supabase posts table
 async function fetchRelatedStories(excludeId: string): Promise<Story[]> {
-  const cookieStore = await cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  const supabase = createServerComponentClient({ cookies });
   const { data, error } = await supabase
     .from("posts")
     .select("*")

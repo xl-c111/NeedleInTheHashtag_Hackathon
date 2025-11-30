@@ -4,41 +4,46 @@ import { useState, useMemo, useEffect } from "react";
 import { StoriesHeader } from "./StoriesHeader";
 import { StoryFilters } from "./StoryFilters";
 import { StoryCard } from "./StoryCard";
-import { fetchMentorStories } from "@/lib/supabase";
-import type { Theme, Story } from "@/lib/types";
+import { fetchMentorStories, fetchUniqueCategories } from "@/lib/supabase";
+import type { Story } from "@/lib/types";
 
 export default function StoriesPage() {
-  const [selectedThemes, setSelectedThemes] = useState<Theme[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [stories, setStories] = useState<Story[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch stories from Supabase on mount
+  // Fetch stories and categories from Supabase on mount
   useEffect(() => {
-    async function loadStories() {
+    async function loadData() {
       setIsLoading(true);
-      const supabaseStories = await fetchMentorStories();
+      const [supabaseStories, supabaseCategories] = await Promise.all([
+        fetchMentorStories(),
+        fetchUniqueCategories(),
+      ]);
       setStories(supabaseStories);
+      setCategories(supabaseCategories);
       setIsLoading(false);
     }
-    loadStories();
+    loadData();
   }, []);
 
   const filteredStories = useMemo(() => {
-    if (selectedThemes.length === 0) return stories;
+    if (selectedCategories.length === 0) return stories;
 
     return stories.filter((story) =>
-      story.themes.some((theme) => selectedThemes.includes(theme))
+      story.tags.some((tag) => selectedCategories.includes(tag))
     );
-  }, [selectedThemes, stories]);
+  }, [selectedCategories, stories]);
 
-  const handleThemeToggle = (theme: Theme) => {
-    setSelectedThemes((prev) =>
-      prev.includes(theme) ? prev.filter((t) => t !== theme) : [...prev, theme]
+  const handleCategoryToggle = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     );
   };
 
   const handleClearFilters = () => {
-    setSelectedThemes([]);
+    setSelectedCategories([]);
   };
 
   return (
@@ -49,14 +54,15 @@ export default function StoriesPage() {
         {/* Filters */}
         <div className="mb-8">
           <StoryFilters
-            selectedThemes={selectedThemes}
-            onThemeToggle={handleThemeToggle}
+            categories={categories}
+            selectedCategories={selectedCategories}
+            onCategoryToggle={handleCategoryToggle}
             onClear={handleClearFilters}
           />
         </div>
 
         {/* Results info */}
-        {selectedThemes.length > 0 && (
+        {selectedCategories.length > 0 && (
           <p className="mb-6 text-sm text-black/60 dark:text-white/60">
             Showing {filteredStories.length} of {stories.length} stories
           </p>
