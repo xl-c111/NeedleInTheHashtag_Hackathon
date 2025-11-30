@@ -48,6 +48,38 @@ CREATE POLICY IF NOT EXISTS "Posts are viewable by everyone"
   USING (true);
 
 -- ============================================================================
+-- MENTOR STORIES TABLE
+-- ============================================================================
+
+-- Mentor stories: Recovery stories from men who have overcome challenges
+CREATE TABLE IF NOT EXISTS mentor_stories (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,                            -- Story title
+  author TEXT NOT NULL,                           -- Author name and age (e.g., "Marcus, 24")
+  excerpt TEXT NOT NULL,                          -- Short summary for cards
+  content TEXT NOT NULL,                          -- Full story content
+  tags TEXT[],                                    -- Story tags (e.g., "mindset shift", "self-reflection")
+  themes TEXT[],                                  -- Theme categories for filtering
+  read_time INTEGER DEFAULT 3,                    -- Estimated read time in minutes
+  date_posted DATE DEFAULT CURRENT_DATE,          -- When the story was posted
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Index for fast array searches on themes
+CREATE INDEX IF NOT EXISTS idx_mentor_stories_themes ON mentor_stories USING GIN (themes);
+
+-- Index for sorting by date
+CREATE INDEX IF NOT EXISTS idx_mentor_stories_date ON mentor_stories (date_posted DESC);
+
+-- Enable RLS on mentor_stories table
+ALTER TABLE mentor_stories ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Allow anyone to read mentor stories (public for demo)
+CREATE POLICY IF NOT EXISTS "Mentor stories are viewable by everyone"
+  ON mentor_stories FOR SELECT
+  USING (true);
+
+-- ============================================================================
 -- NOTES
 -- ============================================================================
 --

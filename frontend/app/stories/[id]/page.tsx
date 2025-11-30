@@ -1,21 +1,113 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Clock, MessageCircle } from "lucide-react";
-import { getStoryById, seedStories } from "@/lib/data/stories";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import type { Story, Theme } from "@/lib/types";
 
 interface StoryPageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateStaticParams() {
-  return seedStories.map((story) => ({
-    id: story.id,
-  }));
+// Map topic_tags to Theme type
+function mapTopicTagsToThemes(topicTags: string[] | null): Theme[] {
+  if (!topicTags) return [];
+  const tagToTheme: Record<string, Theme> = {
+    "Mental health history": "therapy",
+    "Views on women": "relationships",
+    "Views on men/masculinity": "self-improvement",
+    "Dating history": "rejection",
+    "Sexuality": "relationships",
+    "Friendship history": "loneliness",
+    "Online spaces": "toxic-communities",
+    "Social isolation": "loneliness",
+  };
+  const themes = new Set<Theme>();
+  for (const tag of topicTags) {
+    const theme = tagToTheme[tag];
+    if (theme) themes.add(theme);
+  }
+  if (themes.size === 0) themes.add("self-improvement");
+  return Array.from(themes);
+}
+
+// Generate title from content
+function generateTitle(content: string): string {
+  const firstSentence = content.split(/[.!?]/)[0]?.trim();
+  if (firstSentence && firstSentence.length <= 80) return firstSentence;
+  const truncated = content.substring(0, 60);
+  const lastSpace = truncated.lastIndexOf(" ");
+  return truncated.substring(0, lastSpace > 0 ? lastSpace : 60) + "...";
+}
+
+// Generate excerpt
+function generateExcerpt(content: string): string {
+  const maxLength = 200;
+  if (content.length <= maxLength) return content;
+  const truncated = content.substring(0, maxLength);
+  const lastSpace = truncated.lastIndexOf(" ");
+  return truncated.substring(0, lastSpace > 0 ? lastSpace : maxLength) + "...";
+}
+
+// Calculate read time
+function calculateReadTime(content: string): number {
+  const words = content.split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+// Transform post row to Story
+function postToStory(row: { id: string; user_id: string; content: string; topic_tags: string[] | null; timestamp: string | null; created_at: string }): Story {
+  return {
+    id: row.id,
+    title: generateTitle(row.content),
+    author: `Anonymous ${row.user_id.slice(-4)}`,
+    excerpt: generateExcerpt(row.content),
+    content: row.content,
+    tags: row.topic_tags || [],
+    themes: mapTopicTagsToThemes(row.topic_tags),
+    readTime: calculateReadTime(row.content),
+    datePosted: row.timestamp ? new Date(row.timestamp).toISOString().split("T")[0] : row.created_at.split("T")[0],
+  };
+}
+
+// Helper to fetch story from Supabase posts table
+async function fetchStoryFromSupabase(id: string): Promise<Story | null> {
+  const cookieStore = await cookies();
+  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error || !data) {
+    return null;
+  }
+
+  return postToStory(data);
+}
+
+// Helper to fetch related stories from Supabase posts table
+async function fetchRelatedStories(excludeId: string): Promise<Story[]> {
+  const cookieStore = await cookies();
+  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .neq("id", excludeId)
+    .limit(2);
+
+  if (error || !data) {
+    return [];
+  }
+
+  return data.map(postToStory);
 }
 
 export async function generateMetadata({ params }: StoryPageProps) {
   const { id } = await params;
-  const story = getStoryById(id);
+
+  const story = await fetchStoryFromSupabase(id);
 
   if (!story) {
     return { title: "Story Not Found | Village" };
@@ -29,11 +121,15 @@ export async function generateMetadata({ params }: StoryPageProps) {
 
 export default async function StoryPage({ params }: StoryPageProps) {
   const { id } = await params;
-  const story = getStoryById(id);
+
+  const story = await fetchStoryFromSupabase(id);
 
   if (!story) {
     notFound();
   }
+
+  // Fetch related stories
+  const relatedStories = await fetchRelatedStories(id);
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">
@@ -125,23 +221,20 @@ export default async function StoryPage({ params }: StoryPageProps) {
             More stories
           </h3>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {seedStories
-              .filter((s) => s.id !== story.id)
-              .slice(0, 2)
-              .map((relatedStory) => (
-                <Link
-                  key={relatedStory.id}
-                  href={`/stories/${relatedStory.id}`}
-                  className="rounded-lg border border-black/10 p-4 transition-colors hover:border-black/20 dark:border-white/10 dark:hover:border-white/20"
-                >
-                  <h4 className="font-medium text-sm tracking-tight text-black dark:text-white">
-                    {relatedStory.title}
-                  </h4>
-                  <p className="mt-1 line-clamp-2 text-xs text-black/60 dark:text-white/60">
-                    {relatedStory.excerpt}
-                  </p>
-                </Link>
-              ))}
+            {relatedStories.map((relatedStory) => (
+              <Link
+                key={relatedStory.id}
+                href={`/stories/${relatedStory.id}`}
+                className="rounded-lg border border-black/10 p-4 transition-colors hover:border-black/20 dark:border-white/10 dark:hover:border-white/20"
+              >
+                <h4 className="font-medium text-sm tracking-tight text-black dark:text-white">
+                  {relatedStory.title}
+                </h4>
+                <p className="mt-1 line-clamp-2 text-xs text-black/60 dark:text-white/60">
+                  {relatedStory.excerpt}
+                </p>
+              </Link>
+            ))}
           </div>
         </div>
       </main>
