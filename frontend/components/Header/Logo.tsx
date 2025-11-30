@@ -4,7 +4,7 @@ import Image from "next/image";
 export function Logo() {
   return (
     <div className="flex items-center">
-      <Link aria-label="Village" className="flex items-center gap-2" href="/">
+      <Link aria-label="been there" className="flex items-center gap-2" href="/">
         <Image 
           src="/favicon.svg" 
           alt="Logo" 
