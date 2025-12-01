@@ -118,9 +118,8 @@ export default function DiaryPage() {
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <BookOpen className="w-8 h-8 text-primary" />
-              <img src="/diarybtn.svg" alt="My Journal" className="h-8 w-auto" />
+            <div className="mb-2">
+              <img src="/diarybtn.svg" alt="My Journal" className="h-20 w-auto" />
             </div>
             <p className="text-muted-foreground">
               {entries.length} {entries.length === 1 ? 'entry' : 'entries'}
@@ -128,10 +127,9 @@ export default function DiaryPage() {
           </div>
           <Link
             href="/write"
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity"
+            className="hover:opacity-90 transition-opacity"
           >
-            <Edit3 className="w-4 h-4" />
-            <img src="/write.svg" alt="New Entry" className="h-6 w-auto" />
+            <img src="/write.svg" alt="New Entry" className="h-20 w-auto" />
           </Link>
         </div>
 
@@ -178,22 +176,21 @@ export default function DiaryPage() {
         {/* Empty State */}
         {!isLoadingEntries && filteredEntries.length === 0 && (
           <div className="text-center py-16">
-            <BookOpen className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
+            
             <h2 className="text-xl font-semibold mb-2 text-foreground">
-              {selectedMood === 'all' ? 'No entries yet' : 'No entries with this mood'}
+              {selectedMood === 'all' ? 'no entries yet.' : 'no entries with this mood.'}
             </h2>
             <p className="text-muted-foreground mb-6">
               {selectedMood === 'all'
-                ? 'Start writing to capture your thoughts and feelings'
-                : 'Try selecting a different mood filter'}
+                ? 'start writing to capture your thoughts and feelings.'
+                : 'try selecting a different mood filter.'}
             </p>
             {selectedMood === 'all' && (
               <Link
                 href="/write"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity"
+                className="inline-flex items-center justify-center hover:opacity-90 transition-opacity"
               >
-                <Edit3 className="w-5 h-5" />
-                Write Your First Entry
+                <img src="/storiesbtnfeather.svg" alt="Write Your First Entry" className="h-30 w-auto" />
               </Link>
             )}
           </div>

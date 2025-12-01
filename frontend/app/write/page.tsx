@@ -104,17 +104,15 @@ export default function WritePage() {
           is_private: isPrivate,
         })
 
-      console.log('Saving entry:', entry)
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+        if (error) throw error
 
         // Clear form
         setTitle('')
         setContent('')
         setMood('')
 
-      alert('Entry saved successfully!')
+        alert('Entry saved successfully!')
+      }
       router.push('/diary')
     } catch (error) {
       console.error('failed to save entry:', error)

@@ -54,7 +54,7 @@ export function ChatInput({
         </div>
 
         <p className="mt-3 text-center text-xs text-black/40 dark:text-white/40">
-          Village connects you with stories from people who understand. Not a
+          our little owl connects you with stories from people who understand. he is an owl, not a
           substitute for professional help.
         </p>
       </div>

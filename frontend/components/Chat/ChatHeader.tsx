@@ -20,7 +20,7 @@ export function ChatHeader() {
             been there
           </h1>
           <p className="text-xs text-black/50 dark:text-white/50">
-            Share what's on your mind
+            share what's on your mind
           </p>
         </div>
 
