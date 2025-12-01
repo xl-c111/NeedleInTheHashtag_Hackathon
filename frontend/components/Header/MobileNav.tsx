@@ -4,6 +4,7 @@ import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/Auth/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { NAVIGATION_ITEMS } from "./NavigationData";
 
@@ -14,6 +15,7 @@ type MobileNavProps = {
 export function MobileNav({ onClose }: MobileNavProps) {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const router = useRouter();
+  const { user } = useAuth();
 
   return (
     <div className="border-black/5 border-t py-4 lg:hidden dark:border-white/5">
@@ -79,28 +81,7 @@ export function MobileNav({ onClose }: MobileNavProps) {
           </div>
         ))}
         <div className="mt-4 flex flex-col gap-2 px-3">
-          <Button
-            className="w-full tracking-tighter flex items-center justify-center"
-            onClick={() => {
-              router.push("/write");
-              onClose();
-            }}
-            size="sm"
-            variant="outline"
-          >
-            <img src="/storiesbtnfeather.svg" alt="write" className="h-6 w-auto" />
-          </Button>
-          <Button
-            className="w-full tracking-tighter flex items-center justify-center"
-            onClick={() => {
-              router.push("/diary");
-              onClose();
-            }}
-            size="sm"
-            variant="outline"
-          >
-            <img src="/diarybtn.svg" alt="diary" className="h-6 w-auto" />
-          </Button>
+          {/* Stories - Always visible (public access) */}
           <Button
             className="w-full tracking-tighter"
             onClick={() => {
@@ -112,16 +93,44 @@ export function MobileNav({ onClose }: MobileNavProps) {
           >
             stories
           </Button>
-          <Button
-            className="w-full tracking-tighter"
-            onClick={() => {
-              router.push("/chat");
-              onClose();
-            }}
-            size="sm"
-          >
-            chat
-          </Button>
+
+          {/* Authenticated routes - Only visible when logged in */}
+          {user && (
+            <>
+              <Button
+                className="w-full tracking-tighter flex items-center justify-center"
+                onClick={() => {
+                  router.push("/write");
+                  onClose();
+                }}
+                size="sm"
+                variant="outline"
+              >
+                <img src="/storiesbtnfeather.svg" alt="write" className="h-6 w-auto" />
+              </Button>
+              <Button
+                className="w-full tracking-tighter flex items-center justify-center"
+                onClick={() => {
+                  router.push("/diary");
+                  onClose();
+                }}
+                size="sm"
+                variant="outline"
+              >
+                <img src="/diarybtn.svg" alt="diary" className="h-6 w-auto" />
+              </Button>
+              <Button
+                className="w-full tracking-tighter"
+                onClick={() => {
+                  router.push("/chat");
+                  onClose();
+                }}
+                size="sm"
+              >
+                chat
+              </Button>
+            </>
+          )}
         </div>
       </nav>
     </div>
