@@ -32,7 +32,7 @@ export function CTAButtons() {
           alt="Read stories"
           width={150}
           height={45}
-          className="h-10"
+          className="h-10 w-auto"
         />
       </button>
       <button
@@ -44,7 +44,7 @@ export function CTAButtons() {
           alt="Start talking"
           width={150}
           height={45}
-          className="h-10"
+          className="h-10 w-auto"
         />
       </button>
     </>

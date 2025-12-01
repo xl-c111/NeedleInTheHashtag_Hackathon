@@ -8,6 +8,12 @@ const isSupabaseConfigured = !!(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 )
 
+// Simple UUID validator to avoid PostgREST 406s when seed data uses non-UUID IDs
+const isValidUUID = (value: string) =>
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+    value
+  )
+
 // Create a singleton client instance that's shared across all function calls
 // This ensures the authenticated session is consistent
 let supabaseInstance: SupabaseClient<Database> | null = null
@@ -610,12 +616,17 @@ export async function toggleFavorite(userId: string, postId: string): Promise<{ 
     return { isFavorited: false, error: new Error('Supabase not configured') }
   }
 
+  if (!isValidUUID(postId)) {
+    return { isFavorited: false, error: new Error('Invalid post ID') }
+  }
+
   const { data: existing, error: checkError } = await supabase
     .from('user_favorites')
     .select('*')
     .eq('user_id', userId)
     .eq('post_id', postId)
-    .single()
+    .limit(1)
+    .maybeSingle()
 
   if (checkError && checkError.code !== 'PGRST116') {
     console.error('Error checking favorite:', checkError)
@@ -680,6 +691,10 @@ export async function getFavoriteCount(postId: string): Promise<number> {
     return 0
   }
 
+  if (!isValidUUID(postId)) {
+    return 0
+  }
+
   const { count, error } = await supabase
     .from('user_favorites')
     .select('*', { count: 'exact', head: true })
@@ -702,12 +717,17 @@ export async function isPostFavorited(userId: string, postId: string): Promise<b
     return false
   }
 
+  if (!isValidUUID(postId)) {
+    return false
+  }
+
   const { data, error } = await supabase
     .from('user_favorites')
     .select('*')
     .eq('user_id', userId)
     .eq('post_id', postId)
-    .single()
+    .limit(1)
+    .maybeSingle()
 
   if (error && error.code !== 'PGRST116') {
     console.error('Error checking if favorited:', error)
