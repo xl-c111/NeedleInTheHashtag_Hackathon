@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/Auth'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { BookOpen, Edit3, Calendar, Trash2, Lock } from 'lucide-react'
+import { BookOpen, Edit3, Calendar, Trash2, Lock, Pencil } from 'lucide-react'
 
 type DiaryEntry = {
   id: string
@@ -46,32 +46,9 @@ export default function DiaryPage() {
       }
 
       try {
-        // TODO: Fetch from Supabase
-        // Simulated data for now
-        await new Promise(resolve => setTimeout(resolve, 500))
-
-        const mockEntries: DiaryEntry[] = [
-          {
-            id: '1',
-            user_id: user.id,
-            title: 'First Day',
-            content: 'Today was a good day. I finally decided to start journaling...',
-            mood: 'happy',
-            is_private: true,
-            created_at: new Date(Date.now() - 86400000).toISOString(),
-          },
-          {
-            id: '2',
-            user_id: user.id,
-            title: 'Reflections',
-            content: 'Been thinking a lot about my journey and where I want to go...',
-            mood: 'reflective',
-            is_private: true,
-            created_at: new Date(Date.now() - 172800000).toISOString(),
-          },
-        ]
-
-        setEntries(mockEntries)
+        const { fetchUserDiaryEntries } = await import('@/lib/supabase')
+        const data = await fetchUserDiaryEntries(user.id)
+        setEntries(data)
       } catch (error) {
         console.error('Failed to load entries:', error)
       } finally {
@@ -84,9 +61,15 @@ export default function DiaryPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this entry?')) return
+    if (!user) return
 
     try {
-      // TODO: Delete from Supabase
+      const { deleteDiaryEntry } = await import('@/lib/supabase')
+      const { error } = await deleteDiaryEntry(id, user.id)
+
+      if (error) throw error
+
+      // Update local state to remove deleted entry
       setEntries(entries.filter(e => e.id !== id))
     } catch (error) {
       console.error('Failed to delete entry:', error)
@@ -249,12 +232,20 @@ export default function DiaryPage() {
                       </div>
                     </div>
                   </div>
-                  <button
-                    onClick={() => handleDelete(entry.id)}
-                    className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/write?id=${entry.id}`}
+                      className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(entry.id)}
+                      className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
                 <p className="text-foreground/80 line-clamp-3 leading-relaxed">
                   {entry.content}
