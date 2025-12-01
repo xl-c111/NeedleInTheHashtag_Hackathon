@@ -1,15 +1,53 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { User, LogOut } from 'lucide-react'
 import { useAuth } from './AuthProvider'
+import { getUserProfile } from '@/lib/supabase'
 
 export function UserButton() {
   const { user, isLoading, isAnonymous, signOut } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const router = useRouter()
+
+  // Load user profile data including avatar
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      if (user && !isAnonymous) {
+        try {
+          const profile = await getUserProfile(user.id)
+          setAvatarUrl(profile?.avatar_url || null)
+        } catch (error) {
+          console.error('Error loading user profile:', error)
+        }
+      }
+    }
+
+    loadUserProfile()
+
+    // Listen for window focus to refresh avatar when user returns from profile page
+    const handleFocus = () => {
+      if (document.hasFocus()) {
+        loadUserProfile()
+      }
+    }
+
+    // Listen for custom avatar update event
+    const handleAvatarUpdate = () => {
+      loadUserProfile()
+    }
+
+    window.addEventListener('focus', handleFocus)
+    window.addEventListener('avatarUpdated', handleAvatarUpdate)
+
+    return () => {
+      window.removeEventListener('focus', handleFocus)
+      window.removeEventListener('avatarUpdated', handleAvatarUpdate)
+    }
+  }, [user, isAnonymous])
 
   const handleSignOut = async () => {
     await signOut()
@@ -61,9 +99,17 @@ export function UserButton() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-8 w-8 items-center justify-center rounded-full bg-black/10 transition-colors hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/20"
+        className="flex h-8 w-8 items-center justify-center rounded-full bg-black/10 transition-colors hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/20 overflow-hidden"
       >
-        <User className="h-4 w-4 text-black dark:text-white" />
+        {avatarUrl ? (
+          <img 
+            src={avatarUrl} 
+            alt="Profile" 
+            className="h-full w-full object-cover rounded-full"
+          />
+        ) : (
+          <User className="h-4 w-4 text-black dark:text-white" />
+        )}
       </button>
 
       {isOpen && (
