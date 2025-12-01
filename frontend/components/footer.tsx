@@ -13,15 +13,6 @@ const footerLinks = [
       { name: "FAQ", href: "#faq" },
     ],
   },
-  {
-    title: "About",
-    links: [
-      { name: "Our mission", href: "#" },
-      { name: "Privacy", href: "/privacy" },
-      { name: "Terms", href: "/terms" },
-      { name: "Contact", href: "/contact" },
-    ],
-  },
 ];
 
 const crisisResources = [
@@ -42,7 +33,11 @@ export function Footer() {
             href="/"
           >
             <img src="/favicon.ico" alt="been there" className="h-6 w-6" />
-            been there
+            <img 
+              src="/beentheretext.svg" 
+              alt="been there" 
+              className="h-8"
+            />
           </Link>
           <p className="mt-4 text-base text-black/60 leading-relaxed tracking-tight dark:text-white/60">
             a safe space for anyone to share, listen, and find their way
