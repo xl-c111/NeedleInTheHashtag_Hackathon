@@ -31,15 +31,27 @@ if not url or not service_key:
 
 supabase: Client = create_client(url, service_key)
 
-# Mock user IDs (use existing or create anonymous ones)
-MOCK_USER_IDS = [
-    "00000000-0000-0000-0000-000000000001",
-    "00000000-0000-0000-0000-000000000002",
-    "00000000-0000-0000-0000-000000000003",
-    "00000000-0000-0000-0000-000000000004",
-    "00000000-0000-0000-0000-000000000005",
-    "00000000-0000-0000-0000-000000000006",
-]
+# Get real user IDs from database
+def get_real_user_ids():
+    """Fetch actual user IDs from auth.users table."""
+    try:
+        response = supabase.table("profiles").select("id").limit(10).execute()
+        if response.data and len(response.data) > 0:
+            return [user["id"] for user in response.data]
+        else:
+            # Fallback: use the user who created the posts
+            response = supabase.table("posts").select("user_id").limit(1).execute()
+            if response.data:
+                return [response.data[0]["user_id"]]
+    except Exception as e:
+        print(f"Error fetching users: {e}")
+    return []
+
+MOCK_USER_IDS = get_real_user_ids()
+
+if not MOCK_USER_IDS:
+    print("ERROR: No users found in database. Cannot create comments.")
+    sys.exit(1)
 
 # Mock comments - supportive and relevant to incel/men's mental health topics
 MOCK_COMMENTS = [

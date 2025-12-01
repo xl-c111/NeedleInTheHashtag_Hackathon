@@ -1,0 +1,20 @@
+[
+  {
+    "id": "6ea5da16-646a-46a6-b22d-5c4b45b23db7",
+    "user_id": "19a63fcb-5c57-4915-a32e-0b90efbb17da",
+    "post_id": "ba11fb9c-eff9-4d64-b77c-2c9250a223e2",
+    "created_at": "2025-12-01T11:31:29.836427+00:00"
+  },
+  {
+    "id": "f91fe0fd-a2b7-4801-a670-1b2d75bb9b57",
+    "user_id": "19a63fcb-5c57-4915-a32e-0b90efbb17da",
+    "post_id": "48e6806f-40fe-4e30-8b3f-6a87c50325b8",
+    "created_at": "2025-12-01T11:31:33.055476+00:00"
+  },
+  {
+    "id": "375bf4e0-6aba-4eff-9c00-0fdd20d5be86",
+    "user_id": "19a63fcb-5c57-4915-a32e-0b90efbb17da",
+    "post_id": "7f5deab4-5be0-4f49-b80f-f751fe4c64fb",
+    "created_at": "2025-12-01T11:42:07.688512+00:00"
+  }
+]
