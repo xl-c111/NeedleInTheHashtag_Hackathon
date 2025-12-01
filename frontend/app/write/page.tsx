@@ -1,18 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/Auth'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Edit3, Save, Calendar } from 'lucide-react'
 
 export default function WritePage() {
   const { user, isLoading, signInAnonymously } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const editId = searchParams.get('id')
+
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [mood, setMood] = useState<string>('')
   const [isPrivate, setIsPrivate] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
+  const [isLoadingEntry, setIsLoadingEntry] = useState(false)
 
   const moods = [
     { emoji: '😊', label: 'happy', value: 'happy' },
@@ -22,6 +26,36 @@ export default function WritePage() {
     { emoji: '😤', label: 'frustrated', value: 'frustrated' },
     { emoji: '🤔', label: 'reflective', value: 'reflective' },
   ]
+
+  // Load entry data if editing
+  useEffect(() => {
+    const loadEntry = async () => {
+      if (!editId || !user) return
+
+      setIsLoadingEntry(true)
+      try {
+        const { fetchDiaryEntryById } = await import('@/lib/supabase')
+        const entry = await fetchDiaryEntryById(editId, user.id)
+
+        if (entry) {
+          setTitle(entry.title)
+          setContent(entry.content)
+          setMood(entry.mood || '')
+          setIsPrivate(entry.is_private)
+        } else {
+          alert('Entry not found')
+          router.push('/diary')
+        }
+      } catch (error) {
+        console.error('Failed to load entry:', error)
+        alert('Failed to load entry')
+      } finally {
+        setIsLoadingEntry(false)
+      }
+    }
+
+    loadEntry()
+  }, [editId, user, router])
 
   const handleSignIn = async () => {
     try {
@@ -44,27 +78,43 @@ export default function WritePage() {
 
     setIsSaving(true)
     try {
-      // TODO: Save to Supabase
-      const entry = {
-        user_id: user.id,
-        title: title.trim() || 'untitled entry',
-        content: content.trim(),
-        mood,
-        is_private: isPrivate,
-        created_at: new Date().toISOString(),
-      }
+      if (editId) {
+        // Update existing entry
+        const { updateDiaryEntry } = await import('@/lib/supabase')
 
-      console.log('saving entry:', entry)
+        const { data, error } = await updateDiaryEntry(editId, user.id, {
+          title: title.trim() || 'Untitled Entry',
+          content: content.trim(),
+          mood: mood || null,
+          is_private: isPrivate,
+        })
+
+        if (error) throw error
+
+        alert('Entry updated successfully!')
+      } else {
+        // Create new entry
+        const { saveDiaryEntry } = await import('@/lib/supabase')
+
+        const { data, error } = await saveDiaryEntry({
+          user_id: user.id,
+          title: title.trim() || 'Untitled Entry',
+          content: content.trim(),
+          mood: mood || null,
+          is_private: isPrivate,
+        })
+
+      console.log('Saving entry:', entry)
 
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000))
 
-      // Clear form
-      setTitle('')
-      setContent('')
-      setMood('')
+        // Clear form
+        setTitle('')
+        setContent('')
+        setMood('')
 
-      alert('entry saved successfully!')
+      alert('Entry saved successfully!')
       router.push('/diary')
     } catch (error) {
       console.error('failed to save entry:', error)
@@ -105,20 +155,28 @@ export default function WritePage() {
     )
   }
 
+  if (isLoadingEntry) {
+    return (
+      <div className="min-h-screen pt-16 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading entry...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen pt-16 bg-background">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="mb-2">
-            <img 
-              src="/write.svg" 
-              alt="Write"
-              className="h-50 w-auto"
-            />
+          <div className="flex items-center gap-3 mb-2">
+            <Edit3 className="w-8 h-8 text-primary" />
+            <h1 className="text-3xl font-semibold text-foreground">Write</h1>
           </div>
           <p className="text-muted-foreground">
-            express yourself freely. your thoughts are safe here.
+            Express yourself freely. Your thoughts are safe here.
           </p>
         </div>
 
@@ -202,21 +260,15 @@ export default function WritePage() {
           </label>
         </div>
 
-        {/* Save Button */}
+        {/* Save/Update Button */}
         <div className="flex gap-3">
           <button
             onClick={handleSave}
             disabled={isSaving || !content.trim()}
-            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg transition-all hover:scale-110 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSaving ? (
-              <>
-                <Save className="w-5 h-5" />
-                <span className="text-foreground">saving...</span>
-              </>
-            ) : (
-              <img src="/submit.svg" alt="save entry" className="h-15 w-auto" />
-            )}
+            <Save className="w-5 h-5" />
+            {isSaving ? 'Saving...' : 'Save Entry'}
           </button>
         </div>
 
