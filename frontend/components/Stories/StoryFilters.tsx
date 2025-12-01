@@ -18,7 +18,9 @@ export function StoryFilters({
 }: StoryFiltersProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const displayCategories = isExpanded ? categories : categories.slice(0, 6);
+  // Safety check: ensure categories is defined
+  const safeCategories = categories || [];
+  const displayCategories = isExpanded ? safeCategories : safeCategories.slice(0, 6);
 
   return (
     <div className="space-y-3">
@@ -56,12 +58,12 @@ export function StoryFilters({
           );
         })}
 
-        {!isExpanded && categories.length > 6 && (
+        {!isExpanded && safeCategories.length > 6 && (
           <button
             onClick={() => setIsExpanded(true)}
             className="rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-black/60 transition-colors hover:border-black/20 dark:border-white/10 dark:text-white/60 dark:hover:border-white/20"
           >
-            +{categories.length - 6} more
+            +{safeCategories.length - 6} more
           </button>
         )}
 

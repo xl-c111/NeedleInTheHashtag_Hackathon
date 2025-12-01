@@ -5,10 +5,10 @@ import { StoriesHeader } from "./StoriesHeader";
 import { StoryFilters } from "./StoryFilters";
 import { StoryCard } from "./StoryCard";
 import { fetchMentorStories } from "@/lib/supabase";
-import type { Theme, Story } from "@/lib/types";
+import type { Story } from "@/lib/types";
 
 export default function StoriesPage() {
-  const [selectedThemes, setSelectedThemes] = useState<Theme[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [stories, setStories] = useState<Story[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,22 +23,31 @@ export default function StoriesPage() {
     loadStories();
   }, []);
 
+  // Extract unique categories from all stories
+  const allCategories = useMemo(() => {
+    const categorySet = new Set<string>();
+    stories.forEach((story) => {
+      story.tags.forEach((tag) => categorySet.add(tag));
+    });
+    return Array.from(categorySet).sort();
+  }, [stories]);
+
   const filteredStories = useMemo(() => {
-    if (selectedThemes.length === 0) return stories;
+    if (selectedCategories.length === 0) return stories;
 
     return stories.filter((story) =>
-      story.themes.some((theme) => selectedThemes.includes(theme))
+      story.tags.some((tag) => selectedCategories.includes(tag))
     );
-  }, [selectedThemes, stories]);
+  }, [selectedCategories, stories]);
 
-  const handleThemeToggle = (theme: Theme) => {
-    setSelectedThemes((prev) =>
-      prev.includes(theme) ? prev.filter((t) => t !== theme) : [...prev, theme]
+  const handleCategoryToggle = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     );
   };
 
   const handleClearFilters = () => {
-    setSelectedThemes([]);
+    setSelectedCategories([]);
   };
 
   return (
@@ -49,14 +58,15 @@ export default function StoriesPage() {
         {/* Filters */}
         <div className="mb-8">
           <StoryFilters
-            selectedThemes={selectedThemes}
-            onThemeToggle={handleThemeToggle}
+            categories={allCategories}
+            selectedCategories={selectedCategories}
+            onCategoryToggle={handleCategoryToggle}
             onClear={handleClearFilters}
           />
         </div>
 
         {/* Results info */}
-        {selectedThemes.length > 0 && (
+        {selectedCategories.length > 0 && (
           <p className="mb-6 text-sm text-black/60 dark:text-white/60">
             Showing {filteredStories.length} of {stories.length} stories
           </p>
