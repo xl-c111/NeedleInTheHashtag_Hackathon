@@ -35,13 +35,9 @@ export default function FAQSection() {
       id="faq"
     >
       {/* Header outside scroll background */}
-      <div className="mb-8 text-center">
-        <h2 className="mb-3 font-semibold text-3xl text-black tracking-tight sm:text-4xl lg:text-5xl">
-          questions?
-        </h2>
-        <p className="mx-auto max-w-2xl text-black/80 text-sm leading-relaxed tracking-tight sm:text-base">
-          read our faq below.
-        </p>
+      <div className="text-center -mb-100">
+        <img src="/questions.svg" alt="questions?" className="mx-auto mb-0 h-20 sm:h-24 md:h-28 lg:h-32 xl:h-36" />
+        <img src="/readfaqribbon.svg" alt="read our faq below" className="mx-auto mb-0 h-8 sm:h-10 md:h-12" />
       </div>
       
       {/* FAQ items with larger scroll background */}

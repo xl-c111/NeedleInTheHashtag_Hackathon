@@ -26,9 +26,9 @@ export default function ThemeToggle() {
       variant="ghost"
     >
       {theme === "light" ? (
-        <CircleTheme className="h-5 w-5 text-black" />
+        <img src="/moonicon.svg" alt="Switch to dark mode" className="h-5 w-5" />
       ) : (
-        <CircleTheme className="h-5 w-5 text-white" />
+        <img src="/sunicon.svg" alt="Switch to light mode" className="h-5 w-5" />
       )}
     </Button>
   );
