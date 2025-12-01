@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Clock } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import type { Story } from "@/lib/types";
 
 interface StoryCardProps {
@@ -62,8 +62,8 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
           <div className="relative z-10 px-8 pb-16 mt-auto">
             <div className="flex items-center justify-end text-xs text-black/70 drop-shadow">
               <span className="flex items-center gap-1">
-                <Clock className="h-3 w-3" />
-                {story.readTime} min read
+                <MessageCircle className="h-3 w-3" />
+                {story.commentCount ?? 0} {story.commentCount === 1 ? 'response' : 'responses'}
               </span>
             </div>
           </div>
