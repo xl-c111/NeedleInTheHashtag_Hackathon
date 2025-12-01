@@ -30,15 +30,15 @@ export function UserButton() {
       <div className="flex items-center gap-2">
         <Link
           href="/login"
-          className="rounded-lg px-3 py-1.5 text-sm font-medium text-black transition-colors hover:bg-black/5 dark:text-white dark:hover:bg-white/5"
+          className="flex items-center rounded-lg px-3 py-1.5 transition-all hover:scale-110"
         >
-          Sign in
+          <img src="/login.svg" alt="Sign in" className="h-12 w-auto" />
         </Link>
         <Link
           href="/signup"
-          className="rounded-lg bg-black px-3 py-1.5 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
+          className="flex items-center rounded-lg px-3 py-1.5 transition-all hover:scale-110"
         >
-          Sign up
+          <img src="/signup.svg" alt="Sign up" className="h-12 w-auto" />
         </Link>
       </div>
     )
@@ -80,10 +80,9 @@ export function UserButton() {
             </div>
             <button
               onClick={handleSignOut}
-              className="flex w-full items-center gap-2 px-4 py-2 text-sm text-black/60 transition-colors hover:bg-black/5 hover:text-black dark:text-white/60 dark:hover:bg-white/5 dark:hover:text-white"
+              className="flex w-full items-center gap-2 px-4 py-2 text-sm transition-colors hover:bg-black/5 dark:hover:bg-white/5"
             >
-              <LogOut className="h-4 w-4" />
-              Sign out
+              <img src="/logout.svg" alt="Sign out" className="h-8 w-auto" />
             </button>
           </div>
         </>
