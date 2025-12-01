@@ -82,13 +82,35 @@ export function MobileNav({ onClose }: MobileNavProps) {
           <Button
             className="w-full tracking-tighter"
             onClick={() => {
+              router.push("/write");
+              onClose();
+            }}
+            size="sm"
+            variant="outline"
+          >
+            write
+          </Button>
+          <Button
+            className="w-full tracking-tighter"
+            onClick={() => {
+              router.push("/diary");
+              onClose();
+            }}
+            size="sm"
+            variant="outline"
+          >
+            diary
+          </Button>
+          <Button
+            className="w-full tracking-tighter"
+            onClick={() => {
               router.push("/stories");
               onClose();
             }}
             size="sm"
             variant="outline"
           >
-            Read stories
+            stories
           </Button>
           <Button
             className="w-full tracking-tighter"
@@ -98,7 +120,7 @@ export function MobileNav({ onClose }: MobileNavProps) {
             }}
             size="sm"
           >
-            Start talking
+            chat
           </Button>
         </div>
       </nav>

@@ -2,7 +2,8 @@
 
 ## Project Overview
 
-**Project:** Village - Peer Support for Young Men
+**Project:** been there - Peer Support Platform
+**Tagline:** Real human experiences, not AI therapy
 **Event:** eSafety Hackathon - "Needle in the Hashtag"
 **Theme:** 16 Days of Activism Against Gender-Based Violence
 **Dates:** Nov 29-30, 2025 (Stone & Chalk, Melbourne)
@@ -10,6 +11,7 @@
 
 ## Tech Stack
 
+### Frontend
 | Component | Version |
 |-----------|---------|
 | Next.js | 16.0.5 |
@@ -19,6 +21,14 @@
 | Motion | 12.0.5 |
 | shadcn/ui | Latest |
 | Supabase | @supabase/ssr |
+
+### Backend
+| Component | Version |
+|-----------|---------|
+| FastAPI | Latest |
+| Python | 3.x |
+| sentence-transformers | Latest |
+| OpenRouter API | Gemini 2.0 Flash |
 
 ## Quick Commands
 
@@ -51,8 +61,9 @@ frontend/
 │   ├── stories/            # Stories section
 │   │   ├── page.tsx        # Stories listing (protected)
 │   │   └── [id]/page.tsx   # Story detail (public)
-│   ├── posts/page.tsx      # Posts page
-│   └── api/chat/route.ts   # Chat API endpoint
+│   ├── diary/page.tsx      # Diary entries list (protected)
+│   ├── write/page.tsx      # Write new diary entry (protected)
+│   └── api/chat/route.ts   # Chat API endpoint (OpenRouter)
 ├── components/
 │   ├── Auth/               # Authentication components
 │   │   ├── AuthProvider.tsx
@@ -128,16 +139,30 @@ export default function Home() {
 
 ## Current Status
 
+### Completed ✅
 - [x] Landing page complete (Hero, Features, FAQ, Footer)
-- [x] Dark mode support
-- [x] Responsive design
+- [x] Dark mode support (next-themes)
+- [x] Responsive design (mobile-first)
 - [x] Build passes
-- [x] Chat interface with AI integration
-- [x] Stories page with Supabase data
+- [x] Chat interface with OpenRouter API (Gemini 2.0 Flash)
+- [x] Stories page with Supabase data fetching
+- [x] Story detail pages with related stories
 - [x] Supabase authentication system
 - [x] Route protection (middleware)
+- [x] Diary UI pages (/diary and /write)
+
+### In Progress ⚠️
+- [ ] Diary Supabase integration (uses mock data currently)
+  - `frontend/app/write/page.tsx:47` - TODO: Save to Supabase
+  - `frontend/app/diary/page.tsx:49,89` - TODO: Fetch/delete from Supabase
+- [ ] Backend semantic matching (embeddings not generated)
+- [ ] Like/Favorite functionality
+
+### Planned 📋
+- [ ] Professional resources page
 - [ ] User profile management
 - [ ] Story submission form
+- [ ] Content moderation integration
 
 ## Authentication
 
@@ -164,10 +189,40 @@ export default function Home() {
 4. `useAuth()` hook provides user state throughout app
 
 ### Environment Variables
+
+**Frontend** (`.env.local`):
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=your-project-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
+
+**Backend** (`.env`):
+```bash
+SUPABASE_URL=your-project-url
+SUPABASE_SERVICE_KEY=your-service-key
+OPENROUTER_API_KEY=your-openrouter-key
+```
+
+## Backend Integration
+
+### Chat API
+- **Endpoint:** `frontend/app/api/chat/route.ts`
+- **LLM Provider:** OpenRouter (using Gemini 2.0 Flash model)
+- **Fallback:** Mock responses when API unavailable
+- **Purpose:** Compassionate AI to help users articulate feelings (NOT therapy)
+
+### Semantic Matching (TODO)
+- **Backend:** `backend/services/matcher.py` (SemanticMatcher class)
+- **Status:** Code complete, needs embeddings file generated
+- **Required:** Run `backend/scripts/generate_embeddings.py` after seeding posts
+- **Purpose:** Match user descriptions to relevant mentor stories using cosine similarity
+
+### Database Schemas
+See [`docs/DATABASE_SCHEMA.md`](docs/DATABASE_SCHEMA.md) for:
+- Profiles table (auto-created on signup)
+- Posts table (mentor stories)
+- Diary entries table (private journaling)
+- User favorites table (NEW - for like/favorite feature)
 
 ## Notes for Claude Code
 

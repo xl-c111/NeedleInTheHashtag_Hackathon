@@ -1,5 +1,17 @@
 # Quick Start Guide - Bash Commands
 
+> **⚠️ DEPRECATION NOTICE**
+> This guide focuses on the Python/Jupyter mini-challenge approach which has been **deprioritized** in favor of the full-stack web application.
+>
+> **For current development setup**, see:
+> - Frontend: [`frontend/README.md`](frontend/README.md)
+> - Backend: [`backend/README.md`](backend/README.md)
+> - Full documentation: [`docs/`](docs/)
+>
+> This file is kept for reference only.
+
+---
+
 ## Environment Setup (One-Time)
 
 Already done! Your environment is ready to use.
