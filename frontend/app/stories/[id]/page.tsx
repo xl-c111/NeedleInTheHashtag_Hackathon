@@ -182,15 +182,13 @@ export default async function StoryPage({ params }: StoryPageProps) {
         </div>
 
         {/* More stories */}
-        <div className="mt-12">
-          <h3 className="font-medium text-lg tracking-tight text-black dark:text-white">
-            More stories
-          </h3>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {seedStories
-              .filter((s) => s.id !== story.id)
-              .slice(0, 2)
-              .map((relatedStory) => (
+        {relatedStories.length > 0 && (
+          <div className="mt-12">
+            <h3 className="font-medium text-lg tracking-tight text-black dark:text-white">
+              More stories
+            </h3>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              {relatedStories.map((relatedStory) => (
                 <Link
                   key={relatedStory.id}
                   href={`/stories/${relatedStory.id}`}
@@ -206,8 +204,9 @@ export default async function StoryPage({ params }: StoryPageProps) {
                   </div>
                 </Link>
               ))}
+            </div>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );

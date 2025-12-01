@@ -18,13 +18,4 @@ export interface NavigationMenu {
   categories?: NavigationCategory[];
 }
 
-export const NAVIGATION_ITEMS: NavigationMenu[] = [
-  {
-    name: "About",
-    items: [
-      { name: "How it works", href: "#features" },
-      { name: "Our mission", href: "/about", icon: Heart },
-      { name: "FAQ", href: "#faq", icon: HelpCircle },
-    ],
-  },
-];
+export const NAVIGATION_ITEMS: NavigationMenu[] = [];

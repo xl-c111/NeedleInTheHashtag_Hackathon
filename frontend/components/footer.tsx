@@ -7,8 +7,8 @@ const footerLinks = [
   {
     title: "Support",
     links: [
-      { name: "Start a conversation", href: "#" },
-      { name: "Read stories", href: "#" },
+      { name: "Start a conversation", href: "/chat" },
+      { name: "Read stories", href: "/stories" },
       { name: "How it works", href: "#features" },
       { name: "FAQ", href: "#faq" },
     ],
@@ -41,12 +41,12 @@ export function Footer() {
             className="flex items-center gap-2 font-semibold text-2xl text-black tracking-tight transition-opacity hover:opacity-80 dark:text-white"
             href="/"
           >
-            <Heart className="h-6 w-6 text-primary fill-primary/20" />
-            Village
+            <img src="/favicon.ico" alt="been there" className="h-6 w-6" />
+            been there
           </Link>
           <p className="mt-4 text-base text-black/60 leading-relaxed tracking-tight dark:text-white/60">
-            A safe space for young men to share, listen, and find their way
-            forward. You're not alone.
+            a safe space for anyone to share, listen, and find their way
+            forward. you're not alone.
           </p>
         </div>
 
@@ -97,21 +97,8 @@ export function Footer() {
       </div>
 
       <div className="mt-16 flex flex-col justify-between gap-4 border-black/10 border-t pt-8 text-black/50 text-xs tracking-tight sm:flex-row sm:items-center dark:border-white/10 dark:text-white/50">
-        <p>© {currentYear} Village. Made with care in Melbourne.</p>
-        <div className="flex gap-6">
-          <Link
-            className="transition-colors hover:text-black dark:hover:text-white"
-            href="/terms"
-          >
-            Terms
-          </Link>
-          <Link
-            className="transition-colors hover:text-black dark:hover:text-white"
-            href="/privacy"
-          >
-            Privacy
-          </Link>
-        </div>
+        <p>© {currentYear} been there. Made with care in Melbourne.</p>
+        
       </div>
     </footer>
   );
