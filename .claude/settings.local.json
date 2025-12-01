@@ -22,7 +22,8 @@
       "Bash(if [ ! -f .env ])",
       "Bash(then cp ../.env .env)",
       "Bash(else echo \"backend/.env already exists\")",
-      "Bash(fi)"
+      "Bash(fi)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

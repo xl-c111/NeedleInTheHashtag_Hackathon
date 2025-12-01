@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Clock, MessageCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import type { Story } from "@/lib/types";
+import type { Story, Theme } from "@/lib/types";
 
 interface StoryPageProps {
   params: Promise<{ id: string }>;
@@ -32,6 +32,34 @@ function calculateReadTime(content: string): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
+// Map topic_tags to themes
+function mapTopicTagsToThemes(topicTags: string[] | null): Theme[] {
+  if (!topicTags) return ['self-improvement'];
+
+  const tagToTheme: Record<string, Theme> = {
+    'Mental health history': 'therapy',
+    'Views on women': 'relationships',
+    'Views on men/masculinity': 'self-improvement',
+    'Dating history': 'rejection',
+    'Sexuality': 'relationships',
+    'Friendship history': 'loneliness',
+    'Online spaces': 'toxic-communities',
+    'Social isolation': 'loneliness',
+    'Self-improvement': 'self-improvement',
+    'Career': 'career',
+    'Fitness': 'fitness',
+    'Purpose': 'finding-purpose',
+  };
+
+  const themes = new Set<Theme>();
+  for (const tag of topicTags) {
+    const theme = tagToTheme[tag];
+    if (theme) themes.add(theme);
+  }
+
+  return themes.size === 0 ? ['self-improvement'] : Array.from(themes);
+}
+
 // Transform post row to Story
 function postToStory(row: { id: string; user_id: string; content: string; topic_tags: string[] | null; timestamp: string | null; created_at: string }): Story {
   return {
@@ -41,6 +69,7 @@ function postToStory(row: { id: string; user_id: string; content: string; topic_
     excerpt: generateExcerpt(row.content),
     content: row.content,
     tags: row.topic_tags || [],
+    themes: mapTopicTagsToThemes(row.topic_tags),
     readTime: calculateReadTime(row.content),
     datePosted: row.timestamp ? new Date(row.timestamp).toISOString().split("T")[0] : row.created_at.split("T")[0],
   };
