@@ -13,15 +13,15 @@ export function CTAButtons() {
     <>
       <Link
         href="/write"
-        className="rounded-lg px-3 py-1.5 text-sm font-medium text-black transition-colors hover:bg-black/5 dark:text-white dark:hover:bg-white/5"
+        className="flex items-center rounded-lg px-3 py-1.5 transition-all hover:scale-110"
       >
-        write
+        <img src="/storiesbtnfeather.svg" alt="write" className="h-11 w-auto" />
       </Link>
       <Link
         href="/diary"
-        className="rounded-lg px-3 py-1.5 text-sm font-medium text-black transition-colors hover:bg-black/5 dark:text-white dark:hover:bg-white/5"
+        className="flex items-center rounded-lg px-3 py-1.5 transition-all hover:scale-110"
       >
-        diary
+        <img src="/diarybtn.svg" alt="diary" className="h-11 w-auto" />
       </Link>
       <button
         className="h-12 tracking-tighter px-3 hover:scale-110 transition-transform duration-200 ease-in-out"

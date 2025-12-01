@@ -15,30 +15,30 @@ export default function WritePage() {
   const [isSaving, setIsSaving] = useState(false)
 
   const moods = [
-    { emoji: '😊', label: 'Happy', value: 'happy' },
-    { emoji: '😌', label: 'Calm', value: 'calm' },
-    { emoji: '😔', label: 'Sad', value: 'sad' },
-    { emoji: '😰', label: 'Anxious', value: 'anxious' },
-    { emoji: '😤', label: 'Frustrated', value: 'frustrated' },
-    { emoji: '🤔', label: 'Reflective', value: 'reflective' },
+    { emoji: '😊', label: 'happy', value: 'happy' },
+    { emoji: '😌', label: 'calm', value: 'calm' },
+    { emoji: '😔', label: 'sad', value: 'sad' },
+    { emoji: '😰', label: 'anxious', value: 'anxious' },
+    { emoji: '😤', label: 'frustrated', value: 'frustrated' },
+    { emoji: '🤔', label: 'reflective', value: 'reflective' },
   ]
 
   const handleSignIn = async () => {
     try {
       await signInAnonymously()
     } catch (error) {
-      console.error('Failed to sign in:', error)
+      console.error('failed to sign in:', error)
     }
   }
 
   const handleSave = async () => {
     if (!user) {
-      alert('Please sign in to save your entry')
+      alert('please sign in to save your entry')
       return
     }
 
     if (!content.trim()) {
-      alert('Please write something before saving')
+      alert('please write something before saving')
       return
     }
 
@@ -47,14 +47,14 @@ export default function WritePage() {
       // TODO: Save to Supabase
       const entry = {
         user_id: user.id,
-        title: title.trim() || 'Untitled Entry',
+        title: title.trim() || 'untitled entry',
         content: content.trim(),
         mood,
         is_private: isPrivate,
         created_at: new Date().toISOString(),
       }
 
-      console.log('Saving entry:', entry)
+      console.log('saving entry:', entry)
 
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000))
@@ -64,11 +64,11 @@ export default function WritePage() {
       setContent('')
       setMood('')
 
-      alert('Entry saved successfully!')
+      alert('entry saved successfully!')
       router.push('/diary')
     } catch (error) {
-      console.error('Failed to save entry:', error)
-      alert('Failed to save entry. Please try again.')
+      console.error('failed to save entry:', error)
+      alert('failed to save entry. please try again.')
     } finally {
       setIsSaving(false)
     }
@@ -79,7 +79,7 @@ export default function WritePage() {
       <div className="min-h-screen pt-16 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">Loading...</p>
+          <p className="mt-4 text-muted-foreground">loading...</p>
         </div>
       </div>
     )
@@ -92,13 +92,13 @@ export default function WritePage() {
           <Edit3 className="w-16 h-16 mx-auto mb-4 text-primary" />
           <h1 className="text-2xl font-semibold mb-2">Start Your Journal</h1>
           <p className="text-muted-foreground mb-6">
-            Sign in anonymously to start writing your private journal entries
+            sign in to start writing your private journal entries.
           </p>
           <button
             onClick={handleSignIn}
             className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
-            Sign In Anonymously
+            sign in anonymously
           </button>
         </div>
       </div>
@@ -110,12 +110,15 @@ export default function WritePage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <Edit3 className="w-8 h-8 text-primary" />
-            <h1 className="text-3xl font-semibold text-foreground">Write</h1>
+          <div className="mb-2">
+            <img 
+              src="/write.svg" 
+              alt="Write"
+              className="h-50 w-auto"
+            />
           </div>
           <p className="text-muted-foreground">
-            Express yourself freely. Your thoughts are safe here.
+            express yourself freely. your thoughts are safe here.
           </p>
         </div>
 
@@ -128,7 +131,7 @@ export default function WritePage() {
         {/* Mood Selector */}
         <div className="mb-6">
           <label className="block text-sm font-medium text-foreground mb-3">
-            How are you feeling?
+            how are you feeling?
           </label>
           <div className="flex flex-wrap gap-3">
             {moods.map((m) => (
@@ -152,29 +155,41 @@ export default function WritePage() {
         <div className="mb-6">
           <input
             type="text"
-            placeholder="Title (optional)"
+            placeholder="title (optional)"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-3 text-xl font-medium bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-muted-foreground text-foreground"
+            className="w-full px-4 py-3 text-xl font-medium border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder:text-white text-white"
+            style={{
+              backgroundImage: `url('/ribbon.svg')`,
+              backgroundSize: '120%',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }}
           />
         </div>
 
         {/* Content Textarea */}
         <div className="mb-6">
           <textarea
-            placeholder="What's on your mind? Write freely..."
+            placeholder="so, how have you been?"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={12}
-            className="w-full px-4 py-3 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none placeholder:text-muted-foreground text-foreground leading-relaxed"
+            className="w-full px-4 py-3 border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none placeholder:text-black text-black leading-relaxed"
+            style={{
+              backgroundImage: `url('/diaryscrollpost.svg')`,
+              backgroundSize: '120%',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }}
           />
         </div>
 
         {/* Privacy Toggle */}
         <div className="mb-6 flex items-center justify-between p-4 bg-card border border-border rounded-lg">
           <div>
-            <p className="font-medium text-foreground">Private Entry</p>
-            <p className="text-sm text-muted-foreground">Only you can see this entry</p>
+            <p className="font-medium text-foreground">private entry</p>
+            <p className="text-sm text-muted-foreground">only you can see this entry.</p>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
@@ -192,10 +207,16 @@ export default function WritePage() {
           <button
             onClick={handleSave}
             disabled={isSaving || !content.trim()}
-            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg transition-all hover:scale-110 disabled:cursor-not-allowed"
           >
-            <Save className="w-5 h-5" />
-            {isSaving ? 'Saving...' : 'Save Entry'}
+            {isSaving ? (
+              <>
+                <Save className="w-5 h-5" />
+                <span className="text-foreground">saving...</span>
+              </>
+            ) : (
+              <img src="/submit.svg" alt="save entry" className="h-15 w-auto" />
+            )}
           </button>
         </div>
 

@@ -137,7 +137,7 @@ export default function DiaryPage() {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <BookOpen className="w-8 h-8 text-primary" />
-              <h1 className="text-3xl font-semibold text-foreground">My Journal</h1>
+              <img src="/diarybtn.svg" alt="My Journal" className="h-8 w-auto" />
             </div>
             <p className="text-muted-foreground">
               {entries.length} {entries.length === 1 ? 'entry' : 'entries'}
@@ -148,7 +148,7 @@ export default function DiaryPage() {
             className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
             <Edit3 className="w-4 h-4" />
-            New Entry
+            <img src="/write.svg" alt="New Entry" className="h-6 w-auto" />
           </Link>
         </div>
 

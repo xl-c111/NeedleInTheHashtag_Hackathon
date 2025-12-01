@@ -80,7 +80,7 @@ export function MobileNav({ onClose }: MobileNavProps) {
         ))}
         <div className="mt-4 flex flex-col gap-2 px-3">
           <Button
-            className="w-full tracking-tighter"
+            className="w-full tracking-tighter flex items-center justify-center"
             onClick={() => {
               router.push("/write");
               onClose();
@@ -88,10 +88,10 @@ export function MobileNav({ onClose }: MobileNavProps) {
             size="sm"
             variant="outline"
           >
-            write
+            <img src="/storiesbtnfeather.svg" alt="write" className="h-6 w-auto" />
           </Button>
           <Button
-            className="w-full tracking-tighter"
+            className="w-full tracking-tighter flex items-center justify-center"
             onClick={() => {
               router.push("/diary");
               onClose();
@@ -99,7 +99,7 @@ export function MobileNav({ onClose }: MobileNavProps) {
             size="sm"
             variant="outline"
           >
-            diary
+            <img src="/diarybtn.svg" alt="diary" className="h-6 w-auto" />
           </Button>
           <Button
             className="w-full tracking-tighter"
