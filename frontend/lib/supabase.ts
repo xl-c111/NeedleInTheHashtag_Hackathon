@@ -795,7 +795,7 @@ export async function getUserStats(userId: string): Promise<{
 }
 
 /**
- * Get user's favorited stories
+ * Get user's favorited stories with comment counts
  */
 export async function getUserFavoritedStories(userId: string): Promise<Story[]> {
   const supabase = getSupabaseClient()
@@ -823,7 +823,16 @@ export async function getUserFavoritedStories(userId: string): Promise<Story[]> 
     return []
   }
 
-  return posts.map(postToStory)
+  // Get comment counts for each post (same as fetchMentorStories)
+  const storiesWithComments = await Promise.all(
+    posts.map(async (post) => {
+      const story = postToStory(post)
+      const commentCount = await getCommentCount(post.id)
+      return { ...story, commentCount }
+    })
+  )
+
+  return storiesWithComments
 }
 
 // Export config check for use in other files

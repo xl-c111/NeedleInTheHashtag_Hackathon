@@ -239,7 +239,7 @@ export default function DiaryPage() {
                   <div className="flex items-center gap-2">
                     <Link
                       href={`/write?id=${entry.id}`}
-                      className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                      className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                     >
                       <Pencil className="w-4 h-4" />
                     </Link>
