@@ -23,13 +23,13 @@ export function SignupForm() {
     setError(null)
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
+      setError('passwords do not match')
       setLoading(false)
       return
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters')
+      setError('password must be at least 6 characters')
       setLoading(false)
       return
     }
@@ -71,15 +71,15 @@ export function SignupForm() {
 
   if (success) {
     return (
-      <div className="rounded-xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-black">
+      <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
         <div className="text-center">
-          <h3 className="font-medium text-lg text-black dark:text-white">Check your email</h3>
-          <p className="mt-2 text-sm text-black/60 dark:text-white/60">
-            We've sent you a confirmation link to <strong>{email}</strong>. Click the link to verify your account.
+          <h3 className="font-medium text-lg text-foreground">check your email</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            we've sent you a confirmation link to <strong>{email}</strong>. click the link to verify your account.
           </p>
           <button
             onClick={() => router.push('/login')}
-            className="mt-4 text-sm font-medium text-black underline dark:text-white"
+            className="mt-4 text-sm font-medium text-foreground underline"
           >
             back to login
           </button>
@@ -89,10 +89,10 @@ export function SignupForm() {
   }
 
   return (
-    <div className="rounded-xl border border-black/10 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-black">
+    <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
       {isAnonymous && (
         <div className="mb-4 rounded-lg bg-blue-100 p-3 text-sm text-blue-700 dark:bg-blue-900/20 dark:text-blue-400">
-          Create an account to save your progress and access Village from any device.
+          create an account to save your progress and access been there from any device.
         </div>
       )}
 
@@ -104,8 +104,8 @@ export function SignupForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <label htmlFor="email" className="block text-sm font-medium text-black dark:text-white">
-            Email
+          <label htmlFor="email" className="block text-sm font-medium text-foreground">
+            email
           </label>
           <input
             id="email"
@@ -114,53 +114,53 @@ export function SignupForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full rounded-lg border border-black/10 bg-white px-4 py-2 text-black placeholder:text-black/40 focus:border-black focus:outline-none focus:ring-1 focus:ring-black dark:border-white/10 dark:bg-black dark:text-white dark:placeholder:text-white/40 dark:focus:border-white dark:focus:ring-white"
+            className="w-full rounded-lg border border-input bg-background px-4 py-2 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
           />
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="password" className="block text-sm font-medium text-black dark:text-white">
-            Password
+          <label htmlFor="password" className="block text-sm font-medium text-foreground">
+            password
           </label>
           <input
             id="password"
             type="password"
-            placeholder="Create a password"
+            placeholder="create a password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full rounded-lg border border-black/10 bg-white px-4 py-2 text-black placeholder:text-black/40 focus:border-black focus:outline-none focus:ring-1 focus:ring-black dark:border-white/10 dark:bg-black dark:text-white dark:placeholder:text-white/40 dark:focus:border-white dark:focus:ring-white"
+            className="w-full rounded-lg border border-input bg-background px-4 py-2 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
           />
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-black dark:text-white">
-            Confirm Password
+          <label htmlFor="confirmPassword" className="block text-sm font-medium text-foreground">
+            confirm password
           </label>
           <input
             id="confirmPassword"
             type="password"
-            placeholder="Confirm your password"
+            placeholder="confirm your password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            className="w-full rounded-lg border border-black/10 bg-white px-4 py-2 text-black placeholder:text-black/40 focus:border-black focus:outline-none focus:ring-1 focus:ring-black dark:border-white/10 dark:bg-black dark:text-white dark:placeholder:text-white/40 dark:focus:border-white dark:focus:ring-white"
+            className="w-full rounded-lg border border-input bg-background px-4 py-2 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-white dark:text-black"
+          className="w-full rounded-lg px-4 py-3 flex items-center justify-center transition-opacity hover:opacity-90 disabled:opacity-50"
         >
-          {loading ? 'creating account...' : isAnonymous ? 'create account' : 'sign up'}
+          {loading ? 'Creating account...' : isAnonymous ? 'Create account' : 'Sign up'}
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm text-black/60 dark:text-white/60">
         Already have an account?{' '}
         <Link href="/login" className="font-medium text-black underline dark:text-white">
-          login
+          Sign in
         </Link>
       </p>
     </div>
