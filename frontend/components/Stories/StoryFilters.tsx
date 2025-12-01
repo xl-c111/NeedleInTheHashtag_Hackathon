@@ -4,37 +4,21 @@ import { useState } from "react";
 import { X } from "lucide-react";
 
 interface StoryFiltersProps {
-  selectedThemes: string[];
-  onThemeToggle: (theme: string) => void;
+  categories: string[];
+  selectedCategories: string[];
+  onCategoryToggle: (category: string) => void;
   onClear: () => void;
 }
 
 export function StoryFilters({
-  selectedThemes,
-  onThemeToggle,
+  categories,
+  selectedCategories,
+  onCategoryToggle,
   onClear,
 }: StoryFiltersProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // All available themes
-  const allThemes = [
-    "Academic Pressure",
-    "Body Image",
-    "Bullying",
-    "Career Uncertainty",
-    "Family Conflict",
-    "Financial Stress",
-    "Identity & Self-Discovery",
-    "Loneliness",
-    "Mental Health",
-    "Peer Pressure",
-    "Rejection",
-    "Relationship Issues",
-    "Social Anxiety",
-    "Substance Use",
-  ];
-
-  const displayCategories = isExpanded ? allThemes : allThemes.slice(0, 6);
+  const displayCategories = isExpanded ? categories : categories.slice(0, 6);
 
   return (
     <div className="space-y-3">
@@ -43,7 +27,7 @@ export function StoryFilters({
           Filter by category
         </span>
 
-        {selectedThemes.length > 0 && (
+        {selectedCategories.length > 0 && (
           <button
             onClick={onClear}
             className="flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
@@ -56,11 +40,11 @@ export function StoryFilters({
 
       <div className="flex flex-wrap gap-2">
         {displayCategories.map((category) => {
-          const isSelected = selectedThemes.includes(category);
+          const isSelected = selectedCategories.includes(category);
           return (
             <button
               key={category}
-              onClick={() => onThemeToggle(category)}
+              onClick={() => onCategoryToggle(category)}
               className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                 isSelected
                   ? "bg-primary text-primary-foreground"
@@ -72,12 +56,12 @@ export function StoryFilters({
           );
         })}
 
-        {!isExpanded && allThemes.length > 6 && (
+        {!isExpanded && categories.length > 6 && (
           <button
             onClick={() => setIsExpanded(true)}
             className="rounded-full border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-ring"
           >
-            +{allThemes.length - 6} more
+            +{categories.length - 6} more
           </button>
         )}
 
