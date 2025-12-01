@@ -10,38 +10,38 @@ export type Feature = {
   mediaUrl: string;
   mediaType: MediaType;
   color: string;
-  icon: ComponentType<SVGProps<SVGSVGElement>>;
+  icon: ComponentType<SVGProps<SVGSVGElement>> | string;
 };
 
 export const FEATURES: Feature[] = [
   {
     id: "share",
-    title: "Share Your Story",
+    title: "write your story",
     description:
-      "Open up about what you're going through in a safe, anonymous space. No judgement, no pressure—just a place where you can be real about how you're feeling.",
+      "share your story as a mentor to help others. or, add to your diary to reflect on your own journey privately.",
     mediaUrl: "/share-story-video.mp4",
     mediaType: "video",
     color: "blue",
-    icon: MessageCircle as ComponentType<SVGProps<SVGSVGElement>>,
+    icon: "/rolledscroll.svg",
   },
   {
     id: "connect",
-    title: "Connect with Others",
+    title: "connect with others",
     description:
-      "Read stories from others who've been where you are. Discover you're not alone, and find comfort in shared experiences from guys just like you.",
+      "chat with our owl to read stories from people who have been there. find mentors who understand your journey.",
     mediaUrl: "/connect-video.mp4",
     mediaType: "video",
     color: "purple",
-    icon: Users as ComponentType<SVGProps<SVGSVGElement>>,
+    icon: "/owlaitransparent.svg",
   },
   {
     id: "support",
-    title: "Find Your Way Forward",
+    title: "find your way forward",
     description:
-      "Get peer support that feels natural, not clinical. Chat anonymously, explore resources, and take small steps toward feeling better—at your own pace.",
+      "through reflection and connnection, discover new perspectives and paths to genuine growth.",
     mediaUrl: "/forward-video.mp4",
     mediaType: "video",
     color: "pink",
-    icon: Heart as ComponentType<SVGProps<SVGSVGElement>>,
+    icon: "/pathwithfootsteps.svg",
   },
 ];

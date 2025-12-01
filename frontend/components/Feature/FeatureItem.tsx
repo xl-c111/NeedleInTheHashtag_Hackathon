@@ -30,15 +30,29 @@ export function FeatureItem({ feature, isActive, onToggle }: FeatureItemProps) {
         type="button"
       >
         <div className="flex items-center gap-4">
-          <feature.icon
-            className={`h-6 w-6 transition-all duration-200 ${
-              isActive
-                ? iconColorClasses[
-                    feature.color as keyof typeof iconColorClasses
-                  ]
-                : "text-black/30 dark:text-white/30"
-            }`}
-          />
+          {typeof feature.icon === 'string' ? (
+            <img 
+              src={feature.icon} 
+              alt=""
+              className={`h-20 w-20 transition-all duration-200 ${
+                isActive
+                  ? iconColorClasses[
+                      feature.color as keyof typeof iconColorClasses
+                    ]
+                  : "opacity-30"
+              }`}
+            />
+          ) : (
+            <feature.icon
+              className={`h-8 w-8 transition-all duration-200 ${
+                isActive
+                  ? iconColorClasses[
+                      feature.color as keyof typeof iconColorClasses
+                    ]
+                  : "text-black/30 dark:text-white/30"
+              }`}
+            />
+          )}
           <span
             className={`font-semibold text-xl tracking-tight transition-colors duration-200 sm:text-2xl ${
               isActive

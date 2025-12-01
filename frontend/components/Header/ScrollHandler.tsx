@@ -37,8 +37,8 @@ export function ScrollHandler({ children }: { children: React.ReactNode }) {
     <header
       className={`w-full tracking-tighter transition-all duration-300 ${
         isScrolled
-          ? "border-black/5 border-b bg-white/95 backdrop-blur-sm dark:border-white/5 dark:bg-black/95"
-          : "bg-white dark:bg-black"
+          ? "border-black/5 border-b bg-white/95 backdrop-blur-sm dark:border-white/5 dark:bg-[hsl(39,25%,15%)]/95"
+          : "bg-white dark:bg-[hsl(39,25%,15%)]"
       }`}
     >
       {children}

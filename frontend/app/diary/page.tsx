@@ -202,16 +202,22 @@ export default function DiaryPage() {
             {filteredEntries.map((entry) => (
               <div
                 key={entry.id}
-                className="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow"
+                className="border-0 rounded-lg p-6 hover:shadow-lg transition-shadow"
+                style={{
+                  backgroundImage: `url('/diaryscrollpost.svg')`,
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                }}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-start gap-3 flex-1">
                     <span className="text-2xl">{getMoodEmoji(entry.mood)}</span>
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-foreground mb-1">
+                      <h3 className="text-lg font-semibold text-black mb-1">
                         {entry.title}
                       </h3>
-                      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-3 text-sm text-black">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
                           {new Date(entry.created_at).toLocaleDateString('en-US', {
@@ -244,7 +250,7 @@ export default function DiaryPage() {
                     </button>
                   </div>
                 </div>
-                <p className="text-foreground/80 line-clamp-3 leading-relaxed">
+                <p className="text-black line-clamp-3 leading-relaxed">
                   {entry.content}
                 </p>
               </div>
