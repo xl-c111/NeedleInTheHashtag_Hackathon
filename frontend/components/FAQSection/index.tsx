@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "motion/react";
 import Accordion from "./Accordion";
 
 const faqItems = [
@@ -30,7 +33,11 @@ const faqItems = [
 
 export default function FAQSection() {
   return (
-    <section
+    <motion.section
+      initial={{ opacity: 0, y: 100 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
       className="relative mx-auto flex w-full max-w-7xl flex-col items-center px-6 pt-12 pb-24 sm:pt-16 sm:pb-32"
       id="faq"
     >
@@ -58,6 +65,6 @@ export default function FAQSection() {
           />
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
