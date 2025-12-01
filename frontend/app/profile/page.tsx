@@ -135,12 +135,6 @@ export default function ProfilePage() {
   }
 
   const moodEmojis: Record<string, string> = {
-    happy: '😊',
-    calm: '😌',
-    sad: '😔',
-    anxious: '😰',
-    frustrated: '😤',
-    reflective: '🤔',
   }
 
   if (isLoading || isLoadingProfile) {
@@ -179,8 +173,14 @@ export default function ProfilePage() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-semibold text-foreground mb-2">My Profile</h1>
-          <p className="text-muted-foreground">Manage your account and view your activity</p>
+          <div className="mb-2">
+            <img 
+              src="/profilehead.svg" 
+              alt="My Profile" 
+              className="h-30"
+            />
+          </div>
+          <p className="text-muted-foreground">manage your account and view your activity.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -208,7 +208,7 @@ export default function ProfilePage() {
                   disabled={isUploadingAvatar}
                   className="mt-3 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
-                  Choose Avatar
+                  choose avatar
                 </button>
                 {isUploadingAvatar && (
                   <p className="mt-2 text-sm text-muted-foreground">Updating...</p>
@@ -218,7 +218,7 @@ export default function ProfilePage() {
               {/* Username */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Username
+                  username
                 </label>
                 {isEditingUsername ? (
                   <div className="space-y-2">
@@ -244,7 +244,7 @@ export default function ProfilePage() {
                         }}
                         className="flex-1 px-3 py-2 bg-muted text-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
                       >
-                        Cancel
+                        cancel
                       </button>
                     </div>
                   </div>
@@ -265,7 +265,7 @@ export default function ProfilePage() {
               {/* Email */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Email
+                  email
                 </label>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Mail className="w-4 h-4" />
@@ -276,7 +276,7 @@ export default function ProfilePage() {
               {/* Join Date */}
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Member Since
+                  member since
                 </label>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Calendar className="w-4 h-4" />
@@ -298,8 +298,12 @@ export default function ProfilePage() {
                 {/* Diary Entries */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-primary" />
-                    <span className="text-foreground">Diary Entries</span>
+                    
+                    <img 
+                      src="/diarybtn.svg" 
+                      alt="Diary Entries" 
+                      className="h-10"
+                    />
                   </div>
                   <span className="text-2xl font-bold text-primary">{stats.diaryCount}</span>
                 </div>
@@ -307,8 +311,12 @@ export default function ProfilePage() {
                 {/* Favorites */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Heart className="w-5 h-5 text-red-500" />
-                    <span className="text-foreground">Favorites</span>
+                   
+                    <img 
+                      src="/faves.svg" 
+                      alt="Favorites" 
+                      className="h-10"
+                    />
                   </div>
                   <span className="text-2xl font-bold text-red-500">{stats.favoriteCount}</span>
                 </div>
@@ -318,8 +326,12 @@ export default function ProfilePage() {
               {Object.keys(stats.moodBreakdown).length > 0 && (
                 <div className="mt-6">
                   <h3 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
-                    <Smile className="w-4 h-4" />
-                    Mood Breakdown
+                    
+                    <img 
+                      src="/moods.svg" 
+                      alt="Mood Breakdown" 
+                      className="h-15"
+                    />
                   </h3>
                   <div className="space-y-2">
                     {Object.entries(stats.moodBreakdown)
@@ -327,7 +339,51 @@ export default function ProfilePage() {
                       .map(([mood, count]) => (
                         <div key={mood} className="flex items-center justify-between text-sm">
                           <div className="flex items-center gap-2">
-                            <span>{moodEmojis[mood] || '😐'}</span>
+                            {mood === 'happy' ? (
+                              <img 
+                                src="/owlglad.svg" 
+                                alt="😊" 
+                                className="w-10 h-10"
+                              />
+                            ) : mood === 'frustrated' ? (
+                              <img 
+                                src="/owlfrustrated.svg" 
+                                alt="😤" 
+                                className="w-10 h-10"
+                              />
+                            ) : mood === 'calm' ? (
+                              <img 
+                                src="/owlcalm.svg" 
+                                alt="😌" 
+                                className="w-10 h-10"
+                              />
+                            ) : mood === 'sad' ? (
+                              <img 
+                                src="/owlsad.svg" 
+                                alt="😔" 
+                                className="w-10 h-10"
+                              />
+                            ) : mood === 'reflective' ? (
+                              <img 
+                                src="/owlreflective.svg" 
+                                alt="🤔" 
+                                className="w-10 h-10"
+                              />
+                            ) : mood === 'anxious' ? (
+                              <img 
+                                src="/owlanxious.svg" 
+                                alt="😰" 
+                                className="w-10 h-10"
+                              />
+                            ) : moodEmojis[mood] ? (
+                              <span>{moodEmojis[mood]}</span>
+                            ) : (
+                              <img 
+                                src="/owlneutral.svg" 
+                                alt="😐" 
+                                className="w-10 h-10"
+                              />
+                            )}
                             <span className="text-foreground capitalize">{mood}</span>
                           </div>
                           <span className="text-muted-foreground">{count}</span>
@@ -352,7 +408,11 @@ export default function ProfilePage() {
           <div className="lg:col-span-2">
             <div className="bg-card border border-border rounded-lg p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-foreground">My Favorites</h2>
+                <img 
+                  src="/faves.svg" 
+                  alt="My Favorites" 
+                  className="h-20"
+                />
                 <span className="text-sm text-muted-foreground">{favorites.length} stories</span>
               </div>
 

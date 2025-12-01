@@ -19,12 +19,12 @@ export default function WritePage() {
   const [isLoadingEntry, setIsLoadingEntry] = useState(false)
 
   const moods = [
-    { emoji: '😊', label: 'happy', value: 'happy' },
-    { emoji: '😌', label: 'calm', value: 'calm' },
-    { emoji: '😔', label: 'sad', value: 'sad' },
-    { emoji: '😰', label: 'anxious', value: 'anxious' },
-    { emoji: '😤', label: 'frustrated', value: 'frustrated' },
-    { emoji: '🤔', label: 'reflective', value: 'reflective' },
+    { svg: '/owlglad.svg', label: 'happy', value: 'happy' },
+    { svg: '/owlcalm.svg', label: 'calm', value: 'calm' },
+    { svg: '/owlsad.svg', label: 'sad', value: 'sad' },
+    { svg: '/owlanxious.svg', label: 'anxious', value: 'anxious' },
+    { svg: '/owlfrustrated.svg', label: 'frustrated', value: 'frustrated' },
+    { svg: '/owlreflective.svg', label: 'reflective', value: 'reflective' },
   ]
 
   // Load entry data if editing
@@ -200,7 +200,11 @@ export default function WritePage() {
                     : 'border-border hover:border-primary/50 text-foreground'
                 }`}
               >
-                <span className="text-xl">{m.emoji}</span>
+                <img 
+                  src={m.svg} 
+                  alt={m.label} 
+                  className="w-15 h-15"
+                />
                 <span className="text-sm font-medium">{m.label}</span>
               </button>
             ))}
@@ -263,10 +267,21 @@ export default function WritePage() {
           <button
             onClick={handleSave}
             disabled={isSaving || !content.trim()}
-            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-transparent border-none rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Save className="w-5 h-5" />
-            {isSaving ? 'Saving...' : 'Save Entry'}
+            {isSaving ? (
+              <>
+                <Save className="w-5 h-5" />
+                Saving...
+              </>
+            ) : (
+              <img 
+                src="/submit.svg" 
+                alt="Save Entry" 
+                className="h-20 opacity-100 transition-transform duration-200 hover:scale-110"
+                style={{ background: 'none' }}
+              />
+            )}
           </button>
         </div>
 

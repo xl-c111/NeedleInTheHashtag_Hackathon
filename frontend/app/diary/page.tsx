@@ -25,18 +25,18 @@ export default function DiaryPage() {
   const [selectedMood, setSelectedMood] = useState<string>('all')
 
   const moods = [
-    { emoji: '😊', label: 'Happy', value: 'happy' },
-    { emoji: '😌', label: 'Calm', value: 'calm' },
-    { emoji: '😔', label: 'Sad', value: 'sad' },
-    { emoji: '😰', label: 'Anxious', value: 'anxious' },
-    { emoji: '😤', label: 'Frustrated', value: 'frustrated' },
-    { emoji: '🤔', label: 'Reflective', value: 'reflective' },
+    { svg: '/owlglad.svg', label: 'Happy', value: 'happy' },
+    { svg: '/owlcalm.svg', label: 'Calm', value: 'calm' },
+    { svg: '/owlsad.svg', label: 'Sad', value: 'sad' },
+    { svg: '/owlanxious.svg', label: 'Anxious', value: 'anxious' },
+    { svg: '/owlfrustrated.svg', label: 'Frustrated', value: 'frustrated' },
+    { svg: '/owlreflective.svg', label: 'Reflective', value: 'reflective' },
   ]
 
-  const getMoodEmoji = (mood: string | null | undefined) => {
-    if (!mood) return '📝'
+  const getMoodSvg = (mood: string | null | undefined) => {
+    if (!mood) return '/owlneutral.svg'
     const foundMood = moods.find(m => m.value === mood)
-    return foundMood?.emoji || '📝'
+    return foundMood?.svg || '/owlneutral.svg'
   }
 
   useEffect(() => {
@@ -158,7 +158,11 @@ export default function DiaryPage() {
                       : 'bg-card border border-border text-foreground hover:border-primary/50'
                   }`}
                 >
-                  <span>{m.emoji}</span>
+                  <img 
+                    src={m.svg} 
+                    alt={m.label} 
+                    className="w-10 h-10"
+                  />
                   <span>{m.label}</span>
                 </button>
               ))}
@@ -213,7 +217,11 @@ export default function DiaryPage() {
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-start gap-3 flex-1">
-                    <span className="text-2xl">{getMoodEmoji(entry.mood)}</span>
+                    <img 
+                      src={getMoodSvg(entry.mood)} 
+                      alt={entry.mood || 'default'} 
+                      className="w-15 h-15"
+                    />
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-black mb-1">
                         {entry.title}
