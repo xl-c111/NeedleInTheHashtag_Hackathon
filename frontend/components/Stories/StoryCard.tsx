@@ -2,15 +2,89 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import { MessageCircle } from "lucide-react";
+import { Clock, Heart, MessageCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/components/Auth";
 import type { Story } from "@/lib/types";
 
 interface StoryCardProps {
   story: Story;
   index?: number;
+  onFavoriteChange?: (storyId: string, isFavorited: boolean) => void;
 }
 
-export function StoryCard({ story, index = 0 }: StoryCardProps) {
+export function StoryCard({ story, index = 0, onFavoriteChange }: StoryCardProps) {
+  const { user } = useAuth();
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [favoriteCount, setFavoriteCount] = useState(0);
+  const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
+
+  // Load favorite status and count on mount
+  useEffect(() => {
+    const loadFavoriteData = async () => {
+      const { getFavoriteCount, isPostFavorited } = await import("@/lib/supabase");
+
+      // Get favorite count
+      const count = await getFavoriteCount(story.id);
+      setFavoriteCount(count);
+
+      // Check if user has favorited (only if logged in)
+      if (user) {
+        const favorited = await isPostFavorited(user.id, story.id);
+        setIsFavorited(favorited);
+      }
+    };
+
+    loadFavoriteData();
+  }, [story.id, user]);
+
+  const handleToggleFavorite = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation
+    e.stopPropagation(); // Stop event bubbling
+
+    if (!user) {
+      alert("Please sign in to favorite stories");
+      return;
+    }
+
+    if (isTogglingFavorite) return;
+
+    setIsTogglingFavorite(true);
+
+    // Optimistic update
+    const previousFavorited = isFavorited;
+    const previousCount = favoriteCount;
+
+    setIsFavorited(!isFavorited);
+    setFavoriteCount(prev => isFavorited ? prev - 1 : prev + 1);
+
+    try {
+      const { toggleFavorite } = await import("@/lib/supabase");
+      const { isFavorited: newFavorited, error } = await toggleFavorite(user.id, story.id);
+
+      if (error) {
+        // Revert on error
+        setIsFavorited(previousFavorited);
+        setFavoriteCount(previousCount);
+        console.error("Failed to toggle favorite:", error);
+      } else {
+        // Update with actual value
+        setIsFavorited(newFavorited);
+        // Notify parent component of the change
+        if (onFavoriteChange) {
+          onFavoriteChange(story.id, newFavorited);
+        }
+      }
+    } catch (error) {
+      // Revert on error
+      setIsFavorited(previousFavorited);
+      setFavoriteCount(previousCount);
+      console.error("Failed to toggle favorite:", error);
+    } finally {
+      setIsTogglingFavorite(false);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -60,7 +134,25 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
 
           {/* Meta positioned in the lighter bottom area of the scroll */}
           <div className="relative z-10 px-8 pb-16 mt-auto">
-            <div className="flex items-center justify-end text-xs text-black/70 drop-shadow">
+            <div className="flex items-center justify-between text-xs text-black/70 drop-shadow">
+              {/* Favorite button */}
+              <button
+                onClick={handleToggleFavorite}
+                disabled={isTogglingFavorite}
+                className="flex items-center gap-1 transition-all hover:scale-110 disabled:opacity-50"
+                aria-label={isFavorited ? "Unfavorite story" : "Favorite story"}
+              >
+                <Heart
+                  className={`h-4 w-4 transition-all ${
+                    isFavorited
+                      ? "fill-red-500 text-red-500"
+                      : "text-black/70 hover:text-red-500"
+                  }`}
+                />
+                <span className="font-medium">{favoriteCount}</span>
+              </button>
+
+              {/* Comment count */}
               <span className="flex items-center gap-1">
                 <MessageCircle className="h-3 w-3" />
                 {story.commentCount ?? 0} {story.commentCount === 1 ? 'response' : 'responses'}

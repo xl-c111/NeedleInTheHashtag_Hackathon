@@ -552,5 +552,279 @@ export async function updateComment(
   return { data, error: null }
 }
 
+// ============================================================================
+// FAVORITES FUNCTIONS
+// ============================================================================
+
+/**
+ * Toggle favorite status for a story (post)
+ */
+export async function toggleFavorite(userId: string, postId: string): Promise<{ isFavorited: boolean; error: Error | null }> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return { isFavorited: false, error: new Error('Supabase not configured') }
+  }
+
+  const { data: existing, error: checkError } = await supabase
+    .from('user_favorites')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('post_id', postId)
+    .single()
+
+  if (checkError && checkError.code !== 'PGRST116') {
+    console.error('Error checking favorite:', checkError)
+    return { isFavorited: false, error: new Error(checkError.message) }
+  }
+
+  if (existing) {
+    const { error: deleteError } = await supabase
+      .from('user_favorites')
+      .delete()
+      .eq('user_id', userId)
+      .eq('post_id', postId)
+
+    if (deleteError) {
+      console.error('Error removing favorite:', deleteError)
+      return { isFavorited: true, error: new Error(deleteError.message) }
+    }
+
+    return { isFavorited: false, error: null }
+  } else {
+    const { error: insertError } = await supabase
+      .from('user_favorites')
+      .insert([{ user_id: userId, post_id: postId }])
+
+    if (insertError) {
+      console.error('Error adding favorite:', insertError)
+      return { isFavorited: false, error: new Error(insertError.message) }
+    }
+
+    return { isFavorited: true, error: null }
+  }
+}
+
+/**
+ * Get all favorited post IDs for a user
+ */
+export async function getUserFavorites(userId: string): Promise<string[]> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('user_favorites')
+    .select('post_id')
+    .eq('user_id', userId)
+
+  if (error) {
+    console.error('Error fetching user favorites:', error)
+    return []
+  }
+
+  return data.map(fav => fav.post_id)
+}
+
+/**
+ * Get favorite count for a specific post
+ */
+export async function getFavoriteCount(postId: string): Promise<number> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return 0
+  }
+
+  const { count, error } = await supabase
+    .from('user_favorites')
+    .select('*', { count: 'exact', head: true })
+    .eq('post_id', postId)
+
+  if (error) {
+    console.error('Error fetching favorite count:', error)
+    return 0
+  }
+
+  return count || 0
+}
+
+/**
+ * Check if user has favorited a specific post
+ */
+export async function isPostFavorited(userId: string, postId: string): Promise<boolean> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return false
+  }
+
+  const { data, error } = await supabase
+    .from('user_favorites')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('post_id', postId)
+    .single()
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('Error checking if favorited:', error)
+    return false
+  }
+
+  return !!data
+}
+
+// ============================================================================
+// PROFILE FUNCTIONS
+// ============================================================================
+
+/**
+ * Get user profile by ID
+ */
+export async function getUserProfile(userId: string) {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return null
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single()
+
+  if (error) {
+    console.error('Error fetching user profile:', error)
+    return null
+  }
+
+  return data
+}
+
+/**
+ * Update user profile (username, avatar_url)
+ */
+export async function updateUserProfile(
+  userId: string,
+  updates: { username?: string; avatar_url?: string }
+): Promise<{ error: Error | null }> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return { error: new Error('Supabase not configured') }
+  }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update(updates)
+    .eq('id', userId)
+
+  if (error) {
+    console.error('Error updating profile:', error)
+    return { error: new Error(error.message) }
+  }
+
+  return { error: null }
+}
+
+/**
+ * Upload avatar to Supabase Storage
+ */
+export async function uploadAvatar(
+  userId: string,
+  file: File
+): Promise<{ url: string | null; error: Error | null }> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return { url: null, error: new Error('Supabase not configured') }
+  }
+
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${userId}-${Date.now()}.${fileExt}`
+  const filePath = `avatars/${fileName}`
+
+  const { error: uploadError } = await supabase.storage
+    .from('avatars')
+    .upload(filePath, file, { upsert: true })
+
+  if (uploadError) {
+    console.error('Error uploading avatar:', uploadError)
+    return { url: null, error: new Error(uploadError.message) }
+  }
+
+  const { data } = supabase.storage.from('avatars').getPublicUrl(filePath)
+
+  return { url: data.publicUrl, error: null }
+}
+
+/**
+ * Get user statistics (diary entries, favorites)
+ */
+export async function getUserStats(userId: string): Promise<{
+  diaryCount: number
+  favoriteCount: number
+  moodBreakdown: Record<string, number>
+}> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return { diaryCount: 0, favoriteCount: 0, moodBreakdown: {} }
+  }
+
+  const { data: diaryData } = await supabase
+    .from('diary_entries')
+    .select('mood')
+    .eq('user_id', userId)
+
+  const diaryCount = diaryData?.length || 0
+  const moodBreakdown: Record<string, number> = {}
+
+  if (diaryData) {
+    diaryData.forEach((entry: any) => {
+      const mood = entry.mood || 'unknown'
+      moodBreakdown[mood] = (moodBreakdown[mood] || 0) + 1
+    })
+  }
+
+  const { count: favoriteCount } = await supabase
+    .from('user_favorites')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', userId)
+
+  return {
+    diaryCount,
+    favoriteCount: favoriteCount || 0,
+    moodBreakdown,
+  }
+}
+
+/**
+ * Get user's favorited stories
+ */
+export async function getUserFavoritedStories(userId: string): Promise<Story[]> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return []
+  }
+
+  const { data: favorites } = await supabase
+    .from('user_favorites')
+    .select('post_id')
+    .eq('user_id', userId)
+
+  if (!favorites || favorites.length === 0) {
+    return []
+  }
+
+  const postIds = favorites.map((f: any) => f.post_id)
+
+  const { data: posts } = await supabase
+    .from('posts')
+    .select('*')
+    .in('id', postIds)
+
+  if (!posts) {
+    return []
+  }
+
+  return posts.map(postToStory)
+}
+
 // Export config check for use in other files
 export { isSupabaseConfigured }
