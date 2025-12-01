@@ -17,6 +17,7 @@ Welcome to the **been there** project documentation! This directory contains all
 | [COMPONENTS.md](COMPONENTS.md) | Component reference and usage examples | Nov 29 |
 | [API_CONTRACT.md](API_CONTRACT.md) | Backend API endpoints specification | Nov 29 |
 | [TECHNICAL_APPROACHES.md](TECHNICAL_APPROACHES.md) | AI/ML strategies and matching algorithms | Nov 29 |
+| [CLAUDE_AI_TRAINING.md](CLAUDE_AI_TRAINING.md) | Detailed AI training guide (use TECHNICAL_APPROACHES for overview) | Nov 29 |
 
 ### For Presenters & Judges
 
@@ -38,9 +39,7 @@ Welcome to the **been there** project documentation! This directory contains all
 | Document | Description | Last Updated |
 |----------|-------------|--------------|
 | [TEAM_WORKFLOWS.md](TEAM_WORKFLOWS.md) | Team collaboration guidelines | Nov 29 |
-| [CLAUDE_AI_TRAINING.md](CLAUDE_AI_TRAINING.md) | AI training and prompts | Nov 29 |
 | [DATA_SUMMARY.md](DATA_SUMMARY.md) | Data overview and exploration | Nov 29 |
-| [GROQ_QUICKSTART.md](GROQ_QUICKSTART.md) | Groq API integration (legacy) | Nov 29 |
 
 ---
 
@@ -91,6 +90,8 @@ Welcome to the **been there** project documentation! This directory contains all
 - **UPDATED**: Root [README.md](../README.md) - been there branding, current features
 - **UPDATED**: [CLAUDE.md](../CLAUDE.md) - OpenRouter integration, feature status
 - **MOVED**: `.claude/CLAUDE.md` → `.claude/CODE_STANDARDS.md` (resolved naming conflict)
+- **REMOVED**: `DIARY_FEATURE_SCHEMA.md` (consolidated into DATABASE_SCHEMA.md)
+- **REMOVED**: `GROQ_QUICKSTART.md` (outdated - using OpenRouter now)
 - **DEPRECATED**: [QUICK_START.md](../QUICK_START.md) - Legacy Jupyter/Python approach
 
 ---
@@ -102,21 +103,20 @@ docs/
 ├── README.md                     # ← You are here
 ├── HACKATHON_CONTEXT.md          # ⭐ Source of truth
 ├── PITCH_GUIDE.md                # Presentation materials
-├── CODEBASE_REVIEW.md            # Implementation status
+├── CODEBASE_REVIEW.md            # Implementation status (NEW)
 │
 ├── DEVELOPMENT.md                # Frontend dev guide
-├── DATABASE_SCHEMA.md            # Supabase schemas
+├── DATABASE_SCHEMA.md            # Supabase schemas (NEW - consolidated)
 ├── COMPONENTS.md                 # Component reference
 ├── API_CONTRACT.md               # Backend API spec
 ├── TECHNICAL_APPROACHES.md       # AI/ML strategies
+├── CLAUDE_AI_TRAINING.md         # Detailed AI training (use TECHNICAL_APPROACHES for overview)
 │
 ├── DESIGN.md                     # Product design
 ├── UI_DESIGN.md                  # UI specifications
 │
 ├── TEAM_WORKFLOWS.md             # Collaboration guide
-├── CLAUDE_AI_TRAINING.md         # AI prompts
-├── DATA_SUMMARY.md               # Data overview
-└── GROQ_QUICKSTART.md            # Legacy API guide
+└── DATA_SUMMARY.md               # Data overview
 ```
 
 ---
