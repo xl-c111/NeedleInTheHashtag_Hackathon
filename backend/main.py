@@ -15,8 +15,9 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from root directory
+root_dir = Path(__file__).parent.parent
+load_dotenv(root_dir / '.env')
 
 # Import our AI services
 from services.matcher import SemanticMatcher
