@@ -82,6 +82,10 @@ export default function ProfilePage() {
       // Update local state
       setProfile({ ...profile, avatar_url: avatarUrl })
       setShowAvatarPicker(false)
+      
+      // Dispatch custom event to notify other components that avatar was updated
+      window.dispatchEvent(new CustomEvent('avatarUpdated'))
+      
       alert('Avatar updated successfully!')
     } catch (error) {
       console.error('Failed to update avatar:', error)
