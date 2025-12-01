@@ -1,0 +1,62 @@
+[
+  {
+    "id": "c28b8e30-25ae-4c95-87a7-9a1227050973",
+    "user_id": "19a63fcb-5c57-4915-a32e-0b90efbb17da",
+    "title": "happy",
+    "content": "Wooww",
+    "mood": "calm",
+    "is_private": true,
+    "created_at": "2025-12-01T05:53:53.672776+00:00",
+    "updated_at": "2025-12-01T05:53:53.672776+00:00"
+  },
+  {
+    "id": "cb4be906-189d-4341-b73d-a4cb7ee1155e",
+    "user_id": "19a63fcb-5c57-4915-a32e-0b90efbb17da",
+    "title": "Untitled Entry",
+    "content": "Helllo",
+    "mood": "anxious",
+    "is_private": true,
+    "created_at": "2025-12-01T05:51:06.38429+00:00",
+    "updated_at": "2025-12-01T06:00:07.218988+00:00"
+  },
+  {
+    "id": "d06a57ad-9560-4dea-96c8-f3a65d6b117f",
+    "user_id": "19a63fcb-5c57-4915-a32e-0b90efbb17da",
+    "title": "haha",
+    "content": "This is my second diary",
+    "mood": "anxious",
+    "is_private": true,
+    "created_at": "2025-12-01T05:52:14.259987+00:00",
+    "updated_at": "2025-12-01T06:10:04.516793+00:00"
+  },
+  {
+    "id": "f837c0b4-b9c7-4087-8ae1-d876f9372701",
+    "user_id": "fb4f4d66-45dc-4d1a-a8fb-095f19f1d6ea",
+    "title": "testing",
+    "content": "meow meow :)",
+    "mood": null,
+    "is_private": true,
+    "created_at": "2025-12-01T06:56:41.475722+00:00",
+    "updated_at": "2025-12-01T06:56:41.475722+00:00"
+  },
+  {
+    "id": "f1494df7-f7aa-4d75-a7bc-3ace77c5c993",
+    "user_id": "eb82fa24-ff26-4858-a647-d8cc08ea0e39",
+    "title": "Hackathon went well!",
+    "content": "Killed it over the weekend at the hackathon with such a great team :)",
+    "mood": "happy",
+    "is_private": false,
+    "created_at": "2025-12-01T09:37:41.877288+00:00",
+    "updated_at": "2025-12-01T09:37:41.877288+00:00"
+  },
+  {
+    "id": "d9abe854-a6ef-476e-bda5-13786384efd8",
+    "user_id": "19a63fcb-5c57-4915-a32e-0b90efbb17da",
+    "title": "why?",
+    "content": "I'm not happy!!!!!",
+    "mood": "frustrated",
+    "is_private": true,
+    "created_at": "2025-12-01T09:56:05.941949+00:00",
+    "updated_at": "2025-12-01T09:56:16.612984+00:00"
+  }
+]

@@ -1,5 +1,5 @@
 import { type SupabaseClient } from '@supabase/supabase-js'
-import { createClient as createBrowserClient } from './supabase/client'
+import { createClient } from './supabase/client'
 import type { Story, Theme } from './types'
 
 // Check if Supabase is configured
@@ -8,13 +8,22 @@ const isSupabaseConfigured = !!(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 )
 
-// Use the same client as AuthProvider
+// Create a singleton client instance that's shared across all function calls
+// This ensures the authenticated session is consistent
+let supabaseInstance: SupabaseClient<Database> | null = null
+
 function getSupabaseClient(): SupabaseClient<Database> | null {
   if (!isSupabaseConfigured) {
     console.warn('Supabase not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY')
     return null
   }
-  return createBrowserClient()
+
+  // Reuse the same client instance to maintain session
+  if (!supabaseInstance) {
+    supabaseInstance = createClient()
+  }
+
+  return supabaseInstance
 }
 
 export type Database = {
@@ -103,6 +112,23 @@ export type Database = {
           mood?: string | null
           is_private?: boolean
           updated_at?: string
+        }
+      }
+      user_favorites: {
+        Row: {
+          user_id: string
+          post_id: string
+          created_at: string
+        }
+        Insert: {
+          user_id: string
+          post_id: string
+          created_at?: string
+        }
+        Update: {
+          user_id?: string
+          post_id?: string
+          created_at?: string
         }
       }
     }
@@ -479,6 +505,23 @@ export async function createComment(
     return { data: null, error: new Error('Supabase not configured') }
   }
 
+  // Check if user is authenticated
+  const { data: { session } } = await supabase.auth.getSession()
+  console.log('Session check:', {
+    hasSession: !!session,
+    sessionUserId: session?.user?.id,
+    providedUserId: userId,
+    match: session?.user?.id === userId
+  })
+
+  if (!session) {
+    return { data: null, error: new Error('Not authenticated. Please sign in.') }
+  }
+
+  if (session.user.id !== userId) {
+    return { data: null, error: new Error('User ID mismatch. Please refresh and try again.') }
+  }
+
   const commentData = {
     user_id: userId,
     content,
@@ -494,6 +537,8 @@ export async function createComment(
 
   if (error) {
     console.error('Error creating comment:', error)
+    console.error('Error details:', JSON.stringify(error, null, 2))
+    console.error('Comment data:', commentData)
     return { data: null, error: new Error(error.message) }
   }
 
@@ -795,7 +840,7 @@ export async function getUserStats(userId: string): Promise<{
 }
 
 /**
- * Get user's favorited stories
+ * Get user's favorited stories with comment counts
  */
 export async function getUserFavoritedStories(userId: string): Promise<Story[]> {
   const supabase = getSupabaseClient()
@@ -823,7 +868,16 @@ export async function getUserFavoritedStories(userId: string): Promise<Story[]> 
     return []
   }
 
-  return posts.map(postToStory)
+  // Get comment counts for each post (same as fetchMentorStories)
+  const storiesWithComments = await Promise.all(
+    posts.map(async (post) => {
+      const story = postToStory(post)
+      const commentCount = await getCommentCount(post.id)
+      return { ...story, commentCount }
+    })
+  )
+
+  return storiesWithComments
 }
 
 // Export config check for use in other files

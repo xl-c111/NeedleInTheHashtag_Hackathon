@@ -4,6 +4,7 @@ import { Clock, MessageCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Story, Theme } from "@/lib/types";
 import CommentSection from "@/components/Comments/CommentSection";
+import { FavoriteButton } from "@/components/Stories/FavoriteButton";
 
 interface StoryPageProps {
   params: Promise<{ id: string }>;
@@ -153,6 +154,8 @@ export default async function StoryPage({ params }: StoryPageProps) {
                 <Clock className="h-4 w-4" />
                 {story.readTime} min read
               </span>
+              <span>•</span>
+              <FavoriteButton storyId={id} />
             </div>
 
             {/* Title */}
