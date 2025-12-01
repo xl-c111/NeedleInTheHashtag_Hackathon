@@ -11,9 +11,10 @@ type DiaryEntry = {
   user_id: string
   title: string
   content: string
-  mood?: string
+  mood: string | null
   is_private: boolean
   created_at: string
+  updated_at: string
 }
 
 export default function DiaryPage() {
@@ -32,7 +33,7 @@ export default function DiaryPage() {
     { emoji: '🤔', label: 'Reflective', value: 'reflective' },
   ]
 
-  const getMoodEmoji = (mood?: string) => {
+  const getMoodEmoji = (mood: string | null | undefined) => {
     if (!mood) return '📝'
     const foundMood = moods.find(m => m.value === mood)
     return foundMood?.emoji || '📝'

@@ -10,6 +10,7 @@ export interface Story {
   themes: Theme[]; // mapped themes for filtering
   readTime: number; // minutes
   datePosted: string;
+  commentCount?: number; // number of comments/responses
 }
 
 // Theme types for story filtering

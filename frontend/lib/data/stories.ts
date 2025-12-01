@@ -17,6 +17,7 @@ Starting small helped. I began asking coworkers genuine questions about their we
 
 It's been 18 months. I have a small group of friends now. We play basketball on Thursdays. I'm still working on myself, but the bitterness is mostly gone. The world didn't change - I did.`,
     tags: ["mindset shift", "self-reflection", "friendships"],
+    themes: ["self-improvement", "loneliness"],
     readTime: 3,
     datePosted: "2024-08-15",
   },
@@ -38,6 +39,7 @@ The withdrawal was real. I felt lonely and lost. But slowly, that mental fog sta
 
 Now I can actually talk to people - all people - without this constant internal monologue of resentment. I didn't realize how exhausting that was until it was gone.`,
     tags: ["online communities", "recovery", "mental health"],
+    themes: ["self-improvement"],
     readTime: 3,
     datePosted: "2024-07-22",
   },
@@ -59,6 +61,7 @@ Understanding my fear didn't make it disappear. But it let me separate the fear 
 
 I'm not "fixed." I still struggle. But I'm no longer controlled by anger I didn't understand.`,
     tags: ["therapy", "emotional awareness", "vulnerability"],
+    themes: ["self-improvement"],
     readTime: 4,
     datePosted: "2024-06-10",
   },
@@ -80,6 +83,7 @@ The discipline transferred. I started applying the same consistency to other are
 
 The gym didn't make me confident with women. But it made me confident that I could work on being confident with women. That's a subtle but massive difference.`,
     tags: ["fitness", "discipline", "self-improvement"],
+    themes: ["self-improvement"],
     readTime: 3,
     datePosted: "2024-09-03",
   },
@@ -103,6 +107,7 @@ The irony? Once I stopped being desperate, once I had genuine interests and pass
 
 I'm still single. But I'm no longer defined by it.`,
     tags: ["purpose", "hobbies", "identity"],
+    themes: ["self-improvement"],
     readTime: 3,
     datePosted: "2024-05-18",
   },
@@ -124,6 +129,7 @@ The results were immediate. People started opening up to me more. Conversations 
 
 It turns out people don't need you to be brilliant. They need to feel heard. Once I stopped trying so hard to impress, I started actually connecting.`,
     tags: ["social skills", "communication", "listening"],
+    themes: ["self-improvement"],
     readTime: 3,
     datePosted: "2024-04-25",
   },
@@ -149,6 +155,7 @@ Working on this was uncomfortable. Consciously uncrossing my arms. Practicing a 
 
 But over time, it became natural. And people responded differently. Not because I was manipulating them, but because I was finally not putting up walls while complaining that no one got close.`,
     tags: ["self-awareness", "body language", "feedback"],
+    themes: ["self-improvement"],
     readTime: 4,
     datePosted: "2024-03-12",
   },
@@ -172,6 +179,7 @@ Looking back, a lot of my anger at the world was really anger at myself for not 
 
 I still have bad days. But I'm building something. That matters more than I ever realized.`,
     tags: ["career", "self-worth", "taking action"],
+    themes: ["self-improvement"],
     readTime: 3,
     datePosted: "2024-02-20",
   },
@@ -193,6 +201,7 @@ I also realized how much my isolation had warped my worldview. When you only soc
 
 I'm not saying online communities are all bad. But they can't replace human connection. I didn't realize how starved I was for it until I finally had it.`,
     tags: ["friendship", "connection", "isolation"],
+    themes: ["self-improvement"],
     readTime: 3,
     datePosted: "2024-01-15",
   },
@@ -216,6 +225,7 @@ The mystique faded. And without the mystique, my anxiety faded too. Talking to w
 
 I can't believe how much of my life I wasted treating half the population like aliens.`,
     tags: ["perspective shift", "women", "humanizing"],
+    themes: ["self-improvement"],
     readTime: 3,
     datePosted: "2024-08-28",
   },
@@ -237,6 +247,7 @@ Now when rejection happens - and it still does, regularly - I can usually keep i
 
 I'm not numb to rejection. I don't think that's possible or even healthy. But I've stopped letting it confirm the worst stories I tell about myself.`,
     tags: ["rejection", "resilience", "cognitive patterns"],
+    themes: ["self-improvement"],
     readTime: 3,
     datePosted: "2024-07-05",
   },
@@ -262,6 +273,7 @@ I think I was waiting for motivation to strike - some surge of energy that would
 
 The big breakthrough never came. The small steps did.`,
     tags: ["small steps", "consistency", "progress"],
+    themes: ["self-improvement"],
     readTime: 3,
     datePosted: "2024-06-28",
   },

@@ -188,7 +188,25 @@ function postToStory(row: Database['public']['Tables']['posts']['Row']): Story {
   }
 }
 
-// Fetch all stories from posts table in Supabase
+// Get comment count for a specific post
+async function getCommentCount(postId: string): Promise<number> {
+  const supabase = getSupabaseClient()
+  if (!supabase) return 0
+
+  const { count, error } = await supabase
+    .from('posts')
+    .select('*', { count: 'exact', head: true })
+    .eq('post_id', postId)
+
+  if (error) {
+    console.error('Error fetching comment count:', error)
+    return 0
+  }
+
+  return count || 0
+}
+
+// Fetch all stories from posts table in Supabase with comment counts
 export async function fetchMentorStories(): Promise<Story[]> {
   const supabase = getSupabaseClient()
   if (!supabase) {
@@ -196,9 +214,11 @@ export async function fetchMentorStories(): Promise<Story[]> {
     return []
   }
 
+  // Fetch only main posts (where post_id is null)
   const { data, error } = await supabase
     .from('posts')
     .select('*')
+    .is('post_id', null)
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -206,7 +226,16 @@ export async function fetchMentorStories(): Promise<Story[]> {
     return []
   }
 
-  return data.map(postToStory)
+  // Get comment counts for each post
+  const storiesWithComments = await Promise.all(
+    data.map(async (post) => {
+      const story = postToStory(post)
+      const commentCount = await getCommentCount(post.id)
+      return { ...story, commentCount }
+    })
+  )
+
+  return storiesWithComments
 }
 
 // Fetch a single story by ID from posts table
@@ -379,6 +408,148 @@ export async function fetchDiaryEntryById(entryId: string, userId: string): Prom
   }
 
   return data
+}
+
+// ============================================================================
+// COMMENTS FUNCTIONS (using posts table with post_id/comment_id)
+// ============================================================================
+
+export type Comment = Database['public']['Tables']['posts']['Row']
+
+/**
+ * Fetch all comments for a specific post
+ * Comments are posts where post_id matches the story ID
+ */
+export async function fetchPostComments(postId: string): Promise<Comment[]> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    console.log('Supabase not configured')
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('post_id', postId)
+    .is('comment_id', null) // Top-level comments only (not nested replies)
+    .order('created_at', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching comments:', error)
+    return []
+  }
+
+  return data || []
+}
+
+/**
+ * Fetch nested replies for a specific comment
+ */
+export async function fetchCommentReplies(commentId: string): Promise<Comment[]> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('comment_id', commentId)
+    .order('created_at', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching replies:', error)
+    return []
+  }
+
+  return data || []
+}
+
+/**
+ * Create a new comment on a post
+ */
+export async function createComment(
+  userId: string,
+  postId: string,
+  content: string,
+  parentCommentId?: string
+): Promise<{ data: Comment | null; error: Error | null }> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return { data: null, error: new Error('Supabase not configured') }
+  }
+
+  const commentData = {
+    user_id: userId,
+    content,
+    post_id: postId,
+    comment_id: parentCommentId || null,
+  }
+
+  const { data, error } = await supabase
+    .from('posts')
+    .insert([commentData])
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error creating comment:', error)
+    return { data: null, error: new Error(error.message) }
+  }
+
+  return { data, error: null }
+}
+
+/**
+ * Delete a comment (user must own it)
+ */
+export async function deleteComment(commentId: string, userId: string): Promise<{ error: Error | null }> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return { error: new Error('Supabase not configured') }
+  }
+
+  const { error } = await supabase
+    .from('posts')
+    .delete()
+    .eq('id', commentId)
+    .eq('user_id', userId)
+
+  if (error) {
+    console.error('Error deleting comment:', error)
+    return { error: new Error(error.message) }
+  }
+
+  return { error: null }
+}
+
+/**
+ * Update a comment (user must own it)
+ */
+export async function updateComment(
+  commentId: string,
+  userId: string,
+  content: string
+): Promise<{ data: Comment | null; error: Error | null }> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return { data: null, error: new Error('Supabase not configured') }
+  }
+
+  const { data, error } = await supabase
+    .from('posts')
+    .update({ content })
+    .eq('id', commentId)
+    .eq('user_id', userId)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error updating comment:', error)
+    return { data: null, error: new Error(error.message) }
+  }
+
+  return { data, error: null }
 }
 
 // Export config check for use in other files

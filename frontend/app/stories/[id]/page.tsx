@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Clock, MessageCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import type { Story } from "@/lib/types";
+import type { Story, Theme } from "@/lib/types";
+import CommentSection from "@/components/Comments/CommentSection";
 
 interface StoryPageProps {
   params: Promise<{ id: string }>;
@@ -32,6 +33,34 @@ function calculateReadTime(content: string): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
+// Map topic_tags to themes
+function mapTopicTagsToThemes(topicTags: string[] | null): Theme[] {
+  if (!topicTags) return ['self-improvement'];
+
+  const tagToTheme: Record<string, Theme> = {
+    'Mental health history': 'therapy',
+    'Views on women': 'relationships',
+    'Views on men/masculinity': 'self-improvement',
+    'Dating history': 'rejection',
+    'Sexuality': 'relationships',
+    'Friendship history': 'loneliness',
+    'Online spaces': 'toxic-communities',
+    'Social isolation': 'loneliness',
+    'Self-improvement': 'self-improvement',
+    'Career': 'career',
+    'Fitness': 'fitness',
+    'Purpose': 'finding-purpose',
+  };
+
+  const themes = new Set<Theme>();
+  for (const tag of topicTags) {
+    const theme = tagToTheme[tag];
+    if (theme) themes.add(theme);
+  }
+
+  return themes.size === 0 ? ['self-improvement'] : Array.from(themes);
+}
+
 // Transform post row to Story
 function postToStory(row: { id: string; user_id: string; content: string; topic_tags: string[] | null; timestamp: string | null; created_at: string }): Story {
   return {
@@ -41,6 +70,7 @@ function postToStory(row: { id: string; user_id: string; content: string; topic_
     excerpt: generateExcerpt(row.content),
     content: row.content,
     tags: row.topic_tags || [],
+    themes: mapTopicTagsToThemes(row.topic_tags),
     readTime: calculateReadTime(row.content),
     datePosted: row.timestamp ? new Date(row.timestamp).toISOString().split("T")[0] : row.created_at.split("T")[0],
   };
@@ -106,101 +136,85 @@ export default async function StoryPage({ params }: StoryPageProps) {
   const relatedStories = await fetchRelatedStories(id);
 
   return (
-    <div className="min-h-screen pt-16">
-      {/* Header - simplified */}
-      <header className="border-b border-black/10 dark:border-white/10">
-        <div className="mx-auto flex max-w-3xl items-center justify-end px-4 py-4 sm:px-6">
-          <span className="text-sm text-black/60 dark:text-white/60">
-            {story.datePosted}
-          </span>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-gradient-to-b from-background to-background/80 pt-16 pb-12">
       {/* Content */}
-      <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
-        {/* Tags */}
-        <div className="mb-6 flex flex-wrap gap-2">
-          {story.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full bg-black/5 px-3 py-1 text-xs font-medium text-black/60 dark:bg-white/5 dark:text-white/60"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+        {/* Story Scroll Card - Main Content */}
+        <article className="scroll-card-thick relative min-h-[600px] p-8 sm:p-12 md:p-16">
+          {/* Story Header */}
+          <div className="mb-8">
+            {/* Date and Meta */}
+            <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-black/60">
+              <span>{story.datePosted}</span>
+              <span>•</span>
+              <span>{story.author}</span>
+              <span>•</span>
+              <span className="flex items-center gap-1">
+                <Clock className="h-4 w-4" />
+                {story.readTime} min read
+              </span>
+            </div>
 
-        {/* Title */}
-        <h1 className="font-semibold text-2xl tracking-tight text-black dark:text-white sm:text-3xl md:text-4xl">
-          {story.title}
-        </h1>
+            {/* Title */}
+            <h1 className="mb-4 font-bold text-3xl tracking-tight text-black sm:text-4xl md:text-5xl">
+              {story.title}
+            </h1>
 
-        {/* Meta */}
-        <div className="mt-4 flex items-center gap-4 text-sm text-black/50 dark:text-white/50">
-          <span>{story.author}</span>
-          <span className="flex items-center gap-1">
-            <Clock className="h-4 w-4" />
-            {story.readTime} min read
-          </span>
-        </div>
+            {/* Tags */}
+            <div className="flex flex-wrap gap-2">
+              {story.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-black/10 px-3 py-1 text-xs font-medium text-black/70"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
 
-        {/* Divider */}
-        <div className="my-8 h-px bg-black/10 dark:bg-white/10" />
+            {/* Decorative divider */}
+            <div className="mt-6 h-1 w-24 rounded-full bg-black/20" />
+          </div>
 
-        {/* Content */}
-        <article className="scroll-card-thick relative overflow-hidden rounded-lg prose prose-lg max-w-none dark:prose-invert">
-          <div className="relative z-10 bg-white/90 p-8 dark:bg-black/90">
+          {/* Story Content */}
+          <div className="prose prose-lg max-w-none">
             {story.content.split("\n\n").map((paragraph, i) => (
-            <p
-              key={i}
-              className="mb-6 leading-relaxed text-black/80 dark:text-white/80"
-            >
-              {paragraph}
-            </p>
-          ))}
+              <p
+                key={i}
+                className="mb-6 text-base leading-relaxed text-black sm:text-lg"
+              >
+                {paragraph}
+              </p>
+            ))}
           </div>
         </article>
 
-        {/* CTA */}
-        <div className="scroll-card-thin relative overflow-hidden rounded-xl mt-12 border border-black/10 dark:border-white/10">
-          <div className="relative z-10 bg-white/80 p-6 dark:bg-black/80">
-            <h3 className="font-medium text-base tracking-tight text-black dark:text-white">
-              Did this story resonate with you?
-            </h3>
-            <p className="mt-2 text-sm text-black/60 dark:text-white/60">
-              Talk to Village about what you're going through. We'll help you find
-              more stories from people who understand.
-            </p>
-            <Link
-              href="/chat"
-              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:bg-white dark:text-black"
-            >
-              <MessageCircle className="h-4 w-4" />
-              Start talking
-            </Link>
-          </div>
+        {/* Comments Section with Scroll Background */}
+        <div className="scroll-card-thin relative mt-12 min-h-[400px] px-10 pt-16 pb-20 sm:px-14 sm:pt-20 sm:pb-24">
+          <CommentSection postId={id} />
         </div>
 
         {/* More stories */}
         {relatedStories.length > 0 && (
-          <div className="mt-12">
-            <h3 className="font-medium text-lg tracking-tight text-black dark:text-white">
-              More stories
+          <div className="mt-16">
+            <h3 className="mb-6 font-semibold text-2xl tracking-tight text-black">
+              More stories like this
             </h3>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-6 sm:grid-cols-2">
               {relatedStories.map((relatedStory) => (
                 <Link
                   key={relatedStory.id}
                   href={`/stories/${relatedStory.id}`}
-                  className="scroll-card-thin relative overflow-hidden rounded-lg border border-black/10 transition-colors hover:border-black/20 dark:border-white/10 dark:hover:border-white/20"
+                  className="scroll-card-thin relative block px-8 pt-12 pb-14 transition-transform hover:scale-[1.02]"
                 >
-                  <div className="relative z-10 bg-white/85 p-4 dark:bg-black/85">
-                    <h4 className="font-medium text-sm tracking-tight text-black dark:text-white">
-                      {relatedStory.title}
-                    </h4>
-                    <p className="mt-1 line-clamp-2 text-xs text-black/60 dark:text-white/60">
-                      {relatedStory.excerpt}
-                    </p>
+                  <h4 className="font-semibold text-lg tracking-tight text-black">
+                    {relatedStory.title}
+                  </h4>
+                  <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-black/80">
+                    {relatedStory.excerpt}
+                  </p>
+                  <div className="mt-4 text-xs text-black/60">
+                    {relatedStory.readTime} min read
                   </div>
                 </Link>
               ))}
