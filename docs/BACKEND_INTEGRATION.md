@@ -419,9 +419,9 @@ curl http://localhost:8000/api/health
 ### CORS errors
 Make sure backend `.env` has:
 ```env
-SUPABASE_URL=https://pcupibngmhlcxkhsgiyg.supabase.co
-SUPABASE_SERVICE_KEY=sb_secret_jSgMpFdA2lQyZLKLbMW3hw_ZQdiqGHQ
-OPENROUTER_API_KEY=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
+SUPABASE_URL=your-project-url
+SUPABASE_SERVICE_KEY=your-service-key
+OPENROUTER_API_KEY=your-openrouter-key
 ```
 
 ### No stories returned
