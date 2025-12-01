@@ -24,14 +24,14 @@ export default function ProfilePage() {
 
   // Preset avatar options (add your custom avatars to /public/avatars/)
   const avatarOptions = [
-    '/avatars/avatar1.png',
-    '/avatars/avatar2.png',
-    '/avatars/avatar3.png',
-    '/avatars/avatar4.png',
-    '/avatars/avatar5.png',
-    '/avatars/avatar6.png',
-    '/avatars/avatar7.png',
-    '/avatars/avatar8.png',
+    '/avatars/ppic1.png',
+    '/avatars/ppic2.png',
+    '/avatars/ppic3.png',
+    '/avatars/ppic4.png',
+    '/avatars/ppic5.png',
+    '/avatars/ppic6.png',
+    '/avatars/ppic7.png',
+    '/avatars/ppic8.png',
   ]
 
   // Load profile data
