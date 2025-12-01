@@ -1,108 +1,87 @@
 """
-Test the FastAPI backend endpoints.
-
-Make sure the backend is running first:
-    uvicorn main:app --reload
+Test the backend API endpoints.
+Make sure the server is running first: python -m uvicorn main:app --reload
 """
 
 import requests
 import json
 
-BASE_URL = "http://localhost:8000"
+API_BASE = "http://localhost:8000"
 
-def test_health():
-    """Test health check endpoint."""
-    print("="*60)
-    print("Testing /api/health")
-    print("="*60)
+print("=" * 60)
+print("TESTING BACKEND API")
+print("=" * 60)
 
-    response = requests.get(f"{BASE_URL}/api/health")
-    print(f"Status: {response.status_code}")
-    print(f"Response: {json.dumps(response.json(), indent=2)}")
-    print()
+# Test 1: Health check
+print("\n1. Testing /api/health...")
+try:
+    response = requests.get(f"{API_BASE}/api/health")
+    print(f"   Status: {response.status_code}")
+    print(f"   Response: {response.json()}")
+except Exception as e:
+    print(f"   Error: {e}")
 
-def test_match():
-    """Test semantic matching endpoint."""
-    print("="*60)
-    print("Testing /api/match")
-    print("="*60)
+# Test 2: Semantic matching
+print("\n2. Testing /api/match...")
+test_queries = [
+    "I feel so alone and isolated",
+    "I'm struggling with my mental health",
+    "I need help dealing with stress"
+]
 
-    # Test with a sample user input
-    payload = {
-        "user_text": "I feel so lonely and isolated. Nobody seems to understand what I'm going through.",
-        "num_matches": 3
-    }
-
-    response = requests.post(f"{BASE_URL}/api/match", json=payload)
-    print(f"Status: {response.status_code}")
-
-    if response.status_code == 200:
-        data = response.json()
-        print(f"\nFound {len(data['matches'])} matches")
-        print(f"Warning: {data.get('warning', 'None')}")
-        print(f"Risk score: {data.get('user_risk_score', 'N/A')}")
-
-        for i, match in enumerate(data['matches'], 1):
-            print(f"\n--- Match {i} (similarity: {match['similarity_score']:.3f}) ---")
-            print(f"User ID: {match.get('user_id', 'N/A')}")
-            print(f"Topic tags: {match.get('topic_tags', [])}")
-            print(f"Content preview: {match.get('content', '')[:200]}...")
-    else:
-        print(f"Error: {response.text}")
-    print()
-
-def test_moderate():
-    """Test content moderation endpoint."""
-    print("="*60)
-    print("Testing /api/moderate")
-    print("="*60)
-
-    # Test with safe content
-    payload = {
-        "text": "I'm working on improving myself through therapy and exercise."
-    }
-
-    response = requests.post(f"{BASE_URL}/api/moderate", json=payload)
-    print(f"Status: {response.status_code}")
-    print(f"Response: {json.dumps(response.json(), indent=2)}")
-    print()
-
-def test_chat():
-    """Test chat assistance endpoint."""
-    print("="*60)
-    print("Testing /api/chat")
-    print("="*60)
-
-    payload = {
-        "message": "I don't know how to explain how I feel"
-    }
-
-    response = requests.post(f"{BASE_URL}/api/chat", json=payload)
-    print(f"Status: {response.status_code}")
-
-    if response.status_code == 200:
-        data = response.json()
-        print(f"Response: {data['response']}")
-        print(f"Session ID: {data['session_id']}")
-    else:
-        print(f"Error: {response.text}")
-    print()
-
-if __name__ == "__main__":
+for query in test_queries:
+    print(f"\n   Query: \"{query}\"")
     try:
-        print("\nTesting Been There API\n")
+        response = requests.post(
+            f"{API_BASE}/api/match",
+            json={"user_text": query, "top_k": 3}
+        )
+        print(f"   Status: {response.status_code}")
 
-        test_health()
-        test_match()
-        test_moderate()
-        test_chat()
-
-        print("="*60)
-        print("All tests completed!")
-        print("="*60)
-
-    except requests.exceptions.ConnectionError:
-        print("Error: Cannot connect to backend at http://localhost:8000")
-        print("Make sure the backend is running: uvicorn main:app --reload")
+        if response.status_code == 200:
+            results = response.json()
+            print(f"   Found {len(results)} matches:")
+            for i, result in enumerate(results, 1):
+                similarity = result.get('similarity_score', 0)
+                preview = result.get('content', '')[:80]
+                tags = result.get('topic_tags', [])
+                print(f"     {i}. Similarity: {similarity:.3f}")
+                print(f"        Tags: {tags[:3]}...")  # First 3 tags
+                print(f"        Preview: {preview}...")
+        else:
+            print(f"   Error: {response.text}")
     except Exception as e:
-        print(f"Error: {str(e)}")
+        print(f"   Error: {e}")
+
+# Test 3: Content moderation
+print("\n3. Testing /api/moderate...")
+test_texts = [
+    "I feel sad and need help",
+    "This is violent harmful content"  # Should be flagged
+]
+
+for text in test_texts:
+    print(f"\n   Text: \"{text}\"")
+    try:
+        response = requests.post(
+            f"{API_BASE}/api/moderate",
+            json={"text": text}
+        )
+        print(f"   Status: {response.status_code}")
+
+        if response.status_code == 200:
+            result = response.json()
+            is_safe = result.get('is_safe', False)
+            confidence = result.get('confidence', 0)
+            print(f"   Safe: {is_safe}, Confidence: {confidence:.3f}")
+        else:
+            print(f"   Error: {response.text}")
+    except Exception as e:
+        print(f"   Error: {e}")
+
+print("\n" + "=" * 60)
+print("API TESTS COMPLETE")
+print("=" * 60)
+print("\nBackend API is ready!")
+print(f"API docs: {API_BASE}/docs")
+print(f"Interactive API testing: {API_BASE}/docs")
