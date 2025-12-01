@@ -39,14 +39,14 @@ export function StoryFilters({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-black/60 dark:text-white/60">
+        <span className="text-sm font-medium text-muted-foreground">
           Filter by category
         </span>
 
         {selectedThemes.length > 0 && (
           <button
             onClick={onClear}
-            className="flex items-center gap-1 text-xs text-black/50 transition-colors hover:text-black dark:text-white/50 dark:hover:text-white"
+            className="flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             <X className="h-3 w-3" />
             Clear
@@ -63,8 +63,8 @@ export function StoryFilters({
               onClick={() => onThemeToggle(category)}
               className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                 isSelected
-                  ? "bg-black text-white dark:bg-white dark:text-black"
-                  : "bg-black/5 text-black/60 hover:bg-black/10 dark:bg-white/5 dark:text-white/60 dark:hover:bg-white/10"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
               }`}
             >
               {category}
@@ -75,7 +75,7 @@ export function StoryFilters({
         {!isExpanded && allThemes.length > 6 && (
           <button
             onClick={() => setIsExpanded(true)}
-            className="rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-black/60 transition-colors hover:border-black/20 dark:border-white/10 dark:text-white/60 dark:hover:border-white/20"
+            className="rounded-full border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-ring"
           >
             +{allThemes.length - 6} more
           </button>
@@ -84,7 +84,7 @@ export function StoryFilters({
         {isExpanded && (
           <button
             onClick={() => setIsExpanded(false)}
-            className="rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-black/60 transition-colors hover:border-black/20 dark:border-white/10 dark:text-white/60 dark:hover:border-white/20"
+            className="rounded-full border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-ring"
           >
             Show less
           </button>

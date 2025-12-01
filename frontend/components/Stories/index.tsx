@@ -42,7 +42,7 @@ export default function StoriesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black pt-16">
+    <div className="min-h-screen bg-background pt-16">
       <StoriesHeader totalStories={stories.length} />
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
@@ -57,7 +57,7 @@ export default function StoriesPage() {
 
         {/* Results info */}
         {selectedThemes.length > 0 && (
-          <p className="mb-6 text-sm text-black/60 dark:text-white/60">
+          <p className="mb-6 text-sm text-muted-foreground">
             Showing {filteredStories.length} of {stories.length} stories
           </p>
         )}
@@ -65,8 +65,8 @@ export default function StoriesPage() {
         {/* Loading state */}
         {isLoading ? (
           <div className="py-16 text-center">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-black/20 border-t-black dark:border-white/20 dark:border-t-white" />
-            <p className="mt-4 text-black/60 dark:text-white/60">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-border border-t-foreground" />
+            <p className="mt-4 text-muted-foreground">
               Loading stories...
             </p>
           </div>
@@ -78,12 +78,12 @@ export default function StoriesPage() {
           </div>
         ) : (
           <div className="py-16 text-center">
-            <p className="text-black/60 dark:text-white/60">
+            <p className="text-muted-foreground">
               No stories match your filters.
             </p>
             <button
               onClick={handleClearFilters}
-              className="mt-4 text-sm font-medium text-black underline dark:text-white"
+              className="mt-4 text-sm font-medium text-foreground underline"
             >
               Clear filters
             </button>
