@@ -78,6 +78,14 @@ export function UserButton() {
                 {user.email}
               </p>
             </div>
+            <Link
+              href="/profile"
+              onClick={() => setIsOpen(false)}
+              className="flex w-full items-center gap-2 px-4 py-2 text-sm transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+            >
+              <User className="h-4 w-4" />
+              My Profile
+            </Link>
             <button
               onClick={handleSignOut}
               className="flex w-full items-center gap-2 px-4 py-2 text-sm transition-colors hover:bg-black/5 dark:hover:bg-white/5"
