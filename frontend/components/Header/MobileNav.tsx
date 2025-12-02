@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { NAVIGATION_ITEMS } from "./NavigationData";
+import { useAuth } from "@/components/Auth";
 
 type MobileNavProps = {
   onClose: () => void;
@@ -14,6 +15,7 @@ type MobileNavProps = {
 export function MobileNav({ onClose }: MobileNavProps) {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const router = useRouter();
+  const { user, signOut } = useAuth();
 
   return (
     <div className="border-black/5 border-t py-4 lg:hidden dark:border-white/5">
@@ -80,7 +82,7 @@ export function MobileNav({ onClose }: MobileNavProps) {
         ))}
         <div className="mt-4 flex flex-col gap-2 px-3">
           <Button
-            className="w-full tracking-tighter flex items-center justify-center"
+            className="w-full tracking-tighter flex items-center justify-center py-6"
             onClick={() => {
               router.push("/write");
               onClose();
@@ -88,10 +90,10 @@ export function MobileNav({ onClose }: MobileNavProps) {
             size="sm"
             variant="outline"
           >
-            <img src="/storiesbtnfeather.svg" alt="write" className="h-6 w-auto" />
+            <img src="/storiesbtnfeather.svg" alt="write" className="h-8 w-auto object-contain" />
           </Button>
           <Button
-            className="w-full tracking-tighter flex items-center justify-center"
+            className="w-full tracking-tighter flex items-center justify-center py-6"
             onClick={() => {
               router.push("/diary");
               onClose();
@@ -99,10 +101,10 @@ export function MobileNav({ onClose }: MobileNavProps) {
             size="sm"
             variant="outline"
           >
-            <img src="/diarybtn.svg" alt="diary" className="h-6 w-auto" />
+            <img src="/diarybtn.svg" alt="diary" className="h-8 w-auto object-contain" />
           </Button>
           <Button
-            className="w-full tracking-tighter"
+            className="w-full tracking-tighter flex items-center justify-center py-6"
             onClick={() => {
               router.push("/stories");
               onClose();
@@ -110,17 +112,17 @@ export function MobileNav({ onClose }: MobileNavProps) {
             size="sm"
             variant="outline"
           >
-            stories
+            <img src="/storiesbtn.svg" alt="stories" className="h-8 w-auto object-contain" />
           </Button>
           <Button
-            className="w-full tracking-tighter"
+            className="w-full tracking-tighter flex items-center justify-center py-6"
             onClick={() => {
               router.push("/chat");
               onClose();
             }}
             size="sm"
           >
-            chat
+            <img src="/chatbtn.svg" alt="chat" className="h-8 w-auto object-contain" />
           </Button>
           <Button
             className="w-full tracking-tighter"
@@ -133,6 +135,60 @@ export function MobileNav({ onClose }: MobileNavProps) {
           >
             resources
           </Button>
+
+          {/* Auth buttons */}
+          <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 space-y-2">
+            {user ? (
+              <>
+                <Button
+                  className="w-full tracking-tighter flex items-center justify-center py-6"
+                  onClick={() => {
+                    router.push("/profile");
+                    onClose();
+                  }}
+                  size="sm"
+                  variant="outline"
+                >
+                  <img src="/profilehead.svg" alt="profile" className="h-8 w-auto object-contain" />
+                </Button>
+                <Button
+                  className="w-full tracking-tighter flex items-center justify-center py-6"
+                  onClick={async () => {
+                    await signOut();
+                    onClose();
+                  }}
+                  size="sm"
+                  variant="outline"
+                >
+                  <img src="/logout.svg" alt="sign out" className="h-8 w-auto object-contain" />
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  className="w-full tracking-tighter flex items-center justify-center py-6"
+                  onClick={() => {
+                    router.push("/login");
+                    onClose();
+                  }}
+                  size="sm"
+                  variant="outline"
+                >
+                  <img src="/login.svg" alt="log in" className="h-8 w-auto object-contain" />
+                </Button>
+                <Button
+                  className="w-full tracking-tighter flex items-center justify-center py-6"
+                  onClick={() => {
+                    router.push("/signup");
+                    onClose();
+                  }}
+                  size="sm"
+                >
+                  <img src="/signup.svg" alt="sign up" className="h-8 w-auto object-contain" />
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </nav>
     </div>

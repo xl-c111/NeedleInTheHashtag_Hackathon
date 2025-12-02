@@ -84,7 +84,7 @@ function AccordionItemComponent({
     return (
         <motion.div
             className={cn(
-                "p-6 cursor-pointer relative group",
+                "p-1 sm:p-6 cursor-pointer relative group",
                 "transition-colors duration-200"
             )}
             onClick={onClick}

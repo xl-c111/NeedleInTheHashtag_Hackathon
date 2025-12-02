@@ -207,9 +207,9 @@ export default function DiaryPage() {
             {filteredEntries.map((entry) => (
               <div
                 key={entry.id}
-                className="border-0 rounded-lg p-4 sm:p-6 hover:shadow-lg transition-shadow"
+                className="border-0 rounded-lg p-4 sm:p-6 hover:shadow-lg transition-shadow bg-[#d4a574]"
                 style={{
-                  backgroundImage: `url('/diaryscrollpost.svg')`,
+                  backgroundImage: window.innerWidth >= 640 ? `url('/diaryscrollpost.svg')` : 'none',
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
@@ -221,6 +221,7 @@ export default function DiaryPage() {
                       src={getMoodSvg(entry.mood)}
                       alt={entry.mood || 'default'}
                       className="w-12 h-12 sm:w-15 sm:h-15"
+                      loading="lazy"
                     />
                     <div className="flex-1 min-w-0">
                       <h3 className="text-base sm:text-lg font-semibold text-black mb-1 truncate">

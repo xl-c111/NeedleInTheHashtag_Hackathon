@@ -25,7 +25,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear().toString();
 
   return (
-    <footer className="relative mx-auto w-full max-w-7xl px-6 pt-24 pb-12 sm:pt-32 sm:pb-16">
+    <footer className="relative mx-auto w-full max-w-7xl px-6 pt-8 pb-12 sm:pt-32 sm:pb-16">
       <div className="flex flex-col gap-16 md:flex-row md:items-start md:justify-between">
         <div className="max-w-sm flex-shrink-0">
           <Link

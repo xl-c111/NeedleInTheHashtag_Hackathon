@@ -38,23 +38,25 @@ export default function FAQSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="relative mx-auto flex w-full max-w-7xl flex-col items-center px-6 pt-12 pb-24 sm:pt-16 sm:pb-32"
+      className="relative mx-auto flex w-full max-w-7xl flex-col items-center px-6 pt-12 -mb-96 sm:pt-16 sm:pb-32"
       id="faq"
     >
       {/* Header outside scroll background */}
       <div className="text-center -mb-100">
-        <img src="/questions.svg" alt="questions?" className="mx-auto mb-0 h-20 sm:h-24 md:h-28 lg:h-32 xl:h-36" />
-        <img src="/readfaqribbon.svg" alt="read our faq below" className="mx-auto mb-0 h-8 sm:h-10 md:h-12" />
+        <img src="/questions.svg" alt="questions?" className="mx-auto mb-0 h-20 sm:h-24 md:h-28 lg:h-32 xl:h-36" loading="lazy" />
+        <img src="/readfaqribbon.svg" alt="read our faq below" className="mx-auto mb-0 h-8 sm:h-10 md:h-12" loading="lazy" />
       </div>
-      
+
       {/* FAQ items with larger scroll background */}
       <div
-        className="w-full max-w-4xl min-h-[1000px] sm:min-h-[1200px] md:min-h-[1500px] flex items-center justify-center px-4 sm:px-6 md:px-8 py-12 sm:py-16 md:py-24"
+        className="w-full max-w-4xl min-h-[1400px] md:min-h-[1500px] flex items-center justify-center px-8"
         style={{
           backgroundImage: "url('/scrollpostthicc.svg')",
           backgroundSize: 'contain',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          backgroundRepeat: 'no-repeat',
+          paddingTop: '1.5rem',
+          paddingBottom: '6rem'
         }}
       >
         <div className="w-full max-w-2xl">

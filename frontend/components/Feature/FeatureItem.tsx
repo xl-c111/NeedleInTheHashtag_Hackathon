@@ -31,8 +31,8 @@ export function FeatureItem({ feature, isActive, onToggle }: FeatureItemProps) {
       >
         <div className="flex items-center gap-4">
           {typeof feature.icon === 'string' ? (
-            <img 
-              src={feature.icon} 
+            <img
+              src={feature.icon}
               alt=""
               className={`h-20 w-20 transition-all duration-200 ${
                 isActive
@@ -41,6 +41,7 @@ export function FeatureItem({ feature, isActive, onToggle }: FeatureItemProps) {
                     ]
                   : "opacity-30"
               }`}
+              loading="lazy"
             />
           ) : (
             <feature.icon
