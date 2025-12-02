@@ -5,6 +5,8 @@ import { useAuth } from '@/components/Auth'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Edit3, Save, Calendar } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default function WritePage() {
   const { user, isLoading, signInAnonymously } = useAuth()
   const router = useRouter()
