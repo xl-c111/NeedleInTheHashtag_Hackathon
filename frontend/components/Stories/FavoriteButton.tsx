@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/components/Auth";
-import { Heart } from "lucide-react";
 
 interface FavoriteButtonProps {
   storyId: string;
@@ -74,11 +73,13 @@ export function FavoriteButton({ storyId }: FavoriteButtonProps) {
       className="flex items-center gap-1 transition-all hover:scale-110 disabled:opacity-50"
       aria-label={isFavorited ? "Unfavorite story" : "Favorite story"}
     >
-      <Heart
-        className={`h-4 w-4 transition-all ${
+      <img 
+        src="/heart.svg" 
+        alt={isFavorited ? "Unfavorite story" : "Favorite story"}
+        className={`h-6 w-6 transition-all ${
           isFavorited
-            ? "fill-dark-red text-dark-red"
-            : "text-black/60 hover:text-dark-red"
+            ? "opacity-100"
+            : "opacity-60 hover:opacity-100"
         }`}
       />
       <span className="text-sm font-medium text-black/60">{favoriteCount}</span>

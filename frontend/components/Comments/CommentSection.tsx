@@ -273,7 +273,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
   if (!user) {
     return (
       <div className="rounded-lg border border-black/10 bg-white/30 p-6 text-center">
-        <MessageCircle className="mx-auto h-8 w-8 text-black/40" />
+        <img src="/commentbubble.svg" alt="Comments" className="mx-auto h-8 w-8 opacity-40" />
         <p className="mt-2 text-sm text-black/60">
           Sign in to join the conversation
         </p>
@@ -285,7 +285,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     <div>
       {/* Section Header */}
       <div className="mb-6 flex items-center gap-2">
-        <MessageCircle className="h-5 w-5 text-black/60" />
+        <img src="/commentbubble.svg" alt="Comments" className="h-10 w-10 opacity-60" />
         <h3 className="font-semibold text-xl tracking-tight text-black">
           Discussion
         </h3>
