@@ -122,6 +122,17 @@ export function MobileNav({ onClose }: MobileNavProps) {
           >
             chat
           </Button>
+          <Button
+            className="w-full tracking-tighter"
+            onClick={() => {
+              router.push("/resources");
+              onClose();
+            }}
+            size="sm"
+            variant="outline"
+          >
+            resources
+          </Button>
         </div>
       </nav>
     </div>

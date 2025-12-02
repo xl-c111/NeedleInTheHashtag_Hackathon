@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Clock, MessageCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Story, Theme } from "@/lib/types";
 import CommentSection from "@/components/Comments/CommentSection";
@@ -151,7 +150,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
               <span>{story.author}</span>
               <span>•</span>
               <span className="flex items-center gap-1">
-                <Clock className="h-4 w-4" />
+                <img src="/clock.svg" alt="Reading time" className="h-4 w-4" />
                 {story.readTime} min read
               </span>
               <span>•</span>

@@ -19,7 +19,7 @@ export function UserButton() {
       if (user && !isAnonymous) {
         try {
           const profile = await getUserProfile(user.id)
-          setAvatarUrl(profile?.avatar_url || null)
+          setAvatarUrl((profile as any)?.avatar_url || null)
         } catch (error) {
           console.error('Error loading user profile:', error)
         }

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Clock, Heart, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/components/Auth";
 import type { Story } from "@/lib/types";
@@ -142,11 +141,13 @@ export function StoryCard({ story, index = 0, onFavoriteChange }: StoryCardProps
                 className="flex items-center gap-1 transition-all hover:scale-110 disabled:opacity-50"
                 aria-label={isFavorited ? "Unfavorite story" : "Favorite story"}
               >
-                <Heart
-                  className={`h-4 w-4 transition-all ${
+                <img 
+                  src="/heart.svg" 
+                  alt={isFavorited ? "Unfavorite story" : "Favorite story"}
+                  className={`h-6 w-6 transition-all ${
                     isFavorited
-                      ? "fill-dark-red text-dark-red"
-                      : "text-black/70 hover:text-dark-red"
+                      ? "opacity-100"
+                      : "opacity-70 hover:opacity-100"
                   }`}
                 />
                 <span className="font-medium">{favoriteCount}</span>
@@ -154,7 +155,7 @@ export function StoryCard({ story, index = 0, onFavoriteChange }: StoryCardProps
 
               {/* Comment count */}
               <span className="flex items-center gap-1">
-                <MessageCircle className="h-3 w-3" />
+                <img src="/commentbubble.svg" alt="Comments" className="h-8 w-8" />
                 {story.commentCount ?? 0} {story.commentCount === 1 ? 'response' : 'responses'}
               </span>
             </div>
