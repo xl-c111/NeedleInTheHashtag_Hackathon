@@ -311,14 +311,14 @@ export default function ProfilePage() {
                 {/* Favorites */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                   
-                    <img 
-                      src="/faves.svg" 
-                      alt="Favorites" 
+
+                    <img
+                      src="/faves.svg"
+                      alt="Favorites"
                       className="h-10"
                     />
                   </div>
-                  <span className="text-2xl font-bold text-red-500">{stats.favoriteCount}</span>
+                  <span className="text-2xl font-bold text-dark-red">{stats.favoriteCount}</span>
                 </div>
               </div>
 
@@ -397,7 +397,7 @@ export default function ProfilePage() {
             {/* Sign Out Button */}
             <button
               onClick={handleSignOut}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-destructive text-destructive-foreground rounded-lg font-medium hover:opacity-90 transition-opacity"
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-dark-red text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
             >
               <LogOut className="w-5 h-5" />
               Sign Out
