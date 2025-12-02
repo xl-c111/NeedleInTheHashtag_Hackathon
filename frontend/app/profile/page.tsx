@@ -48,7 +48,7 @@ export default function ProfilePage() {
         // Load profile
         const profileData = await getUserProfile(user.id)
         setProfile(profileData)
-        setNewUsername(profileData?.username || '')
+        setNewUsername((profileData as any)?.username || '')
 
         // Load stats
         const statsData = await getUserStats(user.id)

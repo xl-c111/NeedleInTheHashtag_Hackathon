@@ -260,7 +260,7 @@ export async function fetchMentorStories(): Promise<Story[]> {
 
   // Get comment counts for each post
   const storiesWithComments = await Promise.all(
-    data.map(async (post) => {
+    data.map(async (post: any) => {
       const story = postToStory(post)
       const commentCount = await getCommentCount(post.id)
       return { ...story, commentCount }
@@ -328,7 +328,7 @@ export async function saveDiaryEntry(entry: DiaryEntryInsert): Promise<{ data: D
     return { data: null, error: new Error('Supabase not configured') }
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from('diary_entries')
     .insert([entry])
     .select()
@@ -402,7 +402,7 @@ export async function updateDiaryEntry(
     return { data: null, error: new Error('Supabase not configured') }
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from('diary_entries')
     .update(updates)
     .eq('id', entryId)
@@ -535,7 +535,7 @@ export async function createComment(
     comment_id: parentCommentId || null,
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from('posts')
     .insert([commentData])
     .select()
@@ -587,7 +587,7 @@ export async function updateComment(
     return { data: null, error: new Error('Supabase not configured') }
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from('posts')
     .update({ content })
     .eq('id', commentId)
@@ -647,7 +647,7 @@ export async function toggleFavorite(userId: string, postId: string): Promise<{ 
 
     return { isFavorited: false, error: null }
   } else {
-    const { error: insertError } = await supabase
+    const { error: insertError } = await (supabase as any)
       .from('user_favorites')
       .insert([{ user_id: userId, post_id: postId }])
 
@@ -679,7 +679,7 @@ export async function getUserFavorites(userId: string): Promise<string[]> {
     return []
   }
 
-  return data.map(fav => fav.post_id)
+  return (data as any[]).map(fav => fav.post_id)
 }
 
 /**
@@ -776,7 +776,7 @@ export async function updateUserProfile(
     return { error: new Error('Supabase not configured') }
   }
 
-  const { error } = await supabase
+  const { error } = await (supabase as any)
     .from('profiles')
     .update(updates)
     .eq('id', userId)
@@ -890,7 +890,7 @@ export async function getUserFavoritedStories(userId: string): Promise<Story[]> 
 
   // Get comment counts for each post (same as fetchMentorStories)
   const storiesWithComments = await Promise.all(
-    posts.map(async (post) => {
+    (posts as any[]).map(async (post) => {
       const story = postToStory(post)
       const commentCount = await getCommentCount(post.id)
       return { ...story, commentCount }
