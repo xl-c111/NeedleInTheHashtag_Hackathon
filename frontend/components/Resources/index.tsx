@@ -33,7 +33,7 @@ export default function ResourcesPage() {
     <div className="min-h-screen bg-background pt-16">
       <ResourcesHeader totalResources={RESOURCES.length} />
 
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <main className="mx-auto max-w-6xl px-3 sm:px-4 py-6 sm:py-8 lg:px-6">
         {/* Filters */}
         <div className="mb-8">
           <ResourceFilters
@@ -53,7 +53,7 @@ export default function ResourcesPage() {
 
         {/* Resources Grid */}
         {filteredResources.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filteredResources.map((resource, index) => (
               <ResourceCard key={resource.id} resource={resource} index={index} />
             ))}
@@ -74,8 +74,8 @@ export default function ResourcesPage() {
       </main>
 
       {/* Important Notice */}
-      <div className="mx-auto max-w-6xl px-4 pb-12 sm:px-6">
-        <div className="rounded-lg border border-border bg-card p-6">
+      <div className="mx-auto max-w-6xl px-3 sm:px-4 pb-8 sm:pb-12 lg:px-6">
+        <div className="rounded-lg border border-border bg-card p-4 sm:p-6">
           <h3 className="font-semibold text-foreground">
             In an emergency
           </h3>

@@ -22,8 +22,8 @@ export function Header() {
   return (
     <div className="fixed top-0 right-0 left-0 z-50">
       <ScrollHandler>
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex h-16 items-center justify-between gap-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="flex h-14 sm:h-16 items-center justify-between gap-4 sm:gap-8">
             {/* Left section: Logo */}
             <Logo />
 

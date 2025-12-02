@@ -49,7 +49,7 @@ export default function FAQSection() {
       
       {/* FAQ items with larger scroll background */}
       <div
-        className="w-full max-w-4xl min-h-[1500px] flex items-center justify-center px-8 py-24"
+        className="w-full max-w-4xl min-h-[1000px] sm:min-h-[1200px] md:min-h-[1500px] flex items-center justify-center px-4 sm:px-6 md:px-8 py-12 sm:py-16 md:py-24"
         style={{
           backgroundImage: "url('/scrollpostthicc.svg')",
           backgroundSize: 'contain',

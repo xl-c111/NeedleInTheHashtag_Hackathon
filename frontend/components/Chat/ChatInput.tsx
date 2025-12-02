@@ -24,8 +24,8 @@ export function ChatInput({
 
   return (
     <div className="border-t border-black/10 bg-white dark:border-white/10 dark:bg-black">
-      <div className="mx-auto max-w-2xl px-4 py-4">
-        <div className="flex items-end gap-3">
+      <div className="mx-auto max-w-2xl px-3 sm:px-4 py-3 sm:py-4">
+        <div className="flex items-end gap-2 sm:gap-3">
           <div className="flex-1">
             <textarea
               value={value}

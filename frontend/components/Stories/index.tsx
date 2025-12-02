@@ -54,7 +54,7 @@ export default function StoriesPage() {
     <div className="min-h-screen bg-background pt-16">
       <StoriesHeader totalStories={stories.length} />
 
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <main className="mx-auto max-w-6xl px-3 sm:px-4 py-6 sm:py-8 lg:px-6">
         {/* Filters */}
         <div className="mb-8">
           <StoryFilters
@@ -81,7 +81,7 @@ export default function StoriesPage() {
             </p>
           </div>
         ) : filteredStories.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filteredStories.map((story, index) => (
               <StoryCard key={story.id} story={story} index={index} />
             ))}

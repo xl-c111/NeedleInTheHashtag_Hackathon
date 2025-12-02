@@ -101,9 +101,9 @@ export function StoryCard({ story, index = 0, onFavoriteChange }: StoryCardProps
           }}
         >
           {/* Main content area with larger margins to avoid scroll edges */}
-          <div className="relative z-10 flex-1 px-8 pt-14 pb-4">
+          <div className="relative z-10 flex-1 px-6 sm:px-8 pt-12 sm:pt-14 pb-4">
           {/* Title */}
-          <h3 className="font-medium text-lg tracking-tight text-black transition-colors group-hover:text-black/80 drop-shadow-lg">
+          <h3 className="font-medium text-base sm:text-lg tracking-tight text-black transition-colors group-hover:text-black/80 drop-shadow-lg">
             {story.title}
           </h3>
 
@@ -132,7 +132,7 @@ export function StoryCard({ story, index = 0, onFavoriteChange }: StoryCardProps
           </div>
 
           {/* Meta positioned in the lighter bottom area of the scroll */}
-          <div className="relative z-10 px-8 pb-16 mt-auto">
+          <div className="relative z-10 px-6 sm:px-8 pb-12 sm:pb-16 mt-auto">
             <div className="flex items-center justify-between text-xs text-black/70 drop-shadow">
               {/* Favorite button */}
               <button

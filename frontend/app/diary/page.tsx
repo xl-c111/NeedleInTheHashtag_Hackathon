@@ -115,14 +115,14 @@ export default function DiaryPage() {
 
   return (
     <div className="min-h-screen pt-16 bg-background">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-6 sm:mb-8 flex items-center justify-between">
           <div>
             <div className="mb-2">
-              <img src="/diarybtn.svg" alt="My Journal" className="h-20 w-auto" />
+              <img src="/diarybtn.svg" alt="My Journal" className="h-16 sm:h-20 w-auto" />
             </div>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               {entries.length} {entries.length === 1 ? 'entry' : 'entries'}
             </p>
           </div>
@@ -130,7 +130,7 @@ export default function DiaryPage() {
             href="/write"
             className="hover:opacity-90 transition-opacity"
           >
-            <img src="/write.svg" alt="New Entry" className="h-20 w-auto" />
+            <img src="/write.svg" alt="New Entry" className="h-16 sm:h-20 w-auto" />
           </Link>
         </div>
 
@@ -140,7 +140,7 @@ export default function DiaryPage() {
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setSelectedMood('all')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                   selectedMood === 'all'
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-card border border-border text-foreground hover:border-primary/50'
@@ -152,18 +152,18 @@ export default function DiaryPage() {
                 <button
                   key={m.value}
                   onClick={() => setSelectedMood(m.value)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                     selectedMood === m.value
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-card border border-border text-foreground hover:border-primary/50'
                   }`}
                 >
-                  <img 
-                    src={m.svg} 
-                    alt={m.label} 
-                    className="w-10 h-10"
+                  <img
+                    src={m.svg}
+                    alt={m.label}
+                    className="w-8 h-8 sm:w-10 sm:h-10"
                   />
-                  <span>{m.label}</span>
+                  <span className="hidden sm:inline">{m.label}</span>
                 </button>
               ))}
             </div>
@@ -207,7 +207,7 @@ export default function DiaryPage() {
             {filteredEntries.map((entry) => (
               <div
                 key={entry.id}
-                className="border-0 rounded-lg p-6 hover:shadow-lg transition-shadow"
+                className="border-0 rounded-lg p-4 sm:p-6 hover:shadow-lg transition-shadow"
                 style={{
                   backgroundImage: `url('/diaryscrollpost.svg')`,
                   backgroundSize: 'cover',
@@ -215,18 +215,18 @@ export default function DiaryPage() {
                   backgroundPosition: 'center',
                 }}
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-start gap-3 flex-1">
-                    <img 
-                      src={getMoodSvg(entry.mood)} 
-                      alt={entry.mood || 'default'} 
-                      className="w-15 h-15"
+                <div className="flex items-start justify-between mb-3 sm:mb-4">
+                  <div className="flex items-start gap-2 sm:gap-3 flex-1">
+                    <img
+                      src={getMoodSvg(entry.mood)}
+                      alt={entry.mood || 'default'}
+                      className="w-12 h-12 sm:w-15 sm:h-15"
                     />
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-black mb-1">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base sm:text-lg font-semibold text-black mb-1 truncate">
                         {entry.title}
                       </h3>
-                      <div className="flex items-center gap-3 text-sm text-black">
+                      <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-black flex-wrap">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
                           {new Date(entry.created_at).toLocaleDateString('en-US', {
@@ -244,22 +244,22 @@ export default function DiaryPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 sm:gap-2 ml-2">
                     <Link
                       href={`/write?id=${entry.id}`}
-                      className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                      className="p-1.5 sm:p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                     >
-                      <Pencil className="w-4 h-4" />
+                      <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </Link>
                     <button
                       onClick={() => handleDelete(entry.id)}
-                      className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                      className="p-1.5 sm:p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </button>
                   </div>
                 </div>
-                <p className="text-black line-clamp-3 leading-relaxed">
+                <p className="text-sm sm:text-base text-black line-clamp-3 leading-relaxed">
                   {entry.content}
                 </p>
               </div>
