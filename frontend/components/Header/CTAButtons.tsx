@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, BookOpen, PenLine } from "lucide-react";
+import { MessageCircle, BookOpen, PenLine, HeartHandshake } from "lucide-react";
 
 export function CTAButtons() {
   const router = useRouter();
@@ -46,6 +46,14 @@ export function CTAButtons() {
           height={45}
           className="h-10 w-auto"
         />
+      </button>
+      <button
+        className="h-12 tracking-tighter px-3 hover:scale-110 transition-transform duration-200 ease-in-out flex items-center gap-2 text-sm font-medium text-foreground"
+        onClick={() => router.push("/resources")}
+        title="Professional Resources"
+      >
+        <HeartHandshake className="h-5 w-5" />
+        <span>Resources</span>
       </button>
     </>
   );
