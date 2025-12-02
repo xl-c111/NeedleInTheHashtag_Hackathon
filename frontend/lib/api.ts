@@ -21,6 +21,12 @@ export interface MatchedStory {
   comment_id?: string;
 }
 
+export interface MatchResponse {
+  matches: MatchedStory[];
+  warning?: string | null;
+  user_risk_score?: number | null;
+}
+
 export interface MatchRequest {
   user_text: string;
   top_k?: number;
@@ -39,14 +45,16 @@ export interface ChatRequest {
 
 export interface ChatResponse {
   response: string;
-  should_show_stories: boolean;
+  session_id: string;
+  suggested_posts?: MatchedStory[] | null;
+  ready_for_stories?: boolean;
 }
 
 export interface HealthResponse {
   status: string;
-  matcher_loaded: boolean;
-  moderator_loaded: boolean;
-  embeddings_count: number;
+  matcher_ready: boolean;
+  moderator_ready: boolean;
+  version: string;
 }
 
 // ============================================================================
@@ -73,7 +81,7 @@ export async function matchStories(
   userText: string,
   topK: number = 3,
   minSimilarity: number = 0.3
-): Promise<MatchedStory[]> {
+): Promise<MatchResponse> {
   try {
     const response = await fetch(`${API_BASE_URL}/api/match`, {
       method: 'POST',
@@ -91,8 +99,12 @@ export async function matchStories(
       throw new Error(`Match API error: ${response.statusText}`);
     }
 
-    const matches: MatchedStory[] = await response.json();
-    return matches;
+    const result = await response.json();
+    return {
+      matches: result.matches || [],
+      warning: result.warning,
+      user_risk_score: result.user_risk_score,
+    };
   } catch (error) {
     console.error('Error matching stories:', error);
     throw error;
@@ -150,7 +162,7 @@ export async function sendChatMessage(
  * @param text - Text to moderate
  * @returns Whether the text is safe
  */
-export async function moderateContent(text: string): Promise<boolean> {
+export async function moderateContent(text: string): Promise<{ is_risky: boolean; risk_score: number; confidence: number }> {
   try {
     const response = await fetch(`${API_BASE_URL}/api/moderate`, {
       method: 'POST',
@@ -165,11 +177,15 @@ export async function moderateContent(text: string): Promise<boolean> {
     }
 
     const result = await response.json();
-    return result.is_safe;
+    return {
+      is_risky: result.is_risky,
+      risk_score: result.risk_score,
+      confidence: result.confidence,
+    };
   } catch (error) {
     console.error('Error moderating content:', error);
     // Default to safe if moderation fails
-    return true;
+    return { is_risky: false, risk_score: 0, confidence: 0 };
   }
 }
 
@@ -186,8 +202,13 @@ export async function checkHealth(): Promise<HealthResponse> {
       throw new Error(`Health check failed: ${response.statusText}`);
     }
 
-    const health: HealthResponse = await response.json();
-    return health;
+    const health = await response.json();
+    return {
+      status: health.status,
+      matcher_ready: health.matcher_ready,
+      moderator_ready: health.moderator_ready,
+      version: health.version,
+    };
   } catch (error) {
     console.error('Backend health check failed:', error);
     throw error;

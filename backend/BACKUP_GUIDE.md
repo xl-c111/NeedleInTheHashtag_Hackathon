@@ -18,7 +18,7 @@ This creates timestamped backups in `/data/backups/`
 crontab -e
 
 # Add this line (runs daily at 2am):
-0 2 * * * cd /Users/xiaolingcui/NeedleInTheHashtag_Hackathon && source venv/bin/activate && python3 backend/scripts/backup_database.py
+0 2 * * * cd /NeedleInTheHashtag_Hackathon && source venv/bin/activate && python3 backend/scripts/backup_database.py
 ```
 
 ### Before major changes:

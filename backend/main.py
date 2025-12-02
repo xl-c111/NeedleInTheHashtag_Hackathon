@@ -32,13 +32,20 @@ app = FastAPI(
 )
 
 # CORS - allow frontend to connect
+frontend_origin = os.getenv("FRONTEND_ORIGIN")
+allowed_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://*.vercel.app",  # For deployed frontend
+]
+
+# Optionally allow a specific production origin via env (preferred over wildcard)
+if frontend_origin:
+    allowed_origins.append(frontend_origin)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "https://*.vercel.app",  # For deployed frontend
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -52,9 +59,13 @@ app.add_middleware(
 matcher: Optional[SemanticMatcher] = None
 moderator: Optional[ContentModerator] = None
 
-# Paths to trained models
-EMBEDDINGS_PATH = Path("../data/processed/mentor_embeddings.pkl")
-MODERATOR_PATH = Path("../models/moderator.pkl")
+# Paths to trained models (configurable via env for container deployments)
+EMBEDDINGS_PATH = Path(
+    os.getenv("EMBEDDINGS_PATH", "../data/processed/mentor_embeddings.pkl")
+)
+MODERATOR_PATH = Path(
+    os.getenv("MODERATOR_PATH", "../models/moderator.pkl")
+)
 
 
 @app.on_event("startup")
