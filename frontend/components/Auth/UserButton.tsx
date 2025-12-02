@@ -76,7 +76,7 @@ export function UserButton() {
           href="/signup"
           className="flex items-center rounded-lg px-3 py-1.5 transition-all hover:scale-110"
         >
-          Sign up
+          <img src="/signup.svg" alt="Sign up" className="h-12 w-auto" />
         </Link>
       </div>
     )

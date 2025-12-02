@@ -200,9 +200,13 @@ export default async function StoryPage({ params }: StoryPageProps) {
         {/* More stories */}
         {relatedStories.length > 0 && (
           <div className="mt-16">
-            <h3 className="mb-6 font-semibold text-2xl tracking-tight text-black">
-              More stories like this
-            </h3>
+            <div className="mb-6 flex justify-center">
+              <img 
+                src="/moreribbon.svg" 
+                alt="More stories like this" 
+                className="h-20"
+              />
+            </div>
             <div className="grid gap-6 sm:grid-cols-2">
               {relatedStories.map((relatedStory) => (
                 <Link

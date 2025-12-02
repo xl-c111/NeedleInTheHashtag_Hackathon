@@ -308,9 +308,16 @@ export default function CommentSection({ postId }: CommentSectionProps) {
           <button
             onClick={handleSubmitComment}
             disabled={isSubmitting || !newComment.trim()}
-            className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="rounded-lg bg-transparent border-none px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
           >
-            {isSubmitting ? "Posting..." : "Post Comment"}
+            {isSubmitting ? "Posting..." : (
+              <img 
+                src="/submit.svg" 
+                alt="Post Comment" 
+                className="h-15 opacity-100 transition-transform duration-200 hover:scale-110"
+                style={{ background: 'none' }}
+              />
+            )}
           </button>
         </div>
       </div>

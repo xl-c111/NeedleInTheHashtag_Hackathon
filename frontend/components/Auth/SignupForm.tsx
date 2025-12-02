@@ -153,14 +153,20 @@ export function SignupForm() {
           disabled={loading}
           className="w-full rounded-lg px-4 py-3 flex items-center justify-center transition-opacity hover:opacity-90 disabled:opacity-50"
         >
-          {loading ? 'Creating account...' : isAnonymous ? 'Create account' : 'Sign up'}
+          {loading ? 'Creating account...' : isAnonymous ? 'Create account' : (
+            <img 
+              src="/signup.svg" 
+              alt="Sign up" 
+              className="h-20"
+            />
+          )}
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm text-black/60 dark:text-white/60">
-        Already have an account?{' '}
+        already have an account?{' '}
         <Link href="/login" className="font-medium text-black underline dark:text-white">
-          Sign in
+          sign in
         </Link>
       </p>
     </div>
