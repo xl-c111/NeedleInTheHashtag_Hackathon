@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useAuth } from '@/components/Auth'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Edit3, Save, Calendar } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
-export default function WritePage() {
+function WritePageContent() {
   const { user, isLoading, signInAnonymously } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -293,5 +293,22 @@ export default function WritePage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function WritePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen pt-16 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-4 text-muted-foreground">loading...</p>
+          </div>
+        </div>
+      }
+    >
+      <WritePageContent />
+    </Suspense>
   )
 }
