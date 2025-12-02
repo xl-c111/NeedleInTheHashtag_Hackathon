@@ -204,14 +204,16 @@ a {
 /* Scroll card backgrounds - updated paths */
 .scroll-card-thick {
   background-image: url('/scrollpostthicc.svg');
-  background-size: cover;
+  background-size: 150%;
   background-position: center;
   background-repeat: no-repeat;
+  overflow: hidden;
 }
 
 .scroll-card-thin {
   background-image: url('/scrollpostthin.svg');
-  background-size: cover;
+  background-size: 150%;
   background-position: center;
   background-repeat: no-repeat;
+  overflow: hidden;
 }
