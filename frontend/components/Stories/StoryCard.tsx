@@ -145,8 +145,8 @@ export function StoryCard({ story, index = 0, onFavoriteChange }: StoryCardProps
                 <Heart
                   className={`h-4 w-4 transition-all ${
                     isFavorited
-                      ? "fill-red-500 text-red-500"
-                      : "text-black/70 hover:text-red-500"
+                      ? "fill-dark-red text-dark-red"
+                      : "text-black/70 hover:text-dark-red"
                   }`}
                 />
                 <span className="font-medium">{favoriteCount}</span>
