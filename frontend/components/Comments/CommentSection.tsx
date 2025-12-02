@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { MessageCircle, Reply, Trash2, Edit2, X, Check } from "lucide-react";
 import { useAuth } from "@/components/Auth/AuthProvider";
+import { toast } from "sonner";
 import {
   fetchPostComments,
   fetchCommentReplies,
@@ -59,8 +60,9 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     const { error } = await createComment(user.id, postId, newComment.trim());
 
     if (error) {
-      alert("Failed to post comment. Please try again.");
+      toast.error("Failed to post comment. Please try again.");
     } else {
+      toast.success("Comment posted successfully!");
       setNewComment("");
       await loadComments();
     }
@@ -79,8 +81,9 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     );
 
     if (error) {
-      alert("Failed to post reply. Please try again.");
+      toast.error("Failed to post reply. Please try again.");
     } else {
+      toast.success("Reply posted successfully!");
       setReplyTo(null);
       setReplyContent("");
       await loadComments();
@@ -94,8 +97,9 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     const { error } = await deleteComment(commentId, user.id);
 
     if (error) {
-      alert("Failed to delete comment. You can only delete your own comments.");
+      toast.error("Failed to delete comment. You can only delete your own comments.");
     } else {
+      toast.success("Comment deleted successfully!");
       await loadComments();
     }
   }
@@ -107,8 +111,9 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     const { error } = await updateComment(commentId, user.id, editContent.trim());
 
     if (error) {
-      alert("Failed to update comment. You can only edit your own comments.");
+      toast.error("Failed to update comment. You can only edit your own comments.");
     } else {
+      toast.success("Comment updated successfully!");
       setEditingId(null);
       setEditContent("");
       await loadComments();

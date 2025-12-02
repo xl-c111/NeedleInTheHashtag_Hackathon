@@ -106,13 +106,8 @@ async def load_models():
 
 class MatchRequest(BaseModel):
     user_text: str = Field(..., min_length=1, max_length=5000, description="User's description of their struggle")
-    num_matches: int = Field(5, ge=1, le=20, description="Number of matches to return")
-
-
-class MatchResponse(BaseModel):
-    matches: List[dict]
-    warning: Optional[str] = None
-    user_risk_score: Optional[float] = None
+    top_k: int = Field(5, ge=1, le=20, description="Number of matches to return")
+    min_similarity: float = Field(0.3, ge=0.0, le=1.0, description="Minimum similarity threshold")
 
 
 class ModerateRequest(BaseModel):
@@ -125,16 +120,19 @@ class ModerateResponse(BaseModel):
     confidence: float
 
 
+class ChatMessage(BaseModel):
+    role: str = Field(..., pattern="^(user|assistant)$")
+    content: str
+
+
 class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1, max_length=1000)
-    session_id: Optional[str] = None
+    conversation_history: Optional[List[ChatMessage]] = None
 
 
 class ChatResponse(BaseModel):
     response: str
-    session_id: str
-    suggested_posts: Optional[List[dict]] = None
-    ready_for_stories: bool = False
+    should_show_stories: bool = False
 
 
 class HealthResponse(BaseModel):
@@ -159,7 +157,7 @@ async def health_check():
     }
 
 
-@app.post("/api/match", response_model=MatchResponse)
+@app.post("/api/match")
 async def match_to_mentors(request: MatchRequest):
     """
     Match user's description to relevant mentor stories.
@@ -170,7 +168,7 @@ async def match_to_mentors(request: MatchRequest):
     1. Check user input with moderator (crisis detection)
     2. Find matching mentor stories using semantic similarity
     3. Filter matches through moderator (safety check)
-    4. Return ranked, filtered results
+    4. Return ranked, filtered results as array of MatchedStory objects
     """
     if matcher is None or matcher.mentor_embeddings is None:
         raise HTTPException(
@@ -179,21 +177,20 @@ async def match_to_mentors(request: MatchRequest):
         )
 
     # Step 1: Check user input with moderator (if available)
-    user_risk_score = None
-    warning = None
-
     if moderator is not None and moderator.is_trained:
         mod_result = moderator.predict(request.user_text)
-        user_risk_score = mod_result['risk_score']
-
         # High risk = crisis detected
         if mod_result['is_risky'] and mod_result['risk_score'] > 0.8:
-            warning = "crisis_detected"
-            # Still return matches, but flag the concern
+            # Still return matches, but could add crisis resources here
+            pass
 
     # Step 2: Find matching mentor stories
     try:
-        matches = matcher.match(request.user_text, top_k=request.num_matches)
+        matches = matcher.match(
+            request.user_text,
+            top_k=request.top_k,
+            min_similarity=request.min_similarity
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Matching failed: {str(e)}")
 
@@ -208,11 +205,8 @@ async def match_to_mentors(request: MatchRequest):
             # If risky, skip this mentor post
         matches = safe_matches
 
-    return MatchResponse(
-        matches=matches,
-        warning=warning,
-        user_risk_score=user_risk_score
-    )
+    # Return array directly (frontend expects List[MatchedStory])
+    return matches
 
 
 @app.post("/api/moderate", response_model=ModerateResponse)
@@ -255,10 +249,6 @@ I'm here to understand, not to judge. When you're ready, I'll help you find stor
     }
 
 
-# In-memory session storage (in production, use Redis or database)
-chat_sessions = {}
-
-
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_assistance(request: ChatRequest):
     """
@@ -268,42 +258,31 @@ async def chat_assistance(request: ChatRequest):
     Uses Gemini via OpenRouter API (fast, free LLM).
     """
     try:
-        session_id = request.session_id or "default"
+        # Create a new chat assistant instance
+        chat = ChatAssistant()
 
-        # Get or create chat session
-        if session_id not in chat_sessions:
-            chat_sessions[session_id] = ChatAssistant()
-
-        chat = chat_sessions[session_id]
+        # If conversation history provided, use it
+        if request.conversation_history:
+            # Convert Pydantic models to dict for ChatAssistant
+            chat.conversation_history = [
+                {"role": msg.role, "content": msg.content}
+                for msg in request.conversation_history
+            ]
 
         # Send message and get response
         response = chat.send(request.message)
 
-        # Count user messages (not total messages)
-        user_message_count = sum(1 for msg in chat.conversation_history if msg['role'] == 'user')
+        # Count user messages from conversation history
+        user_message_count = len(request.conversation_history) if request.conversation_history else 0
+        # Add 1 for the current message
+        user_message_count += 1
 
-        # After 2-3 user messages, suggest matching posts
-        suggested_posts = None
-        ready_for_stories = False
-
-        if user_message_count >= 2 and matcher and matcher.mentor_embeddings is not None:
-            # Get user's combined text for matching
-            user_text = chat.get_user_text_for_matching()
-
-            # Find matching posts
-            try:
-                matches = matcher.match(user_text, top_k=3, min_similarity=0.3)
-                if matches:
-                    suggested_posts = matches
-                    ready_for_stories = True
-            except Exception as e:
-                print(f"Matching failed: {e}")
+        # After 2-3 user messages, signal frontend to show stories
+        should_show_stories = user_message_count >= 2
 
         return ChatResponse(
             response=response,
-            session_id=session_id,
-            suggested_posts=suggested_posts,
-            ready_for_stories=ready_for_stories
+            should_show_stories=should_show_stories
         )
     except Exception as e:
         raise HTTPException(

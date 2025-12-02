@@ -53,6 +53,7 @@ service-account.json
 *.swp
 *.swo
 .cursor
+.claude
 
 # ===== OS Files =====
 .DS_Store
