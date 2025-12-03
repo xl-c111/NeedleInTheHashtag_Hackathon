@@ -140,11 +140,11 @@ export default async function StoryPage({ params }: StoryPageProps) {
       {/* Content */}
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
         {/* Story Scroll Card - Main Content */}
-        <article className="scroll-card-thick relative min-h-[600px] p-8 sm:p-12 md:p-16">
+        <article className="scroll-card-thick relative min-h-[600px] px-16 py-12 sm:px-20 sm:py-14 md:px-24 md:py-16 lg:px-28 lg:py-20">
           {/* Story Header */}
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
             {/* Date and Meta */}
-            <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-black/60">
+            <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-black/60">
               <span>{story.datePosted}</span>
               <span>•</span>
               <span>{story.author}</span>
@@ -158,7 +158,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
             </div>
 
             {/* Title */}
-            <h1 className="mb-4 font-bold text-3xl tracking-tight text-black sm:text-4xl md:text-5xl">
+            <h1 className="mb-4 font-bold text-2xl tracking-tight text-black break-words sm:text-3xl md:text-4xl lg:text-5xl">
               {story.title}
             </h1>
 
@@ -183,7 +183,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
             {story.content.split("\n\n").map((paragraph, i) => (
               <p
                 key={i}
-                className="mb-6 text-base leading-relaxed text-black sm:text-lg"
+                className="mb-4 sm:mb-6 text-sm leading-relaxed text-black break-words sm:text-base md:text-lg"
               >
                 {paragraph}
               </p>
@@ -192,18 +192,20 @@ export default async function StoryPage({ params }: StoryPageProps) {
         </article>
 
         {/* Comments Section with Scroll Background */}
-        <div className="scroll-card-thin relative mt-12 min-h-[400px] px-10 pt-16 pb-20 sm:px-14 sm:pt-20 sm:pb-24">
-          <CommentSection postId={id} />
+        <div className="scroll-card-thin relative mt-12 px-16 pt-14 pb-18 sm:px-20 sm:pt-16 sm:pb-20 md:px-24 md:pt-20 md:pb-24 lg:px-28 min-h-[500px] max-h-[800px] overflow-y-auto">
+          <div className="max-w-full mx-auto">
+            <CommentSection postId={id} />
+          </div>
         </div>
 
         {/* More stories */}
         {relatedStories.length > 0 && (
-          <div className="mt-16">
+          <div className="mt-12 sm:mt-16">
             <div className="mb-6 flex justify-center">
-              <img 
-                src="/moreribbon.svg" 
-                alt="More stories like this" 
-                className="h-20"
+              <img
+                src="/moreribbon.svg"
+                alt="More stories like this"
+                className="h-16 sm:h-20"
               />
             </div>
             <div className="grid gap-6 sm:grid-cols-2">
@@ -211,15 +213,15 @@ export default async function StoryPage({ params }: StoryPageProps) {
                 <Link
                   key={relatedStory.id}
                   href={`/stories/${relatedStory.id}`}
-                  className="scroll-card-thin relative block px-8 pt-12 pb-14 transition-transform hover:scale-[1.02]"
+                  className="scroll-card-thin relative block px-14 pt-12 pb-16 sm:px-16 sm:pt-14 sm:pb-18 md:px-20 md:pt-16 md:pb-20 transition-transform hover:scale-[1.02]"
                 >
-                  <h4 className="font-semibold text-lg tracking-tight text-black">
+                  <h4 className="font-semibold text-base tracking-tight text-black break-words sm:text-lg">
                     {relatedStory.title}
                   </h4>
-                  <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-black/80">
+                  <p className="mt-2 sm:mt-3 line-clamp-3 text-xs leading-relaxed text-black/80 break-words sm:text-sm">
                     {relatedStory.excerpt}
                   </p>
-                  <div className="mt-4 text-xs text-black/60">
+                  <div className="mt-3 sm:mt-4 text-xs text-black/60">
                     {relatedStory.readTime} min read
                   </div>
                 </Link>

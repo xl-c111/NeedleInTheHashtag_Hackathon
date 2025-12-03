@@ -143,22 +143,24 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     return (
       <div
         key={comment.id}
-        className={`${isReply ? "ml-6 mt-3" : "mt-4"} border-l-2 border-black/20 pl-4`}
+        className={`${isReply ? "ml-3 mt-3 sm:ml-6" : "mt-4"} border-l-2 border-black/20 pl-3 sm:pl-4`}
       >
         {/* Comment Header */}
         <div className="flex items-start justify-between gap-2">
-          <div className="flex-1">
-            <span className="text-sm font-medium text-black">
-              Anonymous {comment.user_id.slice(-4)}
-            </span>
-            <span className="ml-2 text-xs text-black/50">
-              {formatDate(comment.created_at)}
-            </span>
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <span className="text-sm font-medium text-black">
+                Anonymous {comment.user_id.slice(-4)}
+              </span>
+              <span className="text-xs text-black/50">
+                {formatDate(comment.created_at)}
+              </span>
+            </div>
           </div>
 
           {/* Actions */}
           {isOwner && !isEditing && (
-            <div className="flex gap-1">
+            <div className="flex gap-1 shrink-0">
               <button
                 onClick={() => {
                   setEditingId(comment.id);
@@ -186,7 +188,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
             <textarea
               value={editContent}
               onChange={(e) => setEditContent(e.target.value)}
-              className="w-full rounded-lg border border-black/20 bg-white/50 px-3 py-2 text-sm text-black placeholder-black/40 focus:border-black focus:outline-none"
+              className="w-full max-w-full rounded-lg border border-black/20 bg-white/50 px-3 py-2 text-sm text-black placeholder-black/40 focus:border-black focus:outline-none box-border"
               rows={3}
               disabled={isSubmitting}
             />
@@ -213,7 +215,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
             </div>
           </div>
         ) : (
-          <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-black/80">
+          <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-relaxed text-black/80">
             {comment.content}
           </p>
         )}
@@ -239,7 +241,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
               value={replyContent}
               onChange={(e) => setReplyContent(e.target.value)}
               placeholder="Write a reply..."
-              className="w-full rounded-lg border border-black/20 bg-white/50 px-3 py-2 text-sm text-black placeholder-black/40 focus:border-black focus:outline-none"
+              className="w-full max-w-full rounded-lg border border-black/20 bg-white/50 px-3 py-2 text-sm text-black placeholder-black/40 focus:border-black focus:outline-none box-border"
               rows={3}
               disabled={isSubmitting}
             />
@@ -287,7 +289,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
   }
 
   return (
-    <div>
+    <div className="max-w-full">
       {/* Section Header */}
       <div className="mb-6 flex items-center gap-2">
         <img src="/commentbubble.svg" alt="Comments" className="h-10 w-10 opacity-60" />
@@ -300,12 +302,12 @@ export default function CommentSection({ postId }: CommentSectionProps) {
       </div>
 
       {/* New Comment Form */}
-      <div className="mb-6">
+      <div className="mb-6 max-w-full -ml-2">
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Share your thoughts..."
-          className="w-full rounded-lg border border-black/20 bg-white/50 px-4 py-3 text-sm text-black placeholder-black/40 focus:border-black focus:outline-none"
+          className="w-full max-w-full rounded-lg border border-black/20 bg-white/50 px-4 py-3 text-sm text-black placeholder-black/40 focus:border-black focus:outline-none box-border"
           rows={4}
           disabled={isSubmitting}
         />
