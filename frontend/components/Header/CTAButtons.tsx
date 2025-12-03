@@ -4,8 +4,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/components/Auth/AuthProvider";
-import { Button } from "@/components/ui/button";
-import { MessageCircle, BookOpen, PenLine, HeartHandshake } from "lucide-react";
 
 export function CTAButtons() {
   const router = useRouter();
@@ -13,7 +11,7 @@ export function CTAButtons() {
 
   return (
     <>
-      {/* Stories - Always visible (public access) */}
+      {/* Group 2 - Stories & Chat - Always visible (public access) */}
       <button
         className="h-12 tracking-tighter px-3 hover:scale-110 transition-transform duration-200 ease-in-out"
         onClick={() => router.push("/stories")}
@@ -27,7 +25,6 @@ export function CTAButtons() {
         />
       </button>
 
-      {/* Chat - Always visible (public access) */}
       <button
         className="h-12 tracking-tighter px-3 hover:scale-110 transition-transform duration-200 ease-in-out"
         onClick={() => router.push("/chat")}
@@ -41,17 +38,10 @@ export function CTAButtons() {
         />
       </button>
 
-      {/* Resources - Always visible (public access) */}
-      <button
-        className="h-12 tracking-tighter px-3 hover:scale-110 transition-transform duration-200 ease-in-out flex items-center gap-2 text-sm font-medium text-foreground"
-        onClick={() => router.push("/resources")}
-        title="Professional Resources"
-      >
-        <HeartHandshake className="h-5 w-5" />
-        <span>Resources</span>
-      </button>
+      {/* Divider after Group 2 */}
+      <div className="mx-3 h-4 w-px bg-black/10 dark:bg-white/10" />
 
-      {/* Authenticated routes - Only visible when logged in */}
+      {/* Group 3 - Write & Diary - Authenticated routes only */}
       {user && (
         <>
           <Link
@@ -66,6 +56,9 @@ export function CTAButtons() {
           >
             <img src="/diarybtn.svg" alt="diary" className="h-11 w-auto" />
           </Link>
+
+          {/* Divider after Group 3 (only when authenticated) */}
+          <div className="mx-3 h-4 w-px bg-black/10 dark:bg-white/10" />
         </>
       )}
     </>

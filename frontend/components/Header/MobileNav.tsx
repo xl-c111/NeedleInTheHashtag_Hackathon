@@ -81,7 +81,7 @@ export function MobileNav({ onClose }: MobileNavProps) {
           </div>
         ))}
         <div className="mt-4 flex flex-col gap-2 px-3">
-          {/* Stories - Always visible (public access) */}
+          {/* Group 2: Stories & Chat - Always visible (public access) */}
           <Button
             className="w-full tracking-tighter flex items-center justify-center py-6"
             onClick={() => {
@@ -94,7 +94,6 @@ export function MobileNav({ onClose }: MobileNavProps) {
             <img src="/storiesbtn.svg" alt="stories" className="h-8 w-auto object-contain" />
           </Button>
 
-          {/* Chat - Always visible (public access) */}
           <Button
             className="w-full tracking-tighter flex items-center justify-center py-6"
             onClick={() => {
@@ -106,21 +105,8 @@ export function MobileNav({ onClose }: MobileNavProps) {
             <img src="/chatbtn.svg" alt="chat" className="h-8 w-auto object-contain" />
           </Button>
 
-          {/* Resources - Always visible (public access) */}
-          <Button
-            className="w-full tracking-tighter"
-            onClick={() => {
-              router.push("/resources");
-              onClose();
-            }}
-            size="sm"
-            variant="outline"
-          >
-            resources
-          </Button>
-
-          {/* Authenticated routes - Only visible when logged in */}
-          {user ? (
+          {/* Group 3: Write & Diary - Authenticated routes only */}
+          {user && (
             <>
               <Button
                 className="w-full tracking-tighter flex items-center justify-center py-6"
@@ -144,60 +130,72 @@ export function MobileNav({ onClose }: MobileNavProps) {
               >
                 <img src="/diarybtn.svg" alt="diary" className="h-8 w-auto object-contain" />
               </Button>
+            </>
+          )}
 
-              {/* Auth buttons - when logged in */}
-              <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 space-y-2">
-                <Button
-                  className="w-full tracking-tighter flex items-center justify-center py-6"
-                  onClick={() => {
-                    router.push("/profile");
-                    onClose();
-                  }}
-                  size="sm"
-                  variant="outline"
-                >
-                  <img src="/profilehead.svg" alt="profile" className="h-8 w-auto object-contain" />
-                </Button>
-                <Button
-                  className="w-full tracking-tighter flex items-center justify-center py-6"
-                  onClick={async () => {
-                    await signOut();
-                    onClose();
-                  }}
-                  size="sm"
-                  variant="outline"
-                >
-                  <img src="/logout.svg" alt="sign out" className="h-8 w-auto object-contain" />
-                </Button>
-              </div>
-            </>
+          {/* Group 1: Resources - Always visible (public access) */}
+          <Button
+            className="w-full tracking-tighter"
+            onClick={() => {
+              router.push("/resources");
+              onClose();
+            }}
+            size="sm"
+            variant="outline"
+          >
+            resources
+          </Button>
+
+          {/* Group 4: Auth section - Profile, Sign Out / Login, Sign Up */}
+          {user ? (
+            <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 space-y-2">
+              <Button
+                className="w-full tracking-tighter flex items-center justify-center py-6"
+                onClick={() => {
+                  router.push("/profile");
+                  onClose();
+                }}
+                size="sm"
+                variant="outline"
+              >
+                <img src="/profilehead.svg" alt="profile" className="h-8 w-auto object-contain" />
+              </Button>
+              <Button
+                className="w-full tracking-tighter flex items-center justify-center py-6"
+                onClick={async () => {
+                  await signOut();
+                  onClose();
+                }}
+                size="sm"
+                variant="outline"
+              >
+                <img src="/logout.svg" alt="sign out" className="h-8 w-auto object-contain" />
+              </Button>
+            </div>
           ) : (
-            <>
-              {/* Auth buttons - when NOT logged in */}
-              <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 space-y-2">
-                <Button
-                  className="w-full tracking-tighter flex items-center justify-center py-6"
-                  onClick={() => {
-                    router.push("/login");
-                    onClose();
-                  }}
-                  size="sm"
-                  variant="outline"
-                >
-                  <img src="/login.svg" alt="log in" className="h-8 w-auto object-contain" />
-                </Button>
-                <Button
-                  className="w-full tracking-tighter flex items-center justify-center py-6"
-                  onClick={() => {
-                    router.push("/signup");
-                    onClose();
-                  }}
-                  size="sm"
-                >
-                  <img src="/signup.svg" alt="sign up" className="h-8 w-auto object-contain" />
-                </Button>
-              </div>
-            </>
+            <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 space-y-2">
+              <Button
+                className="w-full tracking-tighter flex items-center justify-center py-6"
+                onClick={() => {
+                  router.push("/login");
+                  onClose();
+                }}
+                size="sm"
+                variant="outline"
+              >
+                <img src="/login.svg" alt="log in" className="h-8 w-auto object-contain" />
+              </Button>
+              <Button
+                className="w-full tracking-tighter flex items-center justify-center py-6"
+                onClick={() => {
+                  router.push("/signup");
+                  onClose();
+                }}
+                size="sm"
+              >
+                <img src="/signup.svg" alt="sign up" className="h-8 w-auto object-contain" />
+              </Button>
+            </div>
           )}
         </div>
       </nav>
