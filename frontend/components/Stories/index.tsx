@@ -81,7 +81,7 @@ export default function StoriesPage() {
             </p>
           </div>
         ) : filteredStories.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {filteredStories.map((story, index) => (
               <StoryCard key={story.id} story={story} index={index} />
             ))}

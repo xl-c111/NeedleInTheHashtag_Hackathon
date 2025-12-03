@@ -55,7 +55,7 @@ export function MatchedStories({ stories, onClose }: MatchedStoriesProps) {
                 <div className="rounded bg-green-100 px-2 py-1 font-medium text-green-700 text-xs dark:bg-green-900 dark:text-green-300">
                   {Math.round(story.similarity_score * 100)}% match
                 </div>
-                {story.topic_tags.slice(0, 3).map((tag, i) => (
+                {story.topic_tags.slice(0, 5).map((tag, i) => (
                   <span
                     key={i}
                     className="rounded bg-blue-100 px-2 py-1 text-blue-700 text-xs dark:bg-blue-900 dark:text-blue-300"
@@ -63,6 +63,11 @@ export function MatchedStories({ stories, onClose }: MatchedStoriesProps) {
                     {tag}
                   </span>
                 ))}
+                {story.topic_tags.length > 5 && (
+                  <span className="rounded bg-gray-100 px-2 py-1 text-gray-600 text-xs dark:bg-gray-800 dark:text-gray-400">
+                    +{story.topic_tags.length - 5} more
+                  </span>
+                )}
               </div>
 
               {/* Story Content */}

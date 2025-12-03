@@ -61,6 +61,7 @@ export type Database = {
         Row: {
           id: string
           user_id: string
+          title: string | null
           content: string
           post_id: string | null
           comment_id: string | null
@@ -71,6 +72,7 @@ export type Database = {
         Insert: {
           id?: string
           user_id: string
+          title?: string | null
           content: string
           post_id?: string | null
           comment_id?: string | null
@@ -81,6 +83,7 @@ export type Database = {
         Update: {
           id?: string
           user_id?: string
+          title?: string | null
           content?: string
           post_id?: string | null
           comment_id?: string | null
@@ -177,9 +180,14 @@ function mapTopicTagsToThemes(topicTags: string[] | null): Theme[] {
   return Array.from(themes)
 }
 
-// Generate a title from content
-function generateTitle(content: string): string {
-  // Take first sentence or first 60 chars
+// Generate a title from content (fallback if database title is not available)
+function generateTitle(content: string, dbTitle?: string | null): string {
+  // Use database title if available
+  if (dbTitle && dbTitle.trim()) {
+    return dbTitle
+  }
+
+  // Fallback: Take first sentence or first 60 chars
   const firstSentence = content.split(/[.!?]/)[0]?.trim()
   if (firstSentence && firstSentence.length <= 80) {
     return firstSentence
@@ -209,7 +217,7 @@ function calculateReadTime(content: string): number {
 function postToStory(row: Database['public']['Tables']['posts']['Row']): Story {
   return {
     id: row.id,
-    title: generateTitle(row.content),
+    title: generateTitle(row.content, row.title), // Use DB title if available, fallback to generated
     author: `Anonymous ${row.user_id.slice(-4)}`, // Use last 4 digits of user_id
     excerpt: generateExcerpt(row.content),
     content: row.content,
