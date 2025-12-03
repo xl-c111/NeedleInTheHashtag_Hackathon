@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { MessageCircle, Reply, Trash2, Edit2, X, Check } from "lucide-react";
 import { useAuth } from "@/components/Auth/AuthProvider";
 import { toast } from "sonner";
+import { generateUsername } from "@/lib/utils";
 import {
   fetchPostComments,
   fetchCommentReplies,
@@ -31,6 +32,8 @@ export default function CommentSection({ postId }: CommentSectionProps) {
   const [editContent, setEditContent] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const COMMENTS_PER_PAGE = 5;
 
   // Load comments
   useEffect(() => {
@@ -150,7 +153,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
               <span className="text-sm font-medium text-black">
-                Anonymous {comment.user_id.slice(-4)}
+                {generateUsername(comment.user_id)}
               </span>
               <span className="text-xs text-black/50">
                 {formatDate(comment.created_at)}
@@ -289,17 +292,22 @@ export default function CommentSection({ postId }: CommentSectionProps) {
   }
 
   return (
-    <div className="max-w-full">
-      {/* Section Header */}
-      <div className="mb-6 flex items-center gap-2">
-        <img src="/commentbubble.svg" alt="Comments" className="h-10 w-10 opacity-60" />
-        <h3 className="font-semibold text-xl tracking-tight text-black">
-          Discussion
-        </h3>
-        <span className="text-sm text-black/50">
-          ({comments.length})
-        </span>
-      </div>
+    <div className="max-w-full flex flex-col h-full">
+      {/* Top spacer - pushes content down 20% */}
+      <div className="flex-[0.2]" />
+
+      {/* Main content area */}
+      <div className="flex-1">
+        {/* Section Header */}
+        <div className="mb-6 flex items-center gap-2">
+          <img src="/commentbubble.svg" alt="Comments" className="h-10 w-10 opacity-60" />
+          <h3 className="font-semibold text-xl tracking-tight text-black">
+            Discussion
+          </h3>
+          <span className="text-sm text-black/50">
+            ({comments.length})
+          </span>
+        </div>
 
       {/* New Comment Form */}
       <div className="mb-6 max-w-full -ml-2">
@@ -339,10 +347,58 @@ export default function CommentSection({ postId }: CommentSectionProps) {
           No comments yet. Be the first to share your thoughts!
         </div>
       ) : (
-        <div className="mt-6">
-          {comments.map((comment) => renderComment(comment))}
-        </div>
+        <>
+          <div className="mt-6">
+            {comments
+              .slice((currentPage - 1) * COMMENTS_PER_PAGE, currentPage * COMMENTS_PER_PAGE)
+              .map((comment) => renderComment(comment))}
+          </div>
+
+        </>
       )}
+      </div>
+
+      {/* Bottom spacer + Pagination - positioned 20% from bottom */}
+      <div className="flex-[0.2] flex items-start justify-center pt-8">
+        <div className="flex items-center justify-center gap-3">
+          <button
+            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1.5 text-sm font-medium text-black transition-colors hover:text-black/70 disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+
+          <span className="text-black/40">|</span>
+
+          {/* Page Numbers */}
+          <div className="flex items-center gap-2">
+            {Array.from({ length: Math.max(1, Math.ceil(comments.length / COMMENTS_PER_PAGE)) }, (_, i) => i + 1).map(pageNum => (
+              <button
+                key={pageNum}
+                onClick={() => setCurrentPage(pageNum)}
+                className={`px-2 py-1 text-sm font-medium transition-colors ${
+                  currentPage === pageNum
+                    ? 'text-black underline'
+                    : 'text-black/50 hover:text-black/70'
+                }`}
+              >
+                {pageNum}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-black/40">|</span>
+
+          <button
+            onClick={() => setCurrentPage(p => Math.min(Math.ceil(comments.length / COMMENTS_PER_PAGE), p + 1))}
+            disabled={currentPage >= Math.ceil(comments.length / COMMENTS_PER_PAGE)}
+            className="px-3 py-1.5 text-sm font-medium text-black transition-colors hover:text-black/70 disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

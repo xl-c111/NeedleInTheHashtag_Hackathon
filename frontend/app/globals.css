@@ -206,14 +206,16 @@ a {
 /* Scroll card backgrounds - updated paths */
 .scroll-card-thick {
   background-image: url('/scrollpostthicc.svg');
-  background-size: cover;
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
+  aspect-ratio: 999 / 738;
 }
 
 .scroll-card-thin {
   background-image: url('/scrollpostthin.svg');
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: center center;
   background-repeat: no-repeat;
+  aspect-ratio: 492 / 738;
 }

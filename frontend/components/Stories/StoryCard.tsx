@@ -89,74 +89,80 @@ export function StoryCard({ story, index = 0, onFavoriteChange }: StoryCardProps
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
+      className="w-full"
     >
       <Link href={`/stories/${story.id}`}>
-        <article 
-          className="relative overflow-hidden group h-full transition-all flex flex-col"
+        <article
+          className="relative overflow-hidden group transition-all flex flex-col justify-center mx-auto"
           style={{
             backgroundImage: "url('/scrollpostthicc.svg')",
-            backgroundSize: 'cover',
+            backgroundSize: '100% 100%',
             backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
+            backgroundRepeat: 'no-repeat',
+            aspectRatio: '999 / 738',
+            maxWidth: '350px',
+            minHeight: '258px'
           }}
         >
-          {/* Main content area with larger margins to avoid scroll edges */}
-          <div className="relative z-10 flex-1 px-6 sm:px-8 pt-12 sm:pt-14 pb-4">
-          {/* Title */}
-          <h3 className="font-medium text-base sm:text-lg tracking-tight text-black transition-colors group-hover:text-black/80 drop-shadow-lg">
+          {/* Main content area with more side padding to avoid scroll edges */}
+          <div className="relative z-10 flex-1 px-8 pt-16 pb-0.5 flex flex-col justify-center">
+          {/* Title - More prominent */}
+          <h3 className="font-medium text-base tracking-tight leading-tight text-black transition-colors group-hover:text-black/80 drop-shadow-lg line-clamp-3">
             {story.title}
           </h3>
 
           {/* Divider */}
-          <div className="mt-3 h-px bg-black/10 dark:bg-white/10" />
+          <div className="mt-1 h-px bg-black/10 dark:bg-white/10" />
 
           {/* Excerpt */}
-          <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-black/80 drop-shadow">
+          <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-black/80 drop-shadow">
             {story.excerpt}
           </p>
 
-          {/* Divider */}
-          <div className="mt-4 h-px bg-black/10 dark:bg-white/10" />
-
-          {/* Tags */}
-          <div className="mt-4 flex flex-wrap gap-1.5">
-            {story.tags.slice(0, 3).map((tag) => (
+          {/* Tags section - dedicated space with wrapping */}
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {story.tags.slice(0, 5).map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-secondary/80 px-2 py-0.5 text-[10px] font-medium text-secondary-foreground shadow-sm backdrop-blur-sm dark:bg-accent dark:text-accent-foreground"
+                className="rounded-full bg-secondary/80 px-2 py-0.5 text-[10px] font-medium text-secondary-foreground shadow-sm backdrop-blur-sm dark:bg-accent dark:text-accent-foreground whitespace-nowrap"
               >
                 {tag}
               </span>
             ))}
+            {story.tags.length > 5 && (
+              <span className="rounded-full bg-black/10 px-2 py-0.5 text-[10px] font-medium text-black/60 dark:bg-white/10 dark:text-white/60 whitespace-nowrap">
+                +{story.tags.length - 5} more
+              </span>
+            )}
           </div>
           </div>
 
           {/* Meta positioned in the lighter bottom area of the scroll */}
-          <div className="relative z-10 px-6 sm:px-8 pb-12 sm:pb-16 mt-auto">
-            <div className="flex items-center justify-between text-xs text-black/70 drop-shadow">
+          <div className="relative z-10 px-8 pb-12 mt-auto">
+            <div className="flex items-center gap-3 text-[10px] text-black/70 drop-shadow">
               {/* Favorite button */}
               <button
                 onClick={handleToggleFavorite}
                 disabled={isTogglingFavorite}
-                className="flex items-center gap-1 transition-all hover:scale-110 disabled:opacity-50"
+                className="flex items-center gap-0.5 transition-all hover:scale-110 disabled:opacity-50"
                 aria-label={isFavorited ? "Unfavorite story" : "Favorite story"}
               >
-                <img 
-                  src="/heart.svg" 
+                <img
+                  src="/heart.svg"
                   alt={isFavorited ? "Unfavorite story" : "Favorite story"}
-                  className={`h-6 w-6 transition-all ${
+                  className={`h-4 w-4 transition-all ${
                     isFavorited
                       ? "opacity-100"
                       : "opacity-70 hover:opacity-100"
                   }`}
                 />
-                <span className="font-medium">{favoriteCount}</span>
+                <span className="font-medium text-[10px]">{favoriteCount}</span>
               </button>
 
               {/* Comment count */}
-              <span className="flex items-center gap-1">
-                <img src="/commentbubble.svg" alt="Comments" className="h-8 w-8" />
-                {story.commentCount ?? 0} {story.commentCount === 1 ? 'response' : 'responses'}
+              <span className="flex items-center gap-0.5">
+                <img src="/commentbubble.svg" alt="Comments" className="h-5 w-5" />
+                <span className="text-[10px]">{story.commentCount ?? 0}</span>
               </span>
             </div>
           </div>

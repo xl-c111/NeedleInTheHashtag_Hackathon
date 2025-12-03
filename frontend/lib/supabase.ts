@@ -1,6 +1,7 @@
 import { type SupabaseClient } from '@supabase/supabase-js'
 import { createClient } from './supabase/client'
 import type { Story, Theme } from './types'
+import { generateUsername } from './utils'
 
 // Check if Supabase is configured
 const isSupabaseConfigured = !!(
@@ -218,7 +219,7 @@ function postToStory(row: Database['public']['Tables']['posts']['Row']): Story {
   return {
     id: row.id,
     title: generateTitle(row.content, row.title), // Use DB title if available, fallback to generated
-    author: `Anonymous ${row.user_id.slice(-4)}`, // Use last 4 digits of user_id
+    author: generateUsername(row.user_id),
     excerpt: generateExcerpt(row.content),
     content: row.content,
     tags: row.topic_tags || [],

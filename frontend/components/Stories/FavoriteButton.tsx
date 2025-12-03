@@ -73,8 +73,8 @@ export function FavoriteButton({ storyId }: FavoriteButtonProps) {
       className="flex items-center gap-1 transition-all hover:scale-110 disabled:opacity-50"
       aria-label={isFavorited ? "Unfavorite story" : "Favorite story"}
     >
-      <img 
-        src="/heart.svg" 
+      <img
+        src="/heart.svg"
         alt={isFavorited ? "Unfavorite story" : "Favorite story"}
         className={`h-6 w-6 transition-all ${
           isFavorited

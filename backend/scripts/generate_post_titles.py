@@ -85,24 +85,54 @@ Generate ONLY the title, nothing else:"""
             return title
         else:
             print(f"API error: {response.status_code} - {response.text}")
-            # Fallback to first sentence
-            return generate_fallback_title(content)
+            # Fallback to rule-based generation
+            return generate_fallback_title(content, topic_tags)
 
     except Exception as e:
         print(f"Error generating title: {e}")
-        return generate_fallback_title(content)
+        return generate_fallback_title(content, topic_tags)
 
 
-def generate_fallback_title(content: str) -> str:
-    """Generate a simple fallback title from content."""
-    # Take first sentence or first 60 chars
-    first_sentence = content.split('.')[0].strip()
-    if first_sentence and len(first_sentence) <= 80:
+def generate_fallback_title(content: str, topic_tags: list = None) -> str:
+    """Generate a Reddit-style title from content using simple rules."""
+    # Clean content
+    content = content.strip()
+
+    # Extract first meaningful sentence
+    sentences = content.split('.')
+    first_sentence = sentences[0].strip() if sentences else content
+
+    # If first sentence is reasonable length, use it
+    if 20 <= len(first_sentence) <= 80:
         return first_sentence
-    # Truncate at word boundary
-    truncated = content[:60]
+
+    # Try to extract a compelling snippet
+    # Look for common Reddit post patterns
+    patterns = [
+        ("I'm ", "I'm "),
+        ("I am ", "I am "),
+        ("My ", "My "),
+        ("How ", "How "),
+        ("Why ", "Why "),
+        ("Can't ", "Can't "),
+        ("Struggling ", "Struggling "),
+        ("Need ", "Need "),
+    ]
+
+    for pattern, prefix in patterns:
+        if pattern.lower() in content.lower():
+            idx = content.lower().find(pattern.lower())
+            snippet = content[idx:idx+80].split('.')[0].strip()
+            if len(snippet) >= 20:
+                return snippet if len(snippet) <= 80 else snippet[:77] + "..."
+
+    # Fallback: use first 60-80 chars at word boundary
+    if len(content) <= 80:
+        return content
+
+    truncated = content[:77]
     last_space = truncated.rfind(' ')
-    return truncated[:last_space if last_space > 0 else 60] + "..."
+    return content[:last_space if last_space > 30 else 77] + "..."
 
 
 def main(force_regenerate=False):

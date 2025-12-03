@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import type { Story, Theme } from "@/lib/types";
 import CommentSection from "@/components/Comments/CommentSection";
 import { FavoriteButton } from "@/components/Stories/FavoriteButton";
+import { StoryCard } from "@/components/Stories/StoryCard";
+import { generateUsername } from "@/lib/utils";
 
 interface StoryPageProps {
   params: Promise<{ id: string }>;
@@ -66,7 +68,7 @@ function postToStory(row: { id: string; user_id: string; content: string; topic_
   return {
     id: row.id,
     title: generateTitle(row.content),
-    author: `Anonymous ${row.user_id.slice(-4)}`,
+    author: generateUsername(row.user_id),
     excerpt: generateExcerpt(row.content),
     content: row.content,
     tags: row.topic_tags || [],
@@ -140,34 +142,27 @@ export default async function StoryPage({ params }: StoryPageProps) {
       {/* Content */}
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
         {/* Story Scroll Card - Main Content */}
-        <article className="scroll-card-thick relative min-h-[600px] px-16 py-12 sm:px-20 sm:py-14 md:px-24 md:py-16 lg:px-28 lg:py-20">
+        <article className="scroll-card-thick relative px-16 py-[15%] sm:px-20 md:px-24 lg:px-28 overflow-hidden">
           {/* Story Header */}
-          <div className="mb-6 sm:mb-8">
+          <div className="mb-4 sm:mb-6">
             {/* Date and Meta */}
             <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-black/60">
               <span>{story.datePosted}</span>
               <span>•</span>
               <span>{story.author}</span>
-              <span>•</span>
-              <span className="flex items-center gap-1">
-                <img src="/clock.svg" alt="Reading time" className="h-4 w-4" />
-                {story.readTime} min read
-              </span>
-              <span>•</span>
-              <FavoriteButton storyId={id} />
             </div>
 
             {/* Title */}
-            <h1 className="mb-4 font-bold text-2xl tracking-tight text-black break-words sm:text-3xl md:text-4xl lg:text-5xl">
+            <h1 className="mb-3 font-bold text-lg tracking-tight text-black break-words sm:text-xl md:text-2xl">
               {story.title}
             </h1>
 
             {/* Tags */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {story.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-black/10 px-3 py-1 text-xs font-medium text-black/70"
+                  className="rounded-full bg-black/10 px-2 py-0.5 text-[10px] font-medium text-black/70"
                 >
                   {tag}
                 </span>
@@ -175,27 +170,30 @@ export default async function StoryPage({ params }: StoryPageProps) {
             </div>
 
             {/* Decorative divider */}
-            <div className="mt-6 h-1 w-24 rounded-full bg-black/20" />
+            <div className="mt-3 h-0.5 w-16 rounded-full bg-black/20" />
           </div>
 
           {/* Story Content */}
-          <div className="prose prose-lg max-w-none">
+          <div className="prose max-w-none">
             {story.content.split("\n\n").map((paragraph, i) => (
               <p
                 key={i}
-                className="mb-4 sm:mb-6 text-sm leading-relaxed text-black break-words sm:text-base md:text-lg"
+                className="mb-3 text-xs leading-relaxed text-black break-words sm:text-sm"
               >
                 {paragraph}
               </p>
             ))}
           </div>
+
+          {/* Favorite Button - Bottom Left */}
+          <div className="mt-4">
+            <FavoriteButton storyId={id} />
+          </div>
         </article>
 
         {/* Comments Section with Scroll Background */}
-        <div className="scroll-card-thin relative mt-12 px-16 pt-14 pb-18 sm:px-20 sm:pt-16 sm:pb-20 md:px-24 md:pt-20 md:pb-24 lg:px-28 min-h-[500px] max-h-[800px] overflow-y-auto">
-          <div className="max-w-full mx-auto">
-            <CommentSection postId={id} />
-          </div>
+        <div className="scroll-card-thin relative mt-12 px-12 py-8 sm:px-16 sm:py-10 md:px-20 md:py-12 lg:px-24 lg:py-14 min-h-[600px] flex flex-col">
+          <CommentSection postId={id} />
         </div>
 
         {/* More stories */}
@@ -208,23 +206,9 @@ export default async function StoryPage({ params }: StoryPageProps) {
                 className="h-16 sm:h-20"
               />
             </div>
-            <div className="grid gap-6 sm:grid-cols-2">
-              {relatedStories.map((relatedStory) => (
-                <Link
-                  key={relatedStory.id}
-                  href={`/stories/${relatedStory.id}`}
-                  className="scroll-card-thin relative block px-14 pt-12 pb-16 sm:px-16 sm:pt-14 sm:pb-18 md:px-20 md:pt-16 md:pb-20 transition-transform hover:scale-[1.02]"
-                >
-                  <h4 className="font-semibold text-base tracking-tight text-black break-words sm:text-lg">
-                    {relatedStory.title}
-                  </h4>
-                  <p className="mt-2 sm:mt-3 line-clamp-3 text-xs leading-relaxed text-black/80 break-words sm:text-sm">
-                    {relatedStory.excerpt}
-                  </p>
-                  <div className="mt-3 sm:mt-4 text-xs text-black/60">
-                    {relatedStory.readTime} min read
-                  </div>
-                </Link>
+            <div className="grid gap-4 sm:gap-50 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedStories.map((relatedStory, index) => (
+                <StoryCard key={relatedStory.id} story={relatedStory} index={index} />
               ))}
             </div>
           </div>
