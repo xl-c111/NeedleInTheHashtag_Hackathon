@@ -6,7 +6,8 @@ import { ChatHeader } from "./ChatHeader";
 import { MessageList } from "./MessageList";
 import { ChatInput } from "./ChatInput";
 import { TypingIndicator } from "./TypingIndicator";
-import { StoriesPrompt } from "./StoriesPrompt";
+import { MatchedStories } from "./MatchedStories";
+import { sendChatMessage, matchStories, type MatchedStory } from "@/lib/api";
 import type { ChatMessage } from "@/lib/types";
 
 const INITIAL_MESSAGE: ChatMessage = {
@@ -21,7 +22,8 @@ export default function ChatInterface() {
   const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [showStoriesPrompt, setShowStoriesPrompt] = useState(false);
+  const [matchedStories, setMatchedStories] = useState<MatchedStory[]>([]);
+  const [showMatches, setShowMatches] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -30,15 +32,7 @@ export default function ChatInterface() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isTyping]);
-
-  // Show stories prompt after 4+ exchanges
-  useEffect(() => {
-    const userMessages = messages.filter((m) => m.role === "user");
-    if (userMessages.length >= 4 && !showStoriesPrompt) {
-      setShowStoriesPrompt(true);
-    }
-  }, [messages, showStoriesPrompt]);
+  }, [messages, isTyping, matchedStories]);
 
   const handleSend = async () => {
     if (!inputValue.trim() || isTyping) return;
@@ -55,27 +49,45 @@ export default function ChatInterface() {
     setIsTyping(true);
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [...messages, userMessage].map((m) => ({
-            role: m.role,
-            content: m.content,
-          })),
-        }),
-      });
+      // Get conversation history for backend
+      const conversationHistory = messages.map((m) => ({
+        role: m.role as "user" | "assistant",
+        content: m.content,
+      }));
 
-      const data = await response.json();
+      // Call backend chat API
+      const result = await sendChatMessage(
+        userMessage.content,
+        conversationHistory
+      );
 
-      if (data.reply) {
-        const assistantMessage: ChatMessage = {
-          id: (Date.now() + 1).toString(),
-          role: "assistant",
-          content: data.reply,
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, assistantMessage]);
+      const assistantMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: result.response,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, assistantMessage]);
+
+      // After 2-3 user messages, fetch matched stories
+      const userMessages = messages.filter((m) => m.role === "user");
+      if (userMessages.length >= 2 && !showMatches) {
+        try {
+          // Combine recent user messages for better matching
+          const recentUserText = userMessages
+            .slice(-3)
+            .map((m) => m.content)
+            .join(" ");
+
+          const stories = await matchStories(recentUserText, 3, 0.3);
+          if (stories.length > 0) {
+            setMatchedStories(stories);
+            setShowMatches(true);
+          }
+        } catch (matchError) {
+          console.error("Error matching stories:", matchError);
+          // Don't show error to user, just skip showing matches
+        }
       }
     } catch (error) {
       console.error("Chat error:", error);
@@ -113,17 +125,22 @@ export default function ChatInterface() {
           </AnimatePresence>
 
           <AnimatePresence>
-            {showStoriesPrompt && !isTyping && (
+            {showMatches && matchedStories.length > 0 && !isTyping && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 className="mt-6"
               >
-                <StoriesPrompt />
+                <MatchedStories
+                  stories={matchedStories}
+                  onClose={() => setShowMatches(false)}
+                />
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* TODO: Add "Save to Diary" button to summarize chat conversation and save as diary entry */}
 
           <div ref={messagesEndRef} />
         </div>

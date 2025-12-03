@@ -8,6 +8,9 @@ CREATE TABLE IF NOT EXISTS posts (
   -- Foreign key to auth.users
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
 
+  -- Post title (Reddit-style headline)
+  title TEXT,
+
   -- Post content
   content TEXT NOT NULL,
 
@@ -59,6 +62,7 @@ CREATE POLICY "Users can delete own posts"
 -- Comments
 COMMENT ON TABLE posts IS 'User-generated posts and stories shared in the community';
 COMMENT ON COLUMN posts.user_id IS 'User who created this post';
+COMMENT ON COLUMN posts.title IS 'Title/headline for the post (similar to Reddit post titles)';
 COMMENT ON COLUMN posts.content IS 'Main content of the post';
 COMMENT ON COLUMN posts.topic_tags IS 'Array of topic tags for categorization';
 COMMENT ON COLUMN posts.post_id IS 'Parent post ID if this is a reply';

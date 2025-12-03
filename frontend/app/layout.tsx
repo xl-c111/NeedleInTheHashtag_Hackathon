@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import { Header } from "@/components/Header";
 import { AuthProvider } from "@/components/Auth";
 import { siteConfig } from "@/config/site";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -72,6 +73,7 @@ export default function RootLayout({
             <main className="relative min-h-screen w-full overflow-hidden scroll-smooth">
               {children}
             </main>
+            <Toaster position="top-center" richColors />
           </AuthProvider>
         </ThemeProvider>
       </body>
