@@ -79,9 +79,9 @@ export default function ChatInterface() {
             .map((m) => m.content)
             .join(" ");
 
-          const stories = await matchStories(recentUserText, 3, 0.3);
-          if (stories.length > 0) {
-            setMatchedStories(stories);
+          const response = await matchStories(recentUserText, 3, 0.3);
+          if (response.matches.length > 0) {
+            setMatchedStories(response.matches);
             setShowMatches(true);
           }
         } catch (matchError) {
