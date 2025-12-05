@@ -1,10 +1,15 @@
 /**
  * Backend API Integration
  *
- * This file handles all communication with the FastAPI backend.
- * The backend provides AI-powered semantic matching and chat assistance.
+ * This file handles all communication with backend services.
+ * - Chat: Uses Vercel API routes (frontend/app/api/chat)
+ * - Matching: Uses Hugging Face Space for semantic matching
  */
 
+// Hugging Face Space URL for semantic matching
+const HF_SPACE_URL = process.env.NEXT_PUBLIC_HF_SPACE_URL || 'http://localhost:7860';
+
+// Fallback to old backend URL for local development
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 // ============================================================================
@@ -85,7 +90,12 @@ export async function matchStories(
   minSimilarity: number = 0.3
 ): Promise<MatchResponse> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/match`, {
+    // Use Hugging Face Space for semantic matching
+    const matchUrl = HF_SPACE_URL.includes('localhost')
+      ? `${API_BASE_URL}/api/match`  // Local development
+      : `${HF_SPACE_URL}/api/match`;  // Production (HF Space)
+
+    const response = await fetch(matchUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -137,23 +147,31 @@ export async function sendChatMessage(
   conversationHistory: ChatMessage[] = []
 ): Promise<ChatResponse> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/chat`, {
+    // Use Vercel API route for chat (faster, no cold starts)
+    const response = await fetch('/api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        message,
-        conversation_history: conversationHistory,
-      } as ChatRequest),
+        messages: [
+          ...conversationHistory,
+          { role: 'user', content: message }
+        ]
+      }),
     });
 
     if (!response.ok) {
       throw new Error(`Chat API error: ${response.statusText}`);
     }
 
-    const result: ChatResponse = await response.json();
-    return result;
+    const result = await response.json();
+    return {
+      response: result.reply,
+      session_id: 'vercel-session',
+      suggested_posts: null,
+      ready_for_stories: conversationHistory.length >= 2
+    };
   } catch (error) {
     console.error('Error sending chat message:', error);
     throw error;
