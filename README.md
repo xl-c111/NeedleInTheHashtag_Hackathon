@@ -10,12 +10,6 @@
 - 🎤 Pitch Day: Dec 11
 - 🎯 Theme: 16 Days of Activism Against Gender-Based Violence
 
-## 🌐 Live Demo
-
-**🔗 [https://needleinthehashtaghackathon.vercel.app/](https://needleinthehashtaghackathon.vercel.app/)**
-
----
-
 ## 🎯 The Problem
 
 **Online radicalization and echo chambers increase misogyny and correlate with gender-based violence**
