@@ -52,6 +52,13 @@ export function MatchedStories({ stories, onClose }: MatchedStoriesProps) {
               transition={{ delay: index * 0.1 }}
               className="rounded-lg border border-border bg-card p-4 shadow-sm transition-shadow hover:shadow-md"
             >
+              {/* Story Title */}
+              {story.title && (
+                <h4 className="mb-2 font-semibold text-card-foreground text-base">
+                  {story.title}
+                </h4>
+              )}
+
               {/* Similarity Score and Tags */}
               <div className="mb-2 flex flex-wrap items-center gap-2">
                 <div className="rounded bg-accent px-2 py-1 font-medium text-accent-foreground text-xs">

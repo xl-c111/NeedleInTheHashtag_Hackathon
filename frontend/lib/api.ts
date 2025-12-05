@@ -12,7 +12,9 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 // ============================================================================
 
 export interface MatchedStory {
+  id?: string;
   content: string;
+  title?: string;
   topic_tags: string[];
   similarity_score: number;
   user_id: string;
