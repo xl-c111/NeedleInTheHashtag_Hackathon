@@ -100,8 +100,10 @@ export async function matchStories(
     }
 
     const result = await response.json();
+    // Backend returns array directly, not wrapped in { matches: [...] }
+    const matches = Array.isArray(result) ? result : (result.matches || []);
     return {
-      matches: result.matches || [],
+      matches,
       warning: result.warning,
       user_risk_score: result.user_risk_score,
     };

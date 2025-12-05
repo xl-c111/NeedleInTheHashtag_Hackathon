@@ -296,6 +296,16 @@ async def chat_assistance(request: ChatRequest):
             should_show_stories=should_show_stories
         )
     except Exception as e:
+        # Debug logging to see actual error
+        import traceback
+        print(f"\n{'='*60}")
+        print("CHAT ERROR DEBUG")
+        print(f"{'='*60}")
+        print(f"Error type: {type(e).__name__}")
+        print(f"Error message: {str(e)}")
+        print(f"\nFull traceback:")
+        traceback.print_exc()
+        print(f"{'='*60}\n")
         raise HTTPException(
             status_code=500,
             detail=f"Chat failed: {str(e)}. Make sure OPENROUTER_API_KEY is set in .env"

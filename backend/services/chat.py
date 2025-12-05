@@ -59,7 +59,8 @@ SUMMARY:
         if not self.api_key:
             raise ValueError("OPENROUTER_API_KEY must be set in .env or passed to constructor")
 
-        self.model = "google/gemini-2.0-flash-exp:free"  # Fast and free via OpenRouter
+        # Use GPT-4o-mini - great quality, very cheap, reliable, no rate limits
+        self.model = "openai/gpt-4o-mini"
         self.api_url = "https://openrouter.ai/api/v1/chat/completions"
         self.conversation_history = []
 
@@ -97,8 +98,37 @@ SUMMARY:
             "temperature": 0.7
         }
 
-        response = requests.post(self.api_url, headers=headers, json=payload)
-        response.raise_for_status()
+        # Add small delay to avoid rate limiting (only on subsequent requests)
+        import time
+        if len(self.conversation_history) > 0:
+            time.sleep(1.5)  # 1.5 second delay between requests
+
+        try:
+            response = requests.post(self.api_url, headers=headers, json=payload)
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            # Debug logging for OpenRouter API errors
+            print(f"\n{'='*60}")
+            print("OPENROUTER API ERROR")
+            print(f"{'='*60}")
+            print(f"Status Code: {e.response.status_code}")
+            print(f"Response Body: {e.response.text}")
+            print(f"Request Model: {self.model}")
+            print(f"Request Messages Count: {len(messages)}")
+            print(f"{'='*60}\n")
+
+            # If rate limited, suggest waiting
+            if e.response.status_code == 429:
+                print("⚠️  Rate limited! Waiting 2 seconds and retrying once...")
+                time.sleep(2)
+                # Retry once
+                try:
+                    response = requests.post(self.api_url, headers=headers, json=payload)
+                    response.raise_for_status()
+                except:
+                    raise  # If retry fails, give up
+            else:
+                raise
 
         result = response.json()
         assistant_message = result['choices'][0]['message']['content']
