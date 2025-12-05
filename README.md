@@ -4,6 +4,8 @@
 >
 > Real human experiences, not AI therapy. Because one authentic story from someone who's "been there" is worth more than 100 AI-generated responses.
 
+🌐 **[Live Demo]:** https://needleinthehashtaghackathon.vercel.app
+
 **Built for the eSafety Hackathon - "Needle in the Hashtag"**
 - 🗓️ Hackathon: Nov 29-30, 2025 | Stone & Chalk, Melbourne
 - 📅 Submission: Dec 5, 11:59pm
@@ -152,6 +154,8 @@ OPENROUTER_API_KEY=your-openrouter-key
 - **[Design System](docs/DESIGN.md)** - Product design and user personas
 - **[Development Guide](docs/DEVELOPMENT.md)** - Component patterns and setup
 - **[Technical Approaches](docs/TECHNICAL_APPROACHES.md)** - AI/ML strategies
+- **[Deployment Architecture](DEPLOYMENT_ARCHITECTURE.md)** - Deployment architecture
+
 
 For complete documentation, see the [`docs/`](docs/) directory.
 
