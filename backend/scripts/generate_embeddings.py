@@ -32,12 +32,13 @@ print("="*60)
 print("GENERATING EMBEDDINGS FOR MENTOR POSTS")
 print("="*60)
 
-# Fetch all posts from Supabase
+# Fetch only main posts from Supabase (exclude comments)
+# Comments are entries where post_id is NOT NULL
 print("\n1. Fetching posts from Supabase...")
 try:
-    response = supabase.table('posts').select("*").execute()
+    response = supabase.table('posts').select("*").is_('post_id', None).execute()
     posts = response.data
-    print(f"   Fetched {len(posts)} posts")
+    print(f"   Fetched {len(posts)} posts (comments excluded)")
 except Exception as e:
     print(f"Error fetching posts: {str(e)}")
     sys.exit(1)
