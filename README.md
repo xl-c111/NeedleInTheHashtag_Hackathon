@@ -39,20 +39,30 @@ Young men struggling with loneliness, relationships, or self-esteem often find o
 
 ## 🚀 Quick Start
 
-### Frontend
+### For Daily Development (Recommended)
 ```bash
 cd frontend
 npm install
 npm run dev
 # Open http://localhost:3000
 ```
+Just run the frontend - it will use production HF Space for matching.
 
-### Backend (Python/FastAPI)
+### For Full Local Testing (Optional)
+Only needed if testing matching algorithm changes.
+
+**Terminal 1 - HF Space:**
 ```bash
-cd backend
+cd huggingface-space
 pip install -r requirements.txt
-uvicorn main:app --reload
-# API runs on http://localhost:8000
+uvicorn app:app --reload --port 7860
+```
+
+**Terminal 2 - Frontend:**
+```bash
+cd frontend
+npm run dev
+# Update .env.local: NEXT_PUBLIC_HF_SPACE_URL=http://localhost:7860
 ```
 
 ## 📁 Project Structure

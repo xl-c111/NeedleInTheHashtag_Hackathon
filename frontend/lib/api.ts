@@ -1,16 +1,13 @@
 /**
- * Backend API Integration
+ * API Integration
  *
  * This file handles all communication with backend services.
- * - Chat: Uses Vercel API routes (frontend/app/api/chat)
+ * - Chat: Uses Vercel API routes (/api/chat) with OpenRouter
  * - Matching: Uses Hugging Face Space for semantic matching
  */
 
 // Hugging Face Space URL for semantic matching
 const HF_SPACE_URL = process.env.NEXT_PUBLIC_HF_SPACE_URL || 'http://localhost:7860';
-
-// Fallback to old backend URL for local development
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 // ============================================================================
 // Types
@@ -57,13 +54,6 @@ export interface ChatResponse {
   ready_for_stories?: boolean;
 }
 
-export interface HealthResponse {
-  status: string;
-  matcher_ready: boolean;
-  moderator_ready: boolean;
-  version: string;
-}
-
 // ============================================================================
 // API Functions
 // ============================================================================
@@ -90,10 +80,8 @@ export async function matchStories(
   minSimilarity: number = 0.3
 ): Promise<MatchResponse> {
   try {
-    // Use Hugging Face Space for semantic matching
-    const matchUrl = HF_SPACE_URL.includes('localhost')
-      ? `${API_BASE_URL}/api/match`  // Local development
-      : `${HF_SPACE_URL}/api/match`;  // Production (HF Space)
+    // Use Hugging Face Space for semantic matching (both local and production)
+    const matchUrl = `${HF_SPACE_URL}/api/match`;
 
     const response = await fetch(matchUrl, {
       method: 'POST',
@@ -178,61 +166,8 @@ export async function sendChatMessage(
   }
 }
 
-/**
- * Check if content is safe (no harmful/violent content)
- *
- * @param text - Text to moderate
- * @returns Whether the text is safe
- */
-export async function moderateContent(text: string): Promise<{ is_risky: boolean; risk_score: number; confidence: number }> {
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/moderate`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Moderation API error: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    return {
-      is_risky: result.is_risky,
-      risk_score: result.risk_score,
-      confidence: result.confidence,
-    };
-  } catch (error) {
-    console.error('Error moderating content:', error);
-    // Default to safe if moderation fails
-    return { is_risky: false, risk_score: 0, confidence: 0 };
-  }
-}
-
-/**
- * Check backend health status
- *
- * @returns Health status and model loading info
- */
-export async function checkHealth(): Promise<HealthResponse> {
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/health`);
-
-    if (!response.ok) {
-      throw new Error(`Health check failed: ${response.statusText}`);
-    }
-
-    const health = await response.json();
-    return {
-      status: health.status,
-      matcher_ready: health.matcher_ready,
-      moderator_ready: health.moderator_ready,
-      version: health.version,
-    };
-  } catch (error) {
-    console.error('Backend health check failed:', error);
-    throw error;
-  }
-}
+// Note: Content moderation and health check functions removed
+// These were part of the old backend architecture (Render)
+// New architecture uses:
+// - Vercel API routes for chat (with OpenRouter)
+// - Hugging Face Space for semantic matching
