@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { User, LogOut } from 'lucide-react'
 import { useAuth } from './AuthProvider'
 import { getUserProfile } from '@/lib/supabase'
@@ -12,6 +12,7 @@ export function UserButton() {
   const [isOpen, setIsOpen] = useState(false)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const router = useRouter()
+  const pathname = usePathname()
 
   // Load user profile data including avatar
   useEffect(() => {
@@ -64,16 +65,20 @@ export function UserButton() {
 
   // Not logged in
   if (!user) {
+    // Add redirectTo param if not on homepage or auth pages
+    const shouldRedirect = pathname !== '/' && pathname !== '/login' && pathname !== '/signup'
+    const redirectParam = shouldRedirect ? `?redirectTo=${encodeURIComponent(pathname)}` : ''
+
     return (
       <div className="flex items-center gap-2">
         <Link
-          href="/login"
+          href={`/login${redirectParam}`}
           className="flex items-center rounded-lg px-3 py-1.5 transition-all hover:scale-110"
         >
           <img src="/login.svg" alt="Sign in" className="h-12 w-auto" />
         </Link>
         <Link
-          href="/signup"
+          href={`/signup${redirectParam}`}
           className="flex items-center rounded-lg px-3 py-1.5 transition-all hover:scale-110"
         >
           <img src="/signup.svg" alt="Sign up" className="h-12 w-auto" />

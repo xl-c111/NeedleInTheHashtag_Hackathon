@@ -68,23 +68,11 @@ export function ResourceCard({ resource, index = 0 }: ResourceCardProps) {
               <span>{resource.availability}</span>
             </div>
           </div>
-
-          {/* Tags */}
-          <div className="mt-4 flex flex-wrap gap-1.5">
-            {resource.tags.slice(0, 3).map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full bg-secondary/80 px-2 py-0.5 text-[10px] font-medium text-secondary-foreground shadow-sm backdrop-blur-sm dark:bg-accent dark:text-accent-foreground"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
         </div>
 
         {/* Category badge in bottom area */}
         <div className="relative z-10 px-8 pb-16 mt-auto">
-          <div className="inline-block rounded-full bg-primary/90 px-3 py-1 text-xs font-medium text-primary-foreground shadow-sm">
+          <div className="inline-block rounded-full bg-secondary/80 px-3 py-1 text-xs font-medium text-secondary-foreground shadow-sm backdrop-blur-sm">
             {resource.category}
           </div>
         </div>
