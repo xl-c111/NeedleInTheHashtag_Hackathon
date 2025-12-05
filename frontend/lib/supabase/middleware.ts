@@ -44,8 +44,10 @@ export async function updateSession(request: NextRequest) {
 
   // Redirect authenticated (non-anonymous) users away from auth pages
   if (isAuthRoute && user && !user.is_anonymous) {
+    const redirectTo = request.nextUrl.searchParams.get('redirectTo')
     const url = request.nextUrl.clone()
-    url.pathname = '/'
+    url.pathname = redirectTo || '/'
+    url.search = '' // Clear query params
     return NextResponse.redirect(url)
   }
 
