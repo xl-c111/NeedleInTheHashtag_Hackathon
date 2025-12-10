@@ -215,8 +215,9 @@ a {
 /* Mobile responsive fix - allow content to determine height */
 @media (max-width: 640px) {
   .scroll-card-thick {
+    background-size: 130% 130%;
     aspect-ratio: auto;
-    min-height: 500px;
+    min-height: 490px;
     padding-bottom: 80px !important;
   }
 }
@@ -227,4 +228,13 @@ a {
   background-position: center center;
   background-repeat: no-repeat;
   aspect-ratio: 492 / 738;
+}
+
+/* Mobile responsive fix for comments section */
+@media (max-width: 640px) {
+  .scroll-card-thin {
+    background-size: 100% 100%;
+    aspect-ratio: auto;
+    height: 680px;
+  }
 }

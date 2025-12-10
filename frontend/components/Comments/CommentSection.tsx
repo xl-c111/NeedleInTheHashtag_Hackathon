@@ -293,8 +293,8 @@ export default function CommentSection({ postId }: CommentSectionProps) {
 
   return (
     <div className="max-w-full flex flex-col h-full">
-      {/* Top spacer - pushes content down 20% */}
-      <div className="flex-[0.2]" />
+      {/* Top spacer - pushes content down 20% on desktop only */}
+      <div className="hidden sm:block sm:flex-[0.2]" />
 
       {/* Main content area */}
       <div className="flex-1">
@@ -358,8 +358,8 @@ export default function CommentSection({ postId }: CommentSectionProps) {
       )}
       </div>
 
-      {/* Bottom spacer + Pagination - positioned 20% from bottom */}
-      <div className="flex-[0.2] flex items-start justify-center pt-8">
+      {/* Bottom spacer + Pagination - positioned 20% from bottom on desktop */}
+      <div className="pt-4 sm:flex-[0.2] flex items-start justify-center sm:pt-8">
         <div className="flex items-center justify-center gap-3">
           <button
             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}

@@ -37,21 +37,21 @@ function calculateReadTime(content: string): number {
 
 // Map topic_tags to themes
 function mapTopicTagsToThemes(topicTags: string[] | null): Theme[] {
-  if (!topicTags) return ['self-improvement'];
+  if (!topicTags) return ["self-improvement"];
 
   const tagToTheme: Record<string, Theme> = {
-    'Mental health history': 'therapy',
-    'Views on women': 'relationships',
-    'Views on men/masculinity': 'self-improvement',
-    'Dating history': 'rejection',
-    'Sexuality': 'relationships',
-    'Friendship history': 'loneliness',
-    'Online spaces': 'toxic-communities',
-    'Social isolation': 'loneliness',
-    'Self-improvement': 'self-improvement',
-    'Career': 'career',
-    'Fitness': 'fitness',
-    'Purpose': 'finding-purpose',
+    "Mental health history": "therapy",
+    "Views on women": "relationships",
+    "Views on men/masculinity": "self-improvement",
+    "Dating history": "rejection",
+    Sexuality: "relationships",
+    "Friendship history": "loneliness",
+    "Online spaces": "toxic-communities",
+    "Social isolation": "loneliness",
+    "Self-improvement": "self-improvement",
+    Career: "career",
+    Fitness: "fitness",
+    Purpose: "finding-purpose",
   };
 
   const themes = new Set<Theme>();
@@ -60,11 +60,18 @@ function mapTopicTagsToThemes(topicTags: string[] | null): Theme[] {
     if (theme) themes.add(theme);
   }
 
-  return themes.size === 0 ? ['self-improvement'] : Array.from(themes);
+  return themes.size === 0 ? ["self-improvement"] : Array.from(themes);
 }
 
 // Transform post row to Story
-function postToStory(row: { id: string; user_id: string; content: string; topic_tags: string[] | null; timestamp: string | null; created_at: string }): Story {
+function postToStory(row: {
+  id: string;
+  user_id: string;
+  content: string;
+  topic_tags: string[] | null;
+  timestamp: string | null;
+  created_at: string;
+}): Story {
   return {
     id: row.id,
     title: generateTitle(row.content),
@@ -81,11 +88,7 @@ function postToStory(row: { id: string; user_id: string; content: string; topic_
 // Helper to fetch story from Supabase posts table
 async function fetchStoryFromSupabase(id: string): Promise<Story | null> {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const { data, error } = await supabase.from("posts").select("*").eq("id", id).single();
 
   if (error || !data) {
     return null;
@@ -97,11 +100,7 @@ async function fetchStoryFromSupabase(id: string): Promise<Story | null> {
 // Helper to fetch related stories from Supabase posts table
 async function fetchRelatedStories(excludeId: string): Promise<Story[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("posts")
-    .select("*")
-    .neq("id", excludeId)
-    .limit(2);
+  const { data, error } = await supabase.from("posts").select("*").neq("id", excludeId).limit(2);
 
   if (error || !data) {
     return [];
@@ -138,11 +137,11 @@ export default async function StoryPage({ params }: StoryPageProps) {
   const relatedStories = await fetchRelatedStories(id);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-background/80 pt-16 pb-12">
+    <div className="min-h-screen bg-gradient-to-b from-background to-background/80 pt-2 sm:pt-16 pb-12">
       {/* Content */}
-      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+      <main className="mx-auto max-w-4xl px-4 pt-0 pb-2 sm:px-6 sm:py-12">
         {/* Story Scroll Card - Main Content */}
-        <article className="scroll-card-thick aspect-auto relative mx-auto w-full max-w-3xl px-4 pt-44 pb-32 sm:px-20 sm:pt-[12%] sm:pb-[12%] md:px-24 lg:px-28 overflow-visible">
+        <article className="scroll-card-thick aspect-auto relative mx-auto w-full max-w-3xl px-6 pt-20 pb-20 sm:px-20 sm:pt-[12%] sm:pb-[12%] md:px-24 lg:px-28 overflow-visible sm:overflow-hidden">
           {/* Story Header */}
           <div className="mb-4 sm:mb-6 flex flex-col items-center text-center">
             {/* Date and Meta */}
@@ -160,24 +159,17 @@ export default async function StoryPage({ params }: StoryPageProps) {
             {/* Tags */}
             <div className="flex flex-wrap justify-center gap-1.5">
               {story.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full bg-black/10 px-2 py-0.5 text-[10px] font-medium text-black/70"
-                >
+                <span key={tag} className="rounded-full bg-black/10 px-2 py-0.5 text-[10px] font-medium text-black/70">
                   {tag}
                 </span>
               ))}
             </div>
-
-        </div>
+          </div>
 
           {/* Story Content */}
           <div className="prose max-w-none text-left sm:text-left">
             {story.content.split("\n\n").map((paragraph, i) => (
-              <p
-                key={i}
-                className="mb-3 text-xs leading-relaxed text-black break-words sm:text-sm"
-              >
+              <p key={i} className="mb-3 text-xs leading-relaxed text-black break-words sm:text-sm">
                 {paragraph}
               </p>
             ))}
@@ -190,19 +182,17 @@ export default async function StoryPage({ params }: StoryPageProps) {
         </article>
 
         {/* Comments Section with Scroll Background */}
-        <div className="scroll-card-thin aspect-auto relative mt-12 px-12 py-8 sm:px-16 sm:py-10 md:px-20 md:py-12 lg:px-24 lg:py-14 min-h-[400px] sm:min-h-[600px] flex flex-col">
-          <CommentSection postId={id} />
+        <div className="scroll-card-thin aspect-auto relative mt-0 sm:mt-12 px-8 pt-24 pb-24 sm:px-16 sm:pt-10 sm:pb-10 md:px-20 md:py-12 lg:px-24 lg:py-14 flex flex-col overflow-hidden">
+          <div className="flex flex-col h-full max-h-[550px] sm:max-h-none overflow-y-auto sm:overflow-y-visible">
+            <CommentSection postId={id} />
+          </div>
         </div>
 
         {/* More stories */}
         {relatedStories.length > 0 && (
           <div className="mt-24 sm:mt-16">
             <div className="mb-6 flex justify-center">
-              <img
-                src="/moreribbon.svg"
-                alt="More stories like this"
-                className="h-16 sm:h-20"
-              />
+              <img src="/moreribbon.svg" alt="More stories like this" className="h-16 sm:h-20" />
             </div>
             <div className="grid gap-4 sm:gap-50 sm:grid-cols-2 lg:grid-cols-3">
               {relatedStories.map((relatedStory, index) => (
