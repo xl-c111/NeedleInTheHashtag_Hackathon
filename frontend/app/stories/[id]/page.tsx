@@ -142,9 +142,9 @@ export default async function StoryPage({ params }: StoryPageProps) {
       {/* Content */}
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
         {/* Story Scroll Card - Main Content */}
-        <article className="scroll-card-thick relative px-16 py-[15%] sm:px-20 md:px-24 lg:px-28 overflow-hidden">
+        <article className="scroll-card-thick aspect-auto relative mx-auto w-full max-w-3xl px-4 pt-44 pb-32 sm:px-20 sm:pt-[12%] sm:pb-[12%] md:px-24 lg:px-28 overflow-visible">
           {/* Story Header */}
-          <div className="mb-4 sm:mb-6">
+          <div className="mb-4 sm:mb-6 flex flex-col items-center text-center">
             {/* Date and Meta */}
             <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-black/60">
               <span>{story.datePosted}</span>
@@ -158,7 +158,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
             </h1>
 
             {/* Tags */}
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap justify-center gap-1.5">
               {story.tags.map((tag) => (
                 <span
                   key={tag}
@@ -169,12 +169,10 @@ export default async function StoryPage({ params }: StoryPageProps) {
               ))}
             </div>
 
-            {/* Decorative divider */}
-            <div className="mt-3 h-0.5 w-16 rounded-full bg-black/20" />
-          </div>
+        </div>
 
           {/* Story Content */}
-          <div className="prose max-w-none">
+          <div className="prose max-w-none text-left sm:text-left">
             {story.content.split("\n\n").map((paragraph, i) => (
               <p
                 key={i}
@@ -192,13 +190,13 @@ export default async function StoryPage({ params }: StoryPageProps) {
         </article>
 
         {/* Comments Section with Scroll Background */}
-        <div className="scroll-card-thin relative mt-12 px-12 py-8 sm:px-16 sm:py-10 md:px-20 md:py-12 lg:px-24 lg:py-14 min-h-[600px] flex flex-col">
+        <div className="scroll-card-thin aspect-auto relative mt-12 px-12 py-8 sm:px-16 sm:py-10 md:px-20 md:py-12 lg:px-24 lg:py-14 min-h-[400px] sm:min-h-[600px] flex flex-col">
           <CommentSection postId={id} />
         </div>
 
         {/* More stories */}
         {relatedStories.length > 0 && (
-          <div className="mt-12 sm:mt-16">
+          <div className="mt-24 sm:mt-16">
             <div className="mb-6 flex justify-center">
               <img
                 src="/moreribbon.svg"

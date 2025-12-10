@@ -1,185 +1,114 @@
 # been there
 
 > **Peer support platform connecting people to authentic recovery stories**
->
-> Real human experiences, not AI therapy. Because one authentic story from someone who's "been there" is worth more than 100 AI-generated responses.
+> Real human experiences, not AI therapy.
 
-🌐 **[Live Demo]:** https://needleinthehashtaghackathon.vercel.app
+🌐 **Live Demo:** https://needleinthehashtaghackathon.vercel.app
 
-**Built for the eSafety Hackathon - "Needle in the Hashtag"**
-- 🗓️ Hackathon: Nov 29-30, 2025 | Stone & Chalk, Melbourne
-- 📅 Submission: Dec 5, 11:59pm
-- 🎤 Pitch Day: Dec 11
-- 🎯 Theme: 16 Days of Activism Against Gender-Based Violence
+---
 
-## 🎯 The Problem
+## Overview
 
-**Online radicalization and echo chambers increase misogyny and correlate with gender-based violence**
+**been there** uses AI-powered semantic matching to connect people struggling with difficult issues to authentic mentor stories from those who have overcome similar challenges. Built to combat online radicalization and toxic echo chambers by providing diverse, compassionate peer perspectives.
 
-Young men struggling with loneliness, relationships, or self-esteem often find online communities that start as support groups but become toxic echo chambers. These spaces reinforce harmful beliefs and research links them to higher rates of domestic violence and gender-based violence.
+**Key Features:**
+- AI chat interface to help articulate feelings
+- Semantic matching to relevant mentor stories
+- Private journaling for personal reflection
+- Anonymous, stigma-free environment
+- Curated professional resources
 
-## 💡 Our Solution
+**Built for:** eSafety Hackathon - "Needle in the Hashtag" (Nov 2025)
 
-**been there** matches users struggling with difficult issues to authentic mentor posts from people who have overcome similar challenges.
+## Quick Start
 
-**Key Differentiators:**
-- ✅ **Real human stories** from recovered community members
-- ✅ **AI-powered matching** (not AI-generated advice)
-- ✅ **Diverse perspectives** to break echo chambers
-- ✅ **Anonymous & stigma-free** environment
-- ✅ **Scalable peer support** (one story helps thousands)
-
-## 📱 60-Second Demo Flow
-
-1. **User types their struggles** (loneliness, relationships, self-esteem)
-2. **AI chat helps articulate feelings** (compassionate listening)
-3. **Matched with relevant mentor stories** (semantic similarity)
-4. **Like/favorite content** they resonate with
-5. **Explore diverse perspectives** (different genders/backgrounds)
-6. **Write in private diary** to track their journey
-7. **Access professional resources** for next steps
-
-## 🚀 Quick Start
-
-### For Daily Development (Recommended)
 ```bash
 cd frontend
 npm install
 npm run dev
-# Open http://localhost:3000
-```
-Just run the frontend - it will use production HF Space for matching.
-
-### For Full Local Testing (Optional)
-Only needed if testing matching algorithm changes.
-
-**Terminal 1 - HF Space:**
-```bash
-cd huggingface-space
-pip install -r requirements.txt
-uvicorn app:app --reload --port 7860
 ```
 
-**Terminal 2 - Frontend:**
-```bash
-cd frontend
-npm run dev
-# Update .env.local: NEXT_PUBLIC_HF_SPACE_URL=http://localhost:7860
+Visit http://localhost:3000
+
+The app connects to production services by default. For local backend development, see [DEPLOYMENT_ARCHITECTURE.md](DEPLOYMENT_ARCHITECTURE.md).
+
+## Tech Stack & Architecture
+
+**Frontend (Vercel):** Next.js 16, React 19, TypeScript, Tailwind CSS v4, shadcn/ui
+**Backend (HF Space):** FastAPI, sentence-transformers, scikit-learn
+**Database:** Supabase (PostgreSQL + Row-Level Security)
+**AI Services:** OpenRouter API (Gemini 2.0 Flash)
+
+```
+frontend/          # Next.js app (Vercel)
+├── app/           # Pages & API routes
+├── components/    # React components
+└── lib/           # Supabase client, utilities
+
+huggingface-space/ # Semantic matching API (HF Space)
+└── app.py         # FastAPI + embeddings
+
+backend/           # Development scripts
+└── services/      # AI services, data processing
 ```
 
-## 📁 Project Structure
+## Features
 
-```
-been-there/
-├── frontend/               # Next.js web application
-│   ├── app/               # Pages: /, /chat, /stories, /diary, /write, /resources
-│   ├── components/        # React components (Auth, Chat, Stories, Header, etc.)
-│   └── lib/               # Supabase client, types, utilities
-├── backend/               # FastAPI backend
-│   ├── services/          # AI services (chat, matcher, moderator)
-│   ├── scripts/           # Data fetching and embeddings generation
-│   └── schema_*.sql       # Database schemas
-├── docs/                  # Documentation
-│   ├── HACKATHON_CONTEXT.md
-│   ├── PITCH_GUIDE.md
-│   ├── DATABASE_SCHEMA.md
-│   └── ...
-└── data/                  # Training data and seed content
-```
+**Core Functionality:**
+- AI chat interface for compassionate listening
+- Semantic matching to relevant mentor stories
+- Story browsing with theme-based filtering
+- Private journaling for reflection
+- Authentication (email/password + anonymous)
+- Dark mode support
+- Fully responsive design
 
-## 🛠️ Tech Stack
+**In Development:**
+- Enhanced semantic matching with embeddings
+- Full diary integration with Supabase
+- Like/favorite functionality
+- Professional resources directory
 
-### Frontend
-| Category | Technology |
-|----------|------------|
-| Framework | Next.js 16 (App Router) |
-| Language | TypeScript 5.x |
-| Styling | Tailwind CSS v4 |
-| UI Components | shadcn/ui, Radix UI |
-| Animations | Motion 12 |
-| Database | Supabase (PostgreSQL + Auth) |
-| Theme | next-themes (dark mode) |
+## Environment Setup
 
-### Backend
-| Category | Technology |
-|----------|------------|
-| Framework | FastAPI (Python) |
-| AI/ML | sentence-transformers, scikit-learn |
-| LLM API | OpenRouter (Gemini 2.0 Flash) |
-| Database | Supabase (PostgreSQL) |
-
-## ✨ Features
-
-### Implemented ✅
-- **AI Chat Interface** - Compassionate AI helps users articulate feelings (OpenRouter API)
-- **Story Browsing** - Curated mentor posts with theme-based filtering
-- **Story Detail Pages** - Full stories with related content suggestions
-- **Authentication** - Supabase Auth with anonymous sign-in option
-- **Dark Mode** - Theme toggle with system preference detection
-- **Responsive Design** - Mobile-first, works on all devices
-- **Protected Routes** - Middleware-based authentication
-
-### In Progress ⚠️
-- **Semantic Matching** - AI-powered story matching (backend ready, needs embeddings)
-- **Diary Feature** - Private journaling (UI complete, Supabase integration needed)
-- **Like/Favorite** - Save favorite stories (schema designed, not implemented)
-
-### Planned 📋
-- **Professional Resources** - Crisis hotlines, therapy services, self-help content
-- **Content Moderation** - AI-powered safety classification
-- **Mood Tracking** - Visualize emotional progress over time
-
-## 🔧 Environment Setup
-
-Create a `.env.local` file in the `frontend/` directory:
-
+**Frontend** (`frontend/.env.local`):
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=your-project-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-Create a `.env` file in the `backend/` directory:
-
+**Backend** (`backend/.env`):
 ```bash
 SUPABASE_URL=your-project-url
 SUPABASE_SERVICE_KEY=your-service-key
 OPENROUTER_API_KEY=your-openrouter-key
 ```
 
-## 📚 Documentation
+## Documentation
 
-- **[Hackathon Context](docs/HACKATHON_CONTEXT.md)** - Event details, timeline, challenges
-- **[Pitch Guide](docs/PITCH_GUIDE.md)** - Presentation script and tips
+- **[Deployment Architecture](DEPLOYMENT_ARCHITECTURE.md)** - System architecture and deployment guide
 - **[Database Schema](docs/DATABASE_SCHEMA.md)** - Supabase tables and RLS policies
-- **[Design System](docs/DESIGN.md)** - Product design and user personas
 - **[Development Guide](docs/DEVELOPMENT.md)** - Component patterns and setup
-- **[Technical Approaches](docs/TECHNICAL_APPROACHES.md)** - AI/ML strategies
-- **[Deployment Architecture](DEPLOYMENT_ARCHITECTURE.md)** - Deployment architecture
 
+See [`docs/`](docs/) for complete documentation.
 
-For complete documentation, see the [`docs/`](docs/) directory.
-
-## 📞 Crisis Support
-
-If you or someone you know is in crisis, please reach out:
+## Crisis Support
 
 **Australia:**
-- **Lifeline**: 13 11 14 (24/7 crisis support)
-- **Beyond Blue**: 1300 22 4636 (mental health support)
-- **MensLine Australia**: 1300 78 99 78 (men's support line)
-- **Emergency**: 000
+- Lifeline: 13 11 14 (24/7)
+- Beyond Blue: 1300 22 4636
+- MensLine Australia: 1300 78 99 78
+- Emergency: 000
 
-**International:**
-- See [findahelpline.com](https://findahelpline.com) for resources in your country
+**International:** [findahelpline.com](https://findahelpline.com)
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-This project was built during the eSafety Hackathon (Nov 29-30, 2025). Post-hackathon contributions welcome!
+Built during the eSafety Hackathon (Nov 29-30, 2025). Contributions welcome!
 
-## 📄 License
+## License
 
-Built with care for the eSafety Hackathon - Making online spaces safer together 🛡️
-
-**Theme**: 16 Days of Activism Against Gender-Based Violence
+MIT License - Built for the eSafety Hackathon
+**Theme:** 16 Days of Activism Against Gender-Based Violence

@@ -39,7 +39,7 @@
   --color-chart-4: hsl(var(--chart-4));
   --color-chart-5: hsl(var(--chart-5));
 
-  --color-dark-red: #6F1A1A;
+  --color-dark-red: #6f1a1a;
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -205,15 +205,24 @@ a {
 
 /* Scroll card backgrounds - updated paths */
 .scroll-card-thick {
-  background-image: url('/scrollpostthicc.svg');
+  background-image: url("/scrollpostthicc.svg");
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   aspect-ratio: 999 / 738;
 }
 
+/* Mobile responsive fix - allow content to determine height */
+@media (max-width: 640px) {
+  .scroll-card-thick {
+    aspect-ratio: auto;
+    min-height: 500px;
+    padding-bottom: 80px !important;
+  }
+}
+
 .scroll-card-thin {
-  background-image: url('/scrollpostthin.svg');
+  background-image: url("/scrollpostthin.svg");
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
